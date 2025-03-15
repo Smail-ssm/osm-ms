@@ -1,11 +1,15 @@
 package com.osm.securityservice.resources;
 
+import com.osm.securityservice.domain.Permission;
+import com.osm.securityservice.domain.Role;
 import com.osm.securityservice.domain.User;
 import com.osm.securityservice.service.UserService;
 import com.osm.securityservice.service.dto.ManagedUserVM;
 import com.osm.securityservice.service.dto.PasswordChangeDTO;
 import com.osm.securityservice.service.dto.UserDTO;
 import com.osm.securityservice.util.MailService;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.micrometer.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +20,10 @@ import org.springframework.mail.MailException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import javax.crypto.SecretKey;
+import java.security.SecureRandom;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/security")
@@ -63,9 +70,35 @@ public class AuthResource {
             return ResponseEntity.badRequest().body("Incorrect password");
         }
 
-        // Successful login
+        // Extract roles from the user
+        Role roles = user.getRole();
+
+        // Extract permissions from the user's roles. This assumes that your User entity has a getRoles() method
+        // and that each Role has a getPermissions() method returning a collection of Permission.
+        List<String> permissions = user.getRole().getPermissions().stream().map(Permission::getAccessType)  // or another method to get a unique permission identifier
+                .distinct()                      // ensure no duplicates
+                .collect(Collectors.toList());
+
+        // Build JWT claims including roles and permissions
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("roles", roles);
+        claims.put("permissions", permissions);
+        byte[] keyBytes = new byte[32];  // 32 bytes = 256 bits
+        new SecureRandom().nextBytes(keyBytes);
+        SecretKey secretKey = new javax.crypto.spec.SecretKeySpec(keyBytes, SignatureAlgorithm.HS256.getJcaName());
+
+        // Set token validity (for example, 1 day)
+        long expirationTimeInMs = 86400000L;
+        Date issuedAt = new Date();
+        Date expiration = new Date(issuedAt.getTime() + expirationTimeInMs);
+
+        // IMPORTANT: Use a secure key. In production, store this key securely (e.g., in environment variables or configuration).
+
+        // Build the JWT token
+        String token = Jwts.builder().setClaims(claims).setSubject(user.getUsername()).setIssuedAt(issuedAt).setExpiration(expiration).signWith(SignatureAlgorithm.HS256, secretKey).compact();
+
         LOG.info("Login successful for user: {}", userLoginDTO.getUsername());
-        return ResponseEntity.ok("Login successful");
+        return ResponseEntity.ok(new JwtResponse(token));
     }
 
     /**
@@ -116,5 +149,21 @@ public class AuthResource {
         // Successfully reset password
         LOG.info("Password reset successful for user: {}", user.get().getEmail());
         return ResponseEntity.ok("Password has been reset successfully");
+    }
+
+    public class JwtResponse {
+        private String token;
+
+        public JwtResponse(String token) {
+            this.token = token;
+        }
+
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
+        }
     }
 }

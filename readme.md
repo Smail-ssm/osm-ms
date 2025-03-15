@@ -150,7 +150,7 @@ You should clearly see:
 | Component    | Version  |
 | ------------ | -------- |
 | Spring Boot  | 3.2.4    |
-| Spring Cloud | 2023.0.0 |
+| Spring Cloud | 2024.0.0 |
 | Java         | 17+      |
 
 ---
