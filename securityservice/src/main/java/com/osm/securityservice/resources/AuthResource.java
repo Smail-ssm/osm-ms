@@ -1,6 +1,5 @@
 package com.osm.securityservice.resources;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,9 +16,3 @@ public class AuthResource {
     }
 }
 
-// Example view model for incoming JSON
-class LoginVM {
-    private String username;
-    private String password;
-    // getters/setters
-}
