@@ -23,6 +23,8 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/security/login").permitAll() // <--- Permit the login path
+                        .requestMatchers("/api/security/signup").permitAll() // <--- Permit the login path
+                        .requestMatchers("/api/security/set-password").permitAll() // <--- Permit the login path
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2

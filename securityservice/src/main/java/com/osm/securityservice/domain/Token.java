@@ -2,9 +2,12 @@ package com.osm.securityservice.domain;
 
 import jakarta.persistence.*;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-
+import lombok.Getter;
+import lombok.Setter;
 import java.time.Instant;
 
+@Getter
+@Setter
 @Entity
 @EnableJpaAuditing
 public class Token {

@@ -1,14 +1,16 @@
 package com.osm.securityservice.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
 
+@Getter
+@Setter
 @Entity
 @EnableJpaAuditing
 public class Permission {
@@ -31,10 +33,6 @@ public class Permission {
 
     @LastModifiedDate
     private Instant updatedAt;
-
-    // Mapped side of Many-to-Many
-    @ManyToMany(mappedBy = "permissions")
-    private Set<Role> roles = new HashSet<>();
 
     // constructors, getters, setters
 }
