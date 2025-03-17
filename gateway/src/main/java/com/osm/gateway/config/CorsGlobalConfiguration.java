@@ -13,7 +13,7 @@ public class CorsGlobalConfiguration implements WebFluxConfigurer {
                 .allowedOrigins("*")
                 .allowedMethods("GET","POST","PUT","DELETE","OPTIONS")
                 .allowedHeaders("*")
-                .exposedHeaders("Authorization")
-                .allowCredentials(true);
+                .exposedHeaders("Authorization");
+//                .allowCredentials(true);
     }
 }

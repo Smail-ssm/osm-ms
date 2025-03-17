@@ -1,61 +1,84 @@
 package com.osm.oilproductionservice.rest;
 
 import com.osm.oilproductionservice.domain.Delivery;
+import com.osm.oilproductionservice.domain.customTypes.BaseType;
+import com.osm.oilproductionservice.dto.ApiResponse;
 import com.osm.oilproductionservice.service.DeliveryService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.osm.oilproductionservice.service.GenericTypeService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/production/deliveries")
 public class DeliveryController {
 
-    @Autowired
-    private DeliveryService deliveryService;
+    private final DeliveryService deliveryService;
+
+    public DeliveryController(DeliveryService deliveryService, GenericTypeService genericTypeService) {
+        this.deliveryService = deliveryService;
+     }
 
     @PostMapping
-    public ResponseEntity<Delivery> createDelivery(@RequestBody Delivery delivery) {
-        Delivery createdDelivery = deliveryService.createDelivery(delivery);
-        return ResponseEntity.ok(createdDelivery);
+    public ResponseEntity<ApiResponse<Delivery>> createDelivery(@RequestBody Delivery delivery) {
+        try {
+            Delivery createdDelivery = deliveryService.createDelivery(delivery);
+            ApiResponse<Delivery> response = new ApiResponse<>(true, "Delivery created successfully", createdDelivery);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            ApiResponse<Delivery> response = new ApiResponse<>(false, "Error creating delivery: " + e.getMessage(), null);
+            return ResponseEntity.badRequest().body(response);
+        }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Delivery> updateDelivery(@PathVariable Long id, @RequestBody Delivery delivery) {
+    public ResponseEntity<ApiResponse<Delivery>> updateDelivery(@PathVariable Long id, @RequestBody Delivery delivery) {
         Delivery updatedDelivery = deliveryService.updateDelivery(id, delivery);
         if (updatedDelivery != null) {
-            return ResponseEntity.ok(updatedDelivery);
+            ApiResponse<Delivery> response = new ApiResponse<>(true, "Delivery updated successfully", updatedDelivery);
+            return ResponseEntity.ok(response);
         }
-        return ResponseEntity.notFound().build();
+        ApiResponse<Delivery> response = new ApiResponse<>(false, "Delivery not found", null);
+        return ResponseEntity.status(404).body(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Delivery> getDelivery(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<Delivery>> getDelivery(@PathVariable Long id) {
         Delivery delivery = deliveryService.getDelivery(id);
         if (delivery != null) {
-            return ResponseEntity.ok(delivery);
+            ApiResponse<Delivery> response = new ApiResponse<>(true, "Delivery fetched successfully", delivery);
+            return ResponseEntity.ok(response);
         }
-        return ResponseEntity.notFound().build();
+        ApiResponse<Delivery> response = new ApiResponse<>(false, "Delivery not found", null);
+        return ResponseEntity.status(404).body(response);
     }
 
     // Endpoint for retrieving all deliveries with pagination
     @GetMapping
-    public Page<Delivery> getAllDeliveries(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-        return deliveryService.getAllDeliveries(page, size);
+    public ResponseEntity<ApiResponse<Page<Delivery>>> getAllDeliveries(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        Page<Delivery> deliveriesPage = deliveryService.getAllDeliveries(page, size);
+        ApiResponse<Page<Delivery>> response = new ApiResponse<>(true, "Deliveries fetched successfully", deliveriesPage);
+        return ResponseEntity.ok(response);
     }
 
     // Endpoint for retrieving deliveries by region with pagination
     @GetMapping("/region/{regionId}")
-    public Page<Delivery> getDeliveriesByRegion(@PathVariable Long regionId, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-        return deliveryService.getDeliveriesByRegion(regionId, page, size);
+    public ResponseEntity<ApiResponse<Page<Delivery>>> getDeliveriesByRegion(@PathVariable Long regionId, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        Page<Delivery> deliveriesPage = deliveryService.getDeliveriesByRegion(regionId, page, size);
+        ApiResponse<Page<Delivery>> response = new ApiResponse<>(true, "Deliveries for region fetched successfully", deliveriesPage);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDelivery(@PathVariable Long id) {
-        boolean isDeleted = deliveryService.deleteDelivery(id);
-        if (isDeleted) {
-            return ResponseEntity.noContent().build();
+    public ResponseEntity<ApiResponse<Void>> deleteDelivery(@PathVariable Long id) {
+        boolean deleted = deliveryService.deleteDelivery(id);
+        if (deleted) {
+            ApiResponse<Void> response = new ApiResponse<>(true, "Delivery deleted successfully", null);
+            return ResponseEntity.ok(response);
         }
-        return ResponseEntity.notFound().build();
+        ApiResponse<Void> response = new ApiResponse<>(false, "Delivery not found", null);
+        return ResponseEntity.status(404).body(response);
     }
 }

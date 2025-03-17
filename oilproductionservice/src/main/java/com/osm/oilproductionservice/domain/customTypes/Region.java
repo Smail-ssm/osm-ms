@@ -1,11 +1,12 @@
-package com.osm.oilproductionservice.domain;
+package com.osm.oilproductionservice.domain.customTypes;
 
-import com.osm.oilproductionservice.domain.customTypes.BaseType;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "region")
+@JsonTypeName("region")
 public class Region extends BaseType {
 
     public Region() {
@@ -13,6 +14,6 @@ public class Region extends BaseType {
     }
 
     public Region(String name, String description) {
-        super(name, description); // 'id' is automatically handled by JPA
+        super(name, description);
     }
 }

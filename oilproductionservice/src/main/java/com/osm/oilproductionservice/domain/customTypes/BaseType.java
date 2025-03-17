@@ -24,6 +24,7 @@ import java.util.Objects;
 @JsonSubTypes({@JsonSubTypes.Type(value = WasteType.class, name = "wastetype"),
         @JsonSubTypes.Type(value = SupplierType.class, name = "suppliertype"),
         @JsonSubTypes.Type(value = OliveLotStatusType.class, name = "olivelotstatustype"),
+        @JsonSubTypes.Type(value = Region.class, name = "region"),
         @JsonSubTypes.Type(value = OliveVarietyType.class, name = "olivevarietytype")})
 public abstract class BaseType {
 

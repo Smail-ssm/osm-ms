@@ -1,18 +1,13 @@
 package com.osm.oilproductionservice.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.osm.oilproductionservice.domain.customTypes.Region;
 import com.osm.oilproductionservice.domain.customTypes.SupplierType;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import org.antlr.v4.runtime.misc.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -62,19 +57,66 @@ import java.util.Set;
     @JoinColumn(name = "suppliertype_id")
     private SupplierType suppliertype;
 
-    // Additional custom methods can be added if needed
-    public Supplier addDeliveries(Delivery delivery) {
-        this.deliveries.add(delivery);
-        delivery.setSupplier(this);
-        return this;
+    // Calculated fields (no persistence, calculated at runtime)
+    @Transient
+    private Float totalOliveQuantity;
+
+    @Transient
+    private Float totalOilQuantity;
+
+    @Transient
+    private Float totalPaidAmount;
+
+    @Transient
+    private Float totalUnpaidAmount;
+
+    @Transient
+    private Float totalDebt;
+
+    // Methods to calculate totals based on deliveries
+
+    public Float getTotalOliveQuantity() {
+        totalOliveQuantity = 0f;
+        for (Delivery delivery : deliveries) {
+            totalOliveQuantity += delivery.getOliveQuantity();
+        }
+        return totalOliveQuantity;
     }
 
-    public Supplier removeDeliveries(Delivery delivery) {
-        this.deliveries.remove(delivery);
-        delivery.setSupplier(null);
-        return this;
+    public Float getTotalOilQuantity() {
+        totalOilQuantity = 0f;
+        for (Delivery delivery : deliveries) {
+            totalOilQuantity += delivery.getOilQuantity();
+        }
+        return totalOilQuantity;
     }
 
+    public Float getTotalPaidAmount() {
+        totalPaidAmount = 0f;
+        for (Delivery delivery : deliveries) {
+            if (delivery.getPaidAmount() != null) {
+                totalPaidAmount += delivery.getPaidAmount();
+            }
+        }
+        return totalPaidAmount;
+    }
+
+    public Float getTotalUnpaidAmount() {
+        totalUnpaidAmount = 0f;
+        for (Delivery delivery : deliveries) {
+            if (delivery.getUnpaidAmount() != null) {
+                totalUnpaidAmount += delivery.getUnpaidAmount();
+            }
+        }
+        return totalUnpaidAmount;
+    }
+
+    public Float getTotalDebt() {
+        totalDebt = getTotalUnpaidAmount() - getTotalPaidAmount();
+        return totalDebt;
+    }
+
+    // Getters and setters for the rest of the fields
     public Long getId() {
         return id;
     }

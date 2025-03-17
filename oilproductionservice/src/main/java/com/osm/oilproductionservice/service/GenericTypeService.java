@@ -1,13 +1,14 @@
 package com.osm.oilproductionservice.service;
 
 
+import com.osm.oilproductionservice.domain.customTypes.Region;
 import com.osm.oilproductionservice.domain.customTypes.*;
-import com.osm.oilproductionservice.repository.OliveLotStatusTypeRepository;
-import com.osm.oilproductionservice.repository.OliveVarietyTypeRepository;
-import com.osm.oilproductionservice.repository.SupplierTypeEntityRepository;
-import com.osm.oilproductionservice.repository.WasteTypeRepository;
+import com.osm.oilproductionservice.repository.*;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.osm.oilproductionservice.constants.constants.*;
 
@@ -17,12 +18,14 @@ public class GenericTypeService {
 
 
     private final WasteTypeRepository wasteTypeRepository;
+    private final RegionRepository regionRepository;
     private final SupplierTypeEntityRepository supplierTypeEntityRepository;
     private final OliveVarietyTypeRepository oliveVarietyTypeRepository;
     private final OliveLotStatusTypeRepository oliveLotStatusTypeRepository;
 
-    public GenericTypeService(WasteTypeRepository wasteTypeRepository, SupplierTypeEntityRepository supplierTypeEntityRepository, OliveVarietyTypeRepository oliveVarietyTypeRepository, OliveLotStatusTypeRepository oliveLotStatusTypeRepository) {
+    public GenericTypeService(WasteTypeRepository wasteTypeRepository, RegionRepository regionRepository, SupplierTypeEntityRepository supplierTypeEntityRepository, OliveVarietyTypeRepository oliveVarietyTypeRepository, OliveLotStatusTypeRepository oliveLotStatusTypeRepository) {
         this.wasteTypeRepository = wasteTypeRepository;
+        this.regionRepository = regionRepository;
         this.supplierTypeEntityRepository = supplierTypeEntityRepository;
         this.oliveVarietyTypeRepository = oliveVarietyTypeRepository;
         this.oliveLotStatusTypeRepository = oliveLotStatusTypeRepository;
@@ -36,6 +39,13 @@ public class GenericTypeService {
                     throw new ServiceException("A WasteType with this name already exists.");
                 }
                 yield wasteTypeRepository.save((WasteType) baseType);
+            }
+            case REGION -> {
+                // Check if a similar WasteType already exists by name
+                if (regionRepository.existsByName(baseType.getName())) {
+                    throw new ServiceException("A WasteType with this name already exists.");
+                }
+                yield regionRepository.save((Region) baseType);
             }
             case SUPPLIERTYPE -> {
                 // Check if a similar SupplierType already exists by name
@@ -68,6 +78,7 @@ public class GenericTypeService {
             case WASTETYPE -> wasteTypeRepository.findAll();
             case SUPPLIERTYPE -> supplierTypeEntityRepository.findAll();
             case OLIVELOTSTATUSTYPE -> oliveLotStatusTypeRepository.findAll();
+            case REGION -> regionRepository.findAll();
             case OLIVEVARIETYTYPE -> oliveVarietyTypeRepository.findAll();
             default -> throw new ServiceException("Unknown type: " + type); // Using ServiceException
 
@@ -80,6 +91,7 @@ public class GenericTypeService {
             case WASTETYPE -> wasteTypeRepository.findById(id).orElse(null);
             case SUPPLIERTYPE -> supplierTypeEntityRepository.findById(id).orElse(null);
             case OLIVELOTSTATUSTYPE -> oliveLotStatusTypeRepository.findById(id).orElse(null);
+            case REGION -> regionRepository.findById(id).orElse(null);
             case OLIVEVARIETYTYPE -> oliveVarietyTypeRepository.findById(id).orElse(null);
             default -> throw new ServiceException("Unknown type: " + type); // Using ServiceException
 
@@ -93,6 +105,12 @@ public class GenericTypeService {
                 if (wasteTypeRepository.existsById(id)) {
                     baseType.setId(id);
                     return wasteTypeRepository.save((WasteType) baseType);
+                }
+            }
+            case REGION -> {
+                if (regionRepository.existsById(id)) {
+                    baseType.setId(id);
+                    return regionRepository.save((Region) baseType);
                 }
             }
             case SUPPLIERTYPE -> {
@@ -128,6 +146,12 @@ public class GenericTypeService {
                     return true;
                 }
             }
+            case REGION -> {
+                if (regionRepository.existsById(id)) {
+                    regionRepository.deleteById(id);
+                    return true;
+                }
+            }
             case OLIVEVARIETYTYPE -> {
                 if (oliveVarietyTypeRepository.existsById(id)) {
                     oliveVarietyTypeRepository.deleteById(id);
@@ -150,5 +174,16 @@ public class GenericTypeService {
 
         }
         return false;
+    }
+
+    // New method to return all types regardless of their category
+    public List<BaseType> getAllCombinedTypes() {
+        List<BaseType> combinedTypes = new ArrayList<>();
+        combinedTypes.addAll(wasteTypeRepository.findAll());
+        combinedTypes.addAll(supplierTypeEntityRepository.findAll());
+        combinedTypes.addAll(regionRepository.findAll());
+        combinedTypes.addAll(oliveLotStatusTypeRepository.findAll());
+        combinedTypes.addAll(oliveVarietyTypeRepository.findAll());
+        return combinedTypes;
     }
 }

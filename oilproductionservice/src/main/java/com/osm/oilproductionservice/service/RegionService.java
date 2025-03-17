@@ -1,7 +1,7 @@
 package com.osm.oilproductionservice.service;
 
 
-import com.osm.oilproductionservice.domain.Region;
+import com.osm.oilproductionservice.domain.customTypes.Region;
 import com.osm.oilproductionservice.repository.RegionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

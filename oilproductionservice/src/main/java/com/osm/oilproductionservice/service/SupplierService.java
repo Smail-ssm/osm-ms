@@ -7,6 +7,8 @@ import com.osm.oilproductionservice.repository.SupplierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SupplierService {
 
@@ -31,5 +33,9 @@ public class SupplierService {
 
     public Supplier getSupplierByRegion(Long regionId) {
         return supplierRepository.findById(regionId).orElse(null); // or custom query for region-based suppliers
+    }
+    // New method to get all suppliers
+    public List<Supplier> getAllSuppliers() {
+        return supplierRepository.findAll();
     }
 }
