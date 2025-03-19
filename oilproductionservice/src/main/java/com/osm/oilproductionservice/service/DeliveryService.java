@@ -34,7 +34,7 @@ public class DeliveryService {
                     existingDelivery.setVariety(delivery.getVariety());
                     existingDelivery.setStorageUnit(delivery.getStorageUnit());
                     existingDelivery.setSupplier(delivery.getSupplier());
-                    existingDelivery.setQualityControl(delivery.getQualityControl());
+                    existingDelivery.setQualityControlResult(delivery.getQualityControlResult());
                     return deliveryRepository.save(existingDelivery);
                 })
                 .orElse(null);

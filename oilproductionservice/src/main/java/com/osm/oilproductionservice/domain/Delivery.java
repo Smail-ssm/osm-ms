@@ -69,8 +69,8 @@ public class Delivery implements Serializable {
 
     // One-to-One relationship with QualityControl entity
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "quality_control_id", nullable = true)  // Nullable set to true, making it optional
-    private QualityControl qualityControl;  // Link to quality control record
+    @JoinColumn(name = "quality_control_result", nullable = true)  // Nullable set to true, making it optional
+    private QualityControlResult qualityControlResult;  // Link to quality control record
 
     // New Attributes
     @Column(name = "unit_price")
@@ -240,11 +240,11 @@ public class Delivery implements Serializable {
         this.storageUnit = storageUnit;
     }
 
-    public QualityControl getQualityControl() {
-        return qualityControl;
+    public QualityControlResult getQualityControlResult() {
+        return qualityControlResult;
     }
 
-    public void setQualityControl(QualityControl qualityControl) {
-        this.qualityControl = qualityControl;
+    public void setQualityControlResult(QualityControlResult qualityControlResult) {
+        this.qualityControlResult = qualityControlResult;
     }
 }

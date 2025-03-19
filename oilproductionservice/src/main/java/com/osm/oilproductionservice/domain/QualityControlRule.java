@@ -2,6 +2,7 @@ package com.osm.oilproductionservice.domain;
 
 
 import jakarta.persistence.*;
+
 import java.io.Serializable;
 
 @Entity
@@ -18,22 +19,28 @@ public class QualityControlRule implements Serializable {
     // A technical key for the rule, e.g., "infestation_percentage"
     @Column(name = "rule_key", nullable = false)
     private String ruleKey;
-
+    @Column(name = "is_oil_qc", nullable = false)
+    private Boolean isOilQc;
     // A user-friendly name for the rule, e.g., "Infestation Percentage"
     @Column(name = "rule_name", nullable = false)
     private String ruleName;
-
     // A description of the rule to explain its purpose
     @Column(name = "description")
     private String description;
-
     // The minimum acceptable value for the rule (typically 0)
     @Column(name = "min_value", nullable = false)
     private Float minValue;
-
     // The maximum acceptable value for the rule (typically 100)
     @Column(name = "max_value", nullable = false)
     private Float maxValue;
+
+    public Boolean getOilQc() {
+        return isOilQc;
+    }
+
+    public void setOilQc(Boolean oilQc) {
+        isOilQc = oilQc;
+    }
 
     // Getters and Setters
 
