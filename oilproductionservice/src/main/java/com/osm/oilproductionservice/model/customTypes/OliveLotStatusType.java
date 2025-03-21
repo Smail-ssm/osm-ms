@@ -1,11 +1,7 @@
-package com.osm.oilproductionservice.domain.customTypes;
+package com.osm.oilproductionservice.model.customTypes;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import java.io.Serializable;
 
 /**
  * A OliveLotStatusType.

@@ -1,4 +1,4 @@
-package com.osm.oilproductionservice.domain.customTypes;
+package com.osm.oilproductionservice.model.customTypes;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.persistence.Entity;
@@ -9,11 +9,4 @@ import jakarta.persistence.Table;
 @JsonTypeName("region")
 public class Region extends BaseType {
 
-    public Region() {
-        super();
-    }
-
-    public Region(String name, String description) {
-        super(name, description);
-    }
 }

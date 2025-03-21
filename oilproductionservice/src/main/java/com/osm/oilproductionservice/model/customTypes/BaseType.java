@@ -1,37 +1,22 @@
-package com.osm.oilproductionservice.domain.customTypes;
+package com.osm.oilproductionservice.model.customTypes;
 
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
-import lombok.Getter;
-import lombok.Setter;
-import org.antlr.v4.runtime.misc.NotNull;
+import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @MappedSuperclass
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, // Tells Jackson to use the class name as the type identifier
-        include = JsonTypeInfo.As.PROPERTY, // This adds a property `type` in the JSON payload
-        property = "type" // The property name for type information in the JSON payload
-)
-@JsonSubTypes({@JsonSubTypes.Type(value = WasteType.class, name = "wastetype"),
-        @JsonSubTypes.Type(value = SupplierType.class, name = "suppliertype"),
-        @JsonSubTypes.Type(value = OliveLotStatusType.class, name = "olivelotstatustype"),
-        @JsonSubTypes.Type(value = Region.class, name = "region"),
-        @JsonSubTypes.Type(value = OliveVarietyType.class, name = "olivevarietytype")})
 public abstract class BaseType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // You can also use AUTO or UUID strategy depending on your DB
     private Long id;
     private String name; // The name of the type (e.g., WasteType, FarmerType)
+    private String type; // The name of the type (e.g., WasteType, FarmerType)
     private String description; // Description of the type
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -62,8 +47,10 @@ public abstract class BaseType {
         return createdAt;
     }
 
-    public BaseType(String name, String description, LocalDateTime createdAt, LocalDateTime updatedAt) {
-         this.name = name;
+    public BaseType(Long id, String name, String type, String description, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
         this.description = description;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -100,5 +87,13 @@ public abstract class BaseType {
     @Override
     public String toString() {
         return "BaseType{" + "id=" + id + ", name='" + name + '\'' + ", description='" + description + '\'' + '}';
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

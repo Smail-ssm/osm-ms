@@ -1,41 +1,77 @@
 package com.osm.oilproductionservice.service;
 
-
-import com.osm.oilproductionservice.domain.Supplier;
+import com.osm.oilproductionservice.model.Supplier;
+import com.osm.oilproductionservice.dto.SupplierDto;
 import com.osm.oilproductionservice.repository.RegionRepository;
 import com.osm.oilproductionservice.repository.SupplierRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SupplierService {
 
-    @Autowired
-    private SupplierRepository supplierRepository;
+    private final SupplierRepository supplierRepository;
+    private final RegionRepository regionRepository;
+    private final ModelMapper modelMapper;
 
-    @Autowired
-    private RegionRepository regionRepository;
-
-    public Supplier addSupplier(Supplier supplier) {
-        return supplierRepository.save(supplier);
+    public SupplierService(SupplierRepository supplierRepository, RegionRepository regionRepository, ModelMapper modelMapper) {
+        this.supplierRepository = supplierRepository;
+        this.regionRepository = regionRepository;
+        this.modelMapper = modelMapper;
     }
 
-    public Supplier updateSupplier(Long id, Supplier supplier) {
-        supplier.setId(id);
-        return supplierRepository.save(supplier);
+    /**
+     * Add a new supplier.
+     */
+    public SupplierDto addSupplier(SupplierDto supplierDto) {
+        Supplier supplier = modelMapper.map(supplierDto, Supplier.class);
+        Supplier savedSupplier = supplierRepository.save(supplier);
+        return modelMapper.map(savedSupplier, SupplierDto.class);
     }
 
-    public Supplier getSupplier(Long id) {
-        return supplierRepository.findById(id).orElse(null);
+    /**
+     * Update an existing supplier.
+     */
+    public SupplierDto updateSupplier(Long id, SupplierDto supplierDto) {
+        return supplierRepository.findById(id)
+                .map(existingSupplier -> {
+                    // Map DTO fields to the existing entity
+                    modelMapper.map(supplierDto, existingSupplier);
+                    Supplier updatedSupplier = supplierRepository.save(existingSupplier);
+                    return modelMapper.map(updatedSupplier, SupplierDto.class);
+                })
+                .orElse(null);
     }
 
-    public Supplier getSupplierByRegion(Long regionId) {
-        return supplierRepository.findById(regionId).orElse(null); // or custom query for region-based suppliers
+    /**
+     * Get a supplier by ID.
+     */
+    public SupplierDto getSupplier(Long id) {
+        return supplierRepository.findById(id)
+                .map(supplier -> modelMapper.map(supplier, SupplierDto.class))
+                .orElse(null);
     }
-    // New method to get all suppliers
-    public List<Supplier> getAllSuppliers() {
-        return supplierRepository.findAll();
+
+    /**
+     * Get a supplier by region ID.
+     */
+    public List<SupplierDto> getSuppliersByRegion(Long regionId) {
+        List<Supplier> suppliers = supplierRepository.findSupplierByRegion_Id(regionId); // Assuming a custom query exists
+        return suppliers.stream()
+                .map(supplier -> modelMapper.map(supplier, SupplierDto.class))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Get all suppliers.
+     */
+    public List<SupplierDto> getAllSuppliers() {
+        List<Supplier> suppliers = supplierRepository.findAll();
+        return suppliers.stream()
+                .map(supplier -> modelMapper.map(supplier, SupplierDto.class))
+                .collect(Collectors.toList());
     }
 }

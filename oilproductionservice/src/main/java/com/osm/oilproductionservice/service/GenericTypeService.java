@@ -1,143 +1,192 @@
 package com.osm.oilproductionservice.service;
 
-
-import com.osm.oilproductionservice.domain.customTypes.Region;
-import com.osm.oilproductionservice.domain.customTypes.*;
+import com.osm.oilproductionservice.dto.*;
+import com.osm.oilproductionservice.model.customTypes.*;
 import com.osm.oilproductionservice.repository.*;
-import org.hibernate.service.spi.ServiceException;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static com.osm.oilproductionservice.constants.constants.*;
-
 
 @Service
 public class GenericTypeService {
 
-
     private final WasteTypeRepository wasteTypeRepository;
     private final RegionRepository regionRepository;
     private final SupplierTypeEntityRepository supplierTypeEntityRepository;
-    private final OliveVarietyTypeRepository oliveVarietyTypeRepository;
-    private final OliveLotStatusTypeRepository oliveLotStatusTypeRepository;
+     private final OliveLotStatusTypeRepository oliveLotStatusTypeRepository;
+    private final VarietyRepository varietyRepository;
+    private final ModelMapper modelMapper;
 
-    public GenericTypeService(WasteTypeRepository wasteTypeRepository, RegionRepository regionRepository, SupplierTypeEntityRepository supplierTypeEntityRepository, OliveVarietyTypeRepository oliveVarietyTypeRepository, OliveLotStatusTypeRepository oliveLotStatusTypeRepository) {
+    @Autowired
+    public GenericTypeService(WasteTypeRepository wasteTypeRepository,
+                              RegionRepository regionRepository,
+                              SupplierTypeEntityRepository supplierTypeEntityRepository,
+                               OliveLotStatusTypeRepository oliveLotStatusTypeRepository,
+                              VarietyRepository varietyRepository,
+                              ModelMapper modelMapper) {
         this.wasteTypeRepository = wasteTypeRepository;
         this.regionRepository = regionRepository;
         this.supplierTypeEntityRepository = supplierTypeEntityRepository;
-        this.oliveVarietyTypeRepository = oliveVarietyTypeRepository;
-        this.oliveLotStatusTypeRepository = oliveLotStatusTypeRepository;
+         this.oliveLotStatusTypeRepository = oliveLotStatusTypeRepository;
+        this.varietyRepository = varietyRepository;
+        this.modelMapper = modelMapper;
     }
 
-    public Object createType(BaseType baseType, String type) {
-        return switch (type.toLowerCase()) {
-            case WASTETYPE -> {
-                // Check if a similar WasteType already exists by name
-                if (wasteTypeRepository.existsByName(baseType.getName())) {
-                    throw new ServiceException("A WasteType with this name already exists.");
-                }
-                yield wasteTypeRepository.save((WasteType) baseType);
-            }
-            case REGION -> {
-                // Check if a similar WasteType already exists by name
-                if (regionRepository.existsByName(baseType.getName())) {
-                    throw new ServiceException("A WasteType with this name already exists.");
-                }
-                yield regionRepository.save((Region) baseType);
-            }
-            case SUPPLIERTYPE -> {
-                // Check if a similar SupplierType already exists by name
-                if (supplierTypeEntityRepository.existsByName(baseType.getName())) {
-                    throw new ServiceException("A SupplierType with this name already exists.");
-                }
-                yield supplierTypeEntityRepository.save((SupplierType) baseType);
-            }
-            case OLIVELOTSTATUSTYPE -> {
-                // Check if a similar OliveLotStatusType already exists by name
-                if (oliveLotStatusTypeRepository.existsByName(baseType.getName())) {
-                    throw new ServiceException("An OliveLotStatusType with this name already exists.");
-                }
-                yield oliveLotStatusTypeRepository.save((OliveLotStatusType) baseType);
-            }
-            case OLIVEVARIETYTYPE -> {
-                // Check if a similar OliveVarietyType already exists by name
-                if (oliveVarietyTypeRepository.existsByName(baseType.getName())) {
-                    throw new ServiceException("An OliveVarietyType with this name already exists.");
-                }
-                yield oliveVarietyTypeRepository.save((OliveVarietyType) baseType);
-            }
-            default -> throw new ServiceException("Unknown type: " + type);
-        };
-    }
-
-    // Get all types (e.g., all WasteTypes, SupplierTypes, OliveLotStatusTypes)
-    public Object getAllTypes(String type) {
-        return switch (type.toLowerCase()) {
-            case WASTETYPE -> wasteTypeRepository.findAll();
-            case SUPPLIERTYPE -> supplierTypeEntityRepository.findAll();
-            case OLIVELOTSTATUSTYPE -> oliveLotStatusTypeRepository.findAll();
-            case REGION -> regionRepository.findAll();
-            case OLIVEVARIETYTYPE -> oliveVarietyTypeRepository.findAll();
-            default -> throw new ServiceException("Unknown type: " + type); // Using ServiceException
-
-        };
-    }
-
-    // Get a type by ID
-    public BaseType getType(Long id, String type) {
-        return switch (type.toLowerCase()) {
-            case WASTETYPE -> wasteTypeRepository.findById(id).orElse(null);
-            case SUPPLIERTYPE -> supplierTypeEntityRepository.findById(id).orElse(null);
-            case OLIVELOTSTATUSTYPE -> oliveLotStatusTypeRepository.findById(id).orElse(null);
-            case REGION -> regionRepository.findById(id).orElse(null);
-            case OLIVEVARIETYTYPE -> oliveVarietyTypeRepository.findById(id).orElse(null);
-            default -> throw new ServiceException("Unknown type: " + type); // Using ServiceException
-
-        };
-    }
-
-    // Update a type by ID
-    public BaseType updateType(Long id, BaseType baseType, String type) {
+    /**
+     * Create a new type.
+     */
+    public BaseTypeDto createType(BaseTypeDto baseTypeDto, String type) {
         switch (type.toLowerCase()) {
             case WASTETYPE -> {
-                if (wasteTypeRepository.existsById(id)) {
-                    baseType.setId(id);
-                    return wasteTypeRepository.save((WasteType) baseType);
+                if (wasteTypeRepository.existsByName(baseTypeDto.getName())) {
+                    throw new RuntimeException("A WasteType with this name already exists.");
                 }
+                WasteType wasteType = modelMapper.map(baseTypeDto, WasteType.class);
+                WasteType savedWasteType = wasteTypeRepository.save(wasteType);
+                return modelMapper.map(savedWasteType, WasteTypeDto.class);
             }
             case REGION -> {
-                if (regionRepository.existsById(id)) {
-                    baseType.setId(id);
-                    return regionRepository.save((Region) baseType);
+                if (regionRepository.existsByName(baseTypeDto.getName())) {
+                    throw new RuntimeException("A Region with this name already exists.");
                 }
+                Region region = modelMapper.map(baseTypeDto, Region.class);
+                Region savedRegion = regionRepository.save(region);
+                return modelMapper.map(savedRegion, RegionDto.class);
             }
             case SUPPLIERTYPE -> {
-                if (supplierTypeEntityRepository.existsById(id)) {
-                    baseType.setId(id);
-                    return supplierTypeEntityRepository.save((SupplierType) baseType);
+                if (supplierTypeEntityRepository.existsByName(baseTypeDto.getName())) {
+                    throw new RuntimeException("A SupplierType with this name already exists.");
                 }
+                SupplierType supplierType = modelMapper.map(baseTypeDto, SupplierType.class);
+                SupplierType savedSupplierType = supplierTypeEntityRepository.save(supplierType);
+                return modelMapper.map(savedSupplierType, SupplierTypeDto.class);
+            }
+            case VARIETY -> {
+                if (varietyRepository.existsByName(baseTypeDto.getName())) {
+                    throw new RuntimeException("A Variety with this name already exists.");
+                }
+                OliveVariety oliveVariety = modelMapper.map(baseTypeDto, OliveVariety.class);
+                OliveVariety savedOliveVariety = varietyRepository.save(oliveVariety);
+                return modelMapper.map(savedOliveVariety, OliveVarietyDto.class);
             }
             case OLIVELOTSTATUSTYPE -> {
-                if (oliveLotStatusTypeRepository.existsById(id)) {
-                    baseType.setId(id);
-                    return oliveLotStatusTypeRepository.save((OliveLotStatusType) baseType);
+                if (oliveLotStatusTypeRepository.existsByName(baseTypeDto.getName())) {
+                    throw new RuntimeException("An OliveLotStatusType with this name already exists.");
                 }
+                OliveLotStatusType oliveLotStatusType = modelMapper.map(baseTypeDto, OliveLotStatusType.class);
+                OliveLotStatusType savedOliveLotStatusType = oliveLotStatusTypeRepository.save(oliveLotStatusType);
+                return modelMapper.map(savedOliveLotStatusType, OliveLotStatusTypeDto.class);
             }
-            case OLIVEVARIETYTYPE -> {
-                if (oliveVarietyTypeRepository.existsById(id)) {
-                    baseType.setId(id);
-                    return oliveVarietyTypeRepository.save((OliveVarietyType) baseType);
-                }
-            }
-            default -> throw new ServiceException("Unknown type: " + type); // Using ServiceException
 
+            default -> throw new RuntimeException("Unknown type: " + type);
         }
-        return null;
     }
 
-    // Delete a type by ID
+    /**
+     * Retrieve all types of a specific category.
+     */
+    public List<Object> getAllTypes(String type) {
+        switch (type.toLowerCase()) {
+            case WASTETYPE -> {
+                return Collections.singletonList(wasteTypeRepository.findAll().stream()
+                        .map(entity -> modelMapper.map(entity, WasteTypeDto.class))
+                        .toList());
+            }
+            case REGION -> {
+                return Collections.singletonList(regionRepository.findAll().stream()
+                        .map(entity -> modelMapper.map(entity, RegionDto.class))
+                        .toList());
+            }
+            case SUPPLIERTYPE -> {
+                return Collections.singletonList(supplierTypeEntityRepository.findAll().stream()
+                        .map(entity -> modelMapper.map(entity, SupplierTypeDto.class))
+                        .toList());
+            }
+            case VARIETY -> {
+                return Collections.singletonList(varietyRepository.findAll().stream()
+                        .map(entity -> modelMapper.map(entity, OliveVarietyDto.class))
+                        .toList());
+            }
+            case OLIVELOTSTATUSTYPE -> {
+                return Collections.singletonList(oliveLotStatusTypeRepository.findAll().stream()
+                        .map(entity -> modelMapper.map(entity, OliveLotStatusTypeDto.class))
+                        .toList());
+            }
+
+            default -> throw new RuntimeException("Unknown type: " + type);
+        }
+    }
+
+    /**
+     * Retrieve a type by ID.
+     */
+    public BaseTypeDto getType(Long id, String type) {
+        Optional<?> entity = switch (type.toLowerCase()) {
+            case WASTETYPE -> wasteTypeRepository.findById(id);
+            case REGION -> regionRepository.findById(id);
+            case SUPPLIERTYPE -> supplierTypeEntityRepository.findById(id);
+            case VARIETY -> varietyRepository.findById(id);
+            case OLIVELOTSTATUSTYPE -> oliveLotStatusTypeRepository.findById(id);
+             default -> throw new RuntimeException("Unknown type: " + type);
+        };
+        return entity.map(e -> modelMapper.map(e, BaseTypeDto.class)).orElse(null);
+    }
+
+    /**
+     * Update a type by ID.
+     */
+    public BaseTypeDto updateType(Long id, BaseTypeDto baseTypeDto, String type) {
+        switch (type.toLowerCase()) {
+            case WASTETYPE -> {
+                WasteType existingWasteType = wasteTypeRepository.findById(id)
+                        .orElseThrow(() -> new RuntimeException("WasteType not found"));
+                modelMapper.map(baseTypeDto, existingWasteType);
+                WasteType updatedWasteType = wasteTypeRepository.save(existingWasteType);
+                return modelMapper.map(updatedWasteType, WasteTypeDto.class);
+            }
+            case REGION -> {
+                Region existingRegion = regionRepository.findById(id)
+                        .orElseThrow(() -> new RuntimeException("Region not found"));
+                modelMapper.map(baseTypeDto, existingRegion);
+                Region updatedRegion = regionRepository.save(existingRegion);
+                return modelMapper.map(updatedRegion, RegionDto.class);
+            }
+            case SUPPLIERTYPE -> {
+                SupplierType existingSupplierType = supplierTypeEntityRepository.findById(id)
+                        .orElseThrow(() -> new RuntimeException("SupplierType not found"));
+                modelMapper.map(baseTypeDto, existingSupplierType);
+                SupplierType updatedSupplierType = supplierTypeEntityRepository.save(existingSupplierType);
+                return modelMapper.map(updatedSupplierType, SupplierTypeDto.class);
+            }
+            case VARIETY -> {
+                OliveVariety existingOliveVariety = varietyRepository.findById(id)
+                        .orElseThrow(() -> new RuntimeException("Variety not found"));
+                modelMapper.map(baseTypeDto, existingOliveVariety);
+                OliveVariety updatedOliveVariety = varietyRepository.save(existingOliveVariety);
+                return modelMapper.map(updatedOliveVariety, OliveVarietyDto.class);
+            }
+            case OLIVELOTSTATUSTYPE -> {
+                OliveLotStatusType existingOliveLotStatusType = oliveLotStatusTypeRepository.findById(id)
+                        .orElseThrow(() -> new RuntimeException("OliveLotStatusType not found"));
+                modelMapper.map(baseTypeDto, existingOliveLotStatusType);
+                OliveLotStatusType updatedOliveLotStatusType = oliveLotStatusTypeRepository.save(existingOliveLotStatusType);
+                return modelMapper.map(updatedOliveLotStatusType, OliveLotStatusTypeDto.class);
+            }
+
+            default -> throw new RuntimeException("Unknown type: " + type);
+        }
+    }
+
+    /**
+     * Delete a type by ID.
+     */
     public boolean deleteType(Long id, String type) {
         switch (type.toLowerCase()) {
             case WASTETYPE -> {
@@ -152,15 +201,15 @@ public class GenericTypeService {
                     return true;
                 }
             }
-            case OLIVEVARIETYTYPE -> {
-                if (oliveVarietyTypeRepository.existsById(id)) {
-                    oliveVarietyTypeRepository.deleteById(id);
-                    return true;
-                }
-            }
             case SUPPLIERTYPE -> {
                 if (supplierTypeEntityRepository.existsById(id)) {
                     supplierTypeEntityRepository.deleteById(id);
+                    return true;
+                }
+            }
+            case VARIETY -> {
+                if (varietyRepository.existsById(id)) {
+                    varietyRepository.deleteById(id);
                     return true;
                 }
             }
@@ -170,20 +219,33 @@ public class GenericTypeService {
                     return true;
                 }
             }
-            default -> throw new ServiceException("Unknown type: " + type); // Using ServiceException
 
+            default -> throw new RuntimeException("Unknown type: " + type);
         }
         return false;
     }
 
-    // New method to return all types regardless of their category
-    public List<BaseType> getAllCombinedTypes() {
-        List<BaseType> combinedTypes = new ArrayList<>();
-        combinedTypes.addAll(wasteTypeRepository.findAll());
-        combinedTypes.addAll(supplierTypeEntityRepository.findAll());
-        combinedTypes.addAll(regionRepository.findAll());
-        combinedTypes.addAll(oliveLotStatusTypeRepository.findAll());
-        combinedTypes.addAll(oliveVarietyTypeRepository.findAll());
+    /**
+     * Return all types regardless of their category.
+     */
+    public List<BaseTypeDto> getAllCombinedTypes() {
+        List<BaseTypeDto> combinedTypes = new ArrayList<>();
+        combinedTypes.addAll(wasteTypeRepository.findAll().stream()
+                .map(entity -> modelMapper.map(entity, BaseTypeDto.class))
+                .toList());
+        combinedTypes.addAll(regionRepository.findAll().stream()
+                .map(entity -> modelMapper.map(entity, BaseTypeDto.class))
+                .toList());
+        combinedTypes.addAll(supplierTypeEntityRepository.findAll().stream()
+                .map(entity -> modelMapper.map(entity, BaseTypeDto.class))
+                .toList());
+        combinedTypes.addAll(varietyRepository.findAll().stream()
+                .map(entity -> modelMapper.map(entity, BaseTypeDto.class))
+                .toList());
+        combinedTypes.addAll(oliveLotStatusTypeRepository.findAll().stream()
+                .map(entity -> modelMapper.map(entity, BaseTypeDto.class))
+                .toList());
+
         return combinedTypes;
     }
 }

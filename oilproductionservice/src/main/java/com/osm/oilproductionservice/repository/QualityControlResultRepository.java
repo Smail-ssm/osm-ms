@@ -1,5 +1,6 @@
 package com.osm.oilproductionservice.repository;
 
+import com.osm.oilproductionservice.model.QualityControlResult;
 import com.osm.oilproductionservice.model.QualityControlRule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -7,8 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface QualityControlRuleRepository extends JpaRepository<QualityControlRule, Long> {
-    Optional<QualityControlRule> findByRuleKey(String ruleKey);
+public interface QualityControlResultRepository extends JpaRepository<QualityControlResult, Long> {
 
-    Optional<QualityControlRule> findByRuleName(String ruleName);
 }

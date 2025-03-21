@@ -1,8 +1,8 @@
 package com.osm.oilproductionservice.repository;
 
-import com.osm.oilproductionservice.model.customTypes.WasteType;
+import com.osm.oilproductionservice.model.customTypes.OliveVariety;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface WasteTypeRepository extends JpaRepository<WasteType, Long> {
+public interface VarietyRepository extends JpaRepository<OliveVariety, Long> {
     boolean existsByName(String name);
 }

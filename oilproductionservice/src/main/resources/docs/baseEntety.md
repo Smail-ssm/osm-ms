@@ -21,10 +21,11 @@ The `BaseType` class acts as a parent class for all entity types, encapsulating 
 ### Code Example: `BaseType`
 
 ```java
-package com.osm.oilproductionservice.domain.customTypes;
+package com.osm.oilproductionservice.model.customTypes;
 
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -58,7 +59,7 @@ Each entity type (e.g., `WasteType`, `SupplierType`, `OliveLotStatusType`) exten
 ### Example: `WasteType`
 
 ```java
-package com.osm.oilproductionservice.domain.customTypes;
+package com.osm.oilproductionservice.model.customTypes;
 
 import javax.persistence.Entity;
 
@@ -74,7 +75,7 @@ public class WasteType extends BaseType {
 ### Example: `SupplierType`
 
 ```java
-package com.osm.oilproductionservice.domain.customTypes;
+package com.osm.oilproductionservice.model.customTypes;
 
 import javax.persistence.Entity;
 
@@ -101,7 +102,7 @@ Each entity type has a corresponding repository that interacts with the database
 ```java
 package com.osm.oilproductionservice.repository;
 
-import com.osm.oilproductionservice.domain.customTypes.WasteType;
+import com.osm.oilproductionservice.model.customTypes.WasteType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface WasteTypeRepository extends JpaRepository<WasteType, Long> {
@@ -125,7 +126,7 @@ The service layer contains the business logic for handling CRUD operations on th
 ```java
 package com.osm.oilproductionservice.service;
 
-import com.osm.oilproductionservice.domain.customTypes.*;
+import com.osm.oilproductionservice.model.customTypes.*;
 import com.osm.oilproductionservice.exception.ServiceException;
 import com.osm.oilproductionservice.repository.*;
 import org.springframework.stereotype.Service;
@@ -241,7 +242,7 @@ To add a new entity to the project, follow these steps:
 #### Example: `NewEntity`
 
 ```java
-package com.osm.oilproductionservice.domain.customTypes;
+package com.osm.oilproductionservice.model.customTypes;
 
 import javax.persistence.Entity;
 
@@ -263,7 +264,7 @@ public class NewEntity extends BaseType {
 ```java
 package com.osm.oilproductionservice.repository;
 
-import com.osm.oilproductionservice.domain.customTypes.NewEntity;
+import com.osm.oilproductionservice.model.customTypes.NewEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface NewEntityRepository extends JpaRepository<NewEntity, Long> {

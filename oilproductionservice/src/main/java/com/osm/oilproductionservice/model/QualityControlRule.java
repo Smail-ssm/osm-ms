@@ -1,4 +1,4 @@
-package com.osm.oilproductionservice.domain;
+package com.osm.oilproductionservice.model;
 
 
 import jakarta.persistence.*;
@@ -33,6 +33,8 @@ public class QualityControlRule implements Serializable {
     // The maximum acceptable value for the rule (typically 100)
     @Column(name = "max_value", nullable = false)
     private Float maxValue;
+    @ManyToOne
+    private Delivery delivery;
 
     public Boolean getOilQc() {
         return isOilQc;

@@ -1,8 +1,8 @@
-package com.osm.oilproductionservice.rest;
+package com.osm.oilproductionservice.controller;
 
-import com.osm.oilproductionservice.domain.customTypes.BaseType;
-import com.osm.oilproductionservice.dto.ApiResponse;
-import com.osm.oilproductionservice.service.GenericTypeService;
+ import com.osm.oilproductionservice.dto.ApiResponse;
+ import com.osm.oilproductionservice.dto.BaseTypeDto;
+ import com.osm.oilproductionservice.service.GenericTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,55 +22,55 @@ public class GenericTypeController {
 
     // Create a new type (e.g., WasteType, SupplierTypeEntity, OliveLotStatusType)
     @PostMapping("/{type}")
-    public ResponseEntity<ApiResponse<BaseType>> createType(@PathVariable String type, @RequestBody BaseType baseType) {
+    public ResponseEntity<ApiResponse<BaseTypeDto>> createType(@PathVariable String type, @RequestBody BaseTypeDto baseType) {
         try {
-            BaseType createdType = (BaseType) genericTypeService.createType(baseType, type);
-            ApiResponse<BaseType> response = new ApiResponse<>(true, "Type created successfully", createdType);
+            BaseTypeDto createdType = (BaseTypeDto) genericTypeService.createType(baseType, type);
+            ApiResponse<BaseTypeDto> response = new ApiResponse<>(true, "Type created successfully", createdType);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
-            ApiResponse<BaseType> response = new ApiResponse<>(false, "Error creating type: " + e.getMessage(), null);
+            ApiResponse<BaseTypeDto> response = new ApiResponse<>(false, "Error creating type: " + e.getMessage(), null);
             return ResponseEntity.badRequest().body(response);
         }
     }
 
     // Get all types (e.g., all WasteTypes, SupplierTypes, OliveLotStatusTypes)
     @GetMapping("/{type}")
-    public ResponseEntity<ApiResponse<List<BaseType>>> getAllTypes(@PathVariable String type) {
+    public ResponseEntity<ApiResponse<List<Object>>> getAllTypes(@PathVariable String type) {
         try {
-            List<BaseType> types = (List<BaseType>) genericTypeService.getAllTypes(type);
-            ApiResponse<List<BaseType>> response = new ApiResponse<>(true, "Types fetched successfully", types);
+            List<Object> types = (List<Object>) genericTypeService.getAllTypes(type);
+            ApiResponse<List<Object>> response = new ApiResponse<>(true, "Types fetched successfully", types);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
-            ApiResponse<List<BaseType>> response = new ApiResponse<>(false, "Error fetching types: " + e.getMessage(), null);
+            ApiResponse<List<Object>> response = new ApiResponse<>(false, "Error fetching types: " + e.getMessage(), null);
             return ResponseEntity.badRequest().body(response);
         }
     }
 
     // Get a type by ID
     @GetMapping("/{type}/{id}")
-    public ResponseEntity<ApiResponse<BaseType>> getType(@PathVariable String type, @PathVariable Long id) {
-        BaseType typeObj = genericTypeService.getType(id, type);
+    public ResponseEntity<ApiResponse<BaseTypeDto>> getType(@PathVariable String type, @PathVariable Long id) {
+        BaseTypeDto typeObj = genericTypeService.getType(id, type);
         if (typeObj != null) {
-            ApiResponse<BaseType> response = new ApiResponse<>(true, "Type fetched successfully", typeObj);
+            ApiResponse<BaseTypeDto> response = new ApiResponse<>(true, "Type fetched successfully", typeObj);
             return ResponseEntity.ok(response);
         }
-        ApiResponse<BaseType> response = new ApiResponse<>(false, "Type not found", null);
+        ApiResponse<BaseTypeDto> response = new ApiResponse<>(false, "Type not found", null);
         return ResponseEntity.status(404).body(response);
     }
 
     // Update a type by ID
     @PutMapping("/{type}/{id}")
-    public ResponseEntity<ApiResponse<BaseType>> updateType(@PathVariable String type, @PathVariable Long id, @RequestBody BaseType baseType) {
+    public ResponseEntity<ApiResponse<BaseTypeDto>> updateType(@PathVariable String type, @PathVariable Long id, @RequestBody BaseTypeDto baseType) {
         try {
-            BaseType updatedType = genericTypeService.updateType(id, baseType, type);
+            BaseTypeDto updatedType = genericTypeService.updateType(id, baseType, type);
             if (updatedType != null) {
-                ApiResponse<BaseType> response = new ApiResponse<>(true, "Type updated successfully", updatedType);
+                ApiResponse<BaseTypeDto> response = new ApiResponse<>(true, "Type updated successfully", updatedType);
                 return ResponseEntity.ok(response);
             }
-            ApiResponse<BaseType> response = new ApiResponse<>(false, "Type not found", null);
+            ApiResponse<BaseTypeDto> response = new ApiResponse<>(false, "Type not found", null);
             return ResponseEntity.status(404).body(response);
         } catch (RuntimeException e) {
-            ApiResponse<BaseType> response = new ApiResponse<>(false, "Error updating type: " + e.getMessage(), null);
+            ApiResponse<BaseTypeDto> response = new ApiResponse<>(false, "Error updating type: " + e.getMessage(), null);
             return ResponseEntity.badRequest().body(response);
         }
     }
@@ -94,13 +94,13 @@ public class GenericTypeController {
 
     // New endpoint: Get all types regardless of category
     @GetMapping("/all")
-    public ResponseEntity<ApiResponse<List<BaseType>>> getAllCombinedTypes() {
+    public ResponseEntity<ApiResponse<List<BaseTypeDto>>> getAllCombinedTypes() {
         try {
-            List<BaseType> allTypes = genericTypeService.getAllCombinedTypes();
-            ApiResponse<List<BaseType>> response = new ApiResponse<>(true, "All types fetched successfully", allTypes);
+            List<BaseTypeDto> allTypes = genericTypeService.getAllCombinedTypes();
+            ApiResponse<List<BaseTypeDto>> response = new ApiResponse<>(true, "All types fetched successfully", allTypes);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
-            ApiResponse<List<BaseType>> response = new ApiResponse<>(false, "Error fetching types: " + e.getMessage(), null);
+            ApiResponse<List<BaseTypeDto>> response = new ApiResponse<>(false, "Error fetching types: " + e.getMessage(), null);
             return ResponseEntity.badRequest().body(response);
         }
     }

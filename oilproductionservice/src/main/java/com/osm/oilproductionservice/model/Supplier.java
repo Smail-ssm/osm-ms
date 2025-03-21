@@ -1,8 +1,8 @@
-package com.osm.oilproductionservice.domain;
+package com.osm.oilproductionservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.osm.oilproductionservice.domain.customTypes.Region;
-import com.osm.oilproductionservice.domain.customTypes.SupplierType;
+import com.osm.oilproductionservice.model.customTypes.Region;
+import com.osm.oilproductionservice.model.customTypes.SupplierType;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cache;

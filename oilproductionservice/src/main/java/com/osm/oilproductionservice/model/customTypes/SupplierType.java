@@ -1,4 +1,4 @@
-package com.osm.oilproductionservice.domain.customTypes;
+package com.osm.oilproductionservice.model.customTypes;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.persistence.Entity;

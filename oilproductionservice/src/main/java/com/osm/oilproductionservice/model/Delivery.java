@@ -1,15 +1,16 @@
-package com.osm.oilproductionservice.domain;
+package com.osm.oilproductionservice.model;
 
-import com.osm.oilproductionservice.domain.customTypes.OliveVarietyType;
-import com.osm.oilproductionservice.domain.customTypes.Region;
 import com.osm.oilproductionservice.enums.OliveLotStatus;
+import com.osm.oilproductionservice.model.customTypes.OliveVariety;
+import com.osm.oilproductionservice.model.customTypes.Region;
 import jakarta.persistence.*;
-
-import java.io.Serializable;
-import java.time.Instant;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A Delivery.
@@ -20,58 +21,35 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 public class Delivery implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    // One-to-One relationship with QualityControl entity
+    @OneToMany(mappedBy = "delivery")
+    public Set<QualityControlResult> qualityControlResults = new HashSet<>();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-
     @Column(name = "receipt_number", nullable = false)
     private String receiptNumber;
-
     @Column(name = "lot_number", nullable = false)
     private String lotNumber;
-
     @Column(name = "delivery_date", nullable = false)
-    private Instant deliveryDate;
-
+    private LocalDateTime deliveryDate;
     @Enumerated(EnumType.STRING)  // Use EnumType.STRING to persist the enum as a string
     @Column(name = "status")
     private OliveLotStatus status;  // Enum field to store the status of the olive lot
-
     @Column(name = "global_ot_number")
     private String globalLotNumber;
-
     @Column(name = "olive_quantity")
     private Float oliveQuantity;
-
-    public Float getOilQuantity() {
-        return oilQuantity;
-    }
-
-    public void setOilQuantity(Float oilQuantity) {
-        this.oilQuantity = oilQuantity;
-    }
-
     @Column(name = "oil_quantity")
     private Float oilQuantity;
-
     @ManyToOne(fetch = FetchType.LAZY)
     private Region region;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    private OliveVarietyType variety;
-
+    private OliveVariety variety;
     private String storageUnit;
-
     @ManyToOne(optional = false)
     private Supplier supplier;
-
-    // One-to-One relationship with QualityControl entity
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "quality_control_result", nullable = true)  // Nullable set to true, making it optional
-    private QualityControlResult qualityControlResult;  // Link to quality control record
-
     // New Attributes
     @Column(name = "unit_price")
     private Float unitPrice;      // Price per unit of olive oil
@@ -81,6 +59,25 @@ public class Delivery implements Serializable {
     private Float paidAmount;     // Amount paid by the supplier
     @Column(name = "unpaid_amount")
     private Float unpaidAmount;   // Amount that remains unpaid
+
+    public Float getOilQuantity() {
+        return oilQuantity;
+    }
+
+    public void setOilQuantity(Float oilQuantity) {
+        this.oilQuantity = oilQuantity;
+    }
+
+    public Set<QualityControlResult> getQualityControlResults() {
+        return qualityControlResults;
+    }
+
+    public void setQualityControlResults(Set<QualityControlResult> qualityControlResults) {
+         this.qualityControlResults.clear();
+        if (qualityControlResults != null) {
+            this.qualityControlResults.addAll(qualityControlResults);
+        }
+    }
 
     // Constructor, getters, setters, etc.
 
@@ -183,11 +180,11 @@ public class Delivery implements Serializable {
         this.lotNumber = lotNumber;
     }
 
-    public Instant getDeliveryDate() {
+    public LocalDateTime getDeliveryDate() {
         return deliveryDate;
     }
 
-    public void setDeliveryDate(Instant deliveryDate) {
+    public void setDeliveryDate(LocalDateTime deliveryDate) {
         this.deliveryDate = deliveryDate;
     }
 
@@ -224,11 +221,11 @@ public class Delivery implements Serializable {
         this.region = region;
     }
 
-    public OliveVarietyType getVariety() {
+    public OliveVariety getVariety() {
         return variety;
     }
 
-    public void setVariety(OliveVarietyType variety) {
+    public void setVariety(OliveVariety variety) {
         this.variety = variety;
     }
 
@@ -240,11 +237,5 @@ public class Delivery implements Serializable {
         this.storageUnit = storageUnit;
     }
 
-    public QualityControlResult getQualityControlResult() {
-        return qualityControlResult;
-    }
 
-    public void setQualityControlResult(QualityControlResult qualityControlResult) {
-        this.qualityControlResult = qualityControlResult;
-    }
 }

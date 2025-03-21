@@ -1,24 +1,36 @@
 package com.osm.oilproductionservice.service;
 
-import com.osm.oilproductionservice.domain.QualityControlRule;
+import com.osm.oilproductionservice.model.QualityControlRule;
+import com.osm.oilproductionservice.dto.QualityControlRuleDto;
 import com.osm.oilproductionservice.repository.QualityControlRuleRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class QualityControlRuleService {
 
+    private final QualityControlRuleRepository qualityControlRuleRepository;
+    private final ModelMapper modelMapper;
+
     @Autowired
-    private QualityControlRuleRepository qualityControlRuleRepository;
+    public QualityControlRuleService(QualityControlRuleRepository qualityControlRuleRepository, ModelMapper modelMapper) {
+        this.qualityControlRuleRepository = qualityControlRuleRepository;
+        this.modelMapper = modelMapper;
+    }
 
     /**
      * Create a new quality control rule.
      * Checks for duplicates based on ruleKey or ruleName.
      */
-    public QualityControlRule createRule(QualityControlRule rule) {
+    public QualityControlRuleDto createRule(QualityControlRuleDto ruleDto) {
+        // Map DTO to entity
+        QualityControlRule rule = modelMapper.map(ruleDto, QualityControlRule.class);
+
         // Check if a rule with the same ruleKey exists
         Optional<QualityControlRule> ruleByKey = qualityControlRuleRepository.findByRuleKey(rule.getRuleKey());
         if (ruleByKey.isPresent()) {
@@ -31,31 +43,40 @@ public class QualityControlRuleService {
             throw new RuntimeException("A rule with the ruleName '" + rule.getRuleName() + "' already exists.");
         }
 
-        return qualityControlRuleRepository.save(rule);
+        // Save the rule and map the saved entity back to DTO
+        QualityControlRule savedRule = qualityControlRuleRepository.save(rule);
+        return modelMapper.map(savedRule, QualityControlRuleDto.class);
     }
 
     /**
      * Retrieve all quality control rules.
      */
-    public List<QualityControlRule> getAllRules() {
-        return qualityControlRuleRepository.findAll();
+    public List<QualityControlRuleDto> getAllRules() {
+        List<QualityControlRule> rules = qualityControlRuleRepository.findAll();
+        return rules.stream()
+                .map(rule -> modelMapper.map(rule, QualityControlRuleDto.class))
+                .collect(Collectors.toList());
     }
 
     /**
      * Retrieve a quality control rule by its ID.
      */
-    public Optional<QualityControlRule> getRuleById(Long id) {
-        return qualityControlRuleRepository.findById(id);
+    public QualityControlRuleDto getRuleById(Long id) {
+        Optional<QualityControlRule> optionalRule = qualityControlRuleRepository.findById(id);
+        return optionalRule.map(rule -> modelMapper.map(rule, QualityControlRuleDto.class)).orElse(null);
     }
 
     /**
      * Update an existing quality control rule.
      * Checks for duplicates if ruleKey or ruleName is changed.
      */
-    public QualityControlRule updateRule(Long id, QualityControlRule ruleDetails) {
+    public QualityControlRuleDto updateRule(Long id, QualityControlRuleDto ruleDetailsDto) {
         Optional<QualityControlRule> optionalRule = qualityControlRuleRepository.findById(id);
         if (optionalRule.isPresent()) {
             QualityControlRule rule = optionalRule.get();
+
+            // Map DTO to entity for rule details
+            QualityControlRule ruleDetails = modelMapper.map(ruleDetailsDto, QualityControlRule.class);
 
             // Check for duplicate ruleKey if changed
             if (!rule.getRuleKey().equals(ruleDetails.getRuleKey())) {
@@ -73,12 +94,16 @@ public class QualityControlRuleService {
                 }
             }
 
+            // Update the rule fields
             rule.setRuleKey(ruleDetails.getRuleKey());
             rule.setRuleName(ruleDetails.getRuleName());
             rule.setDescription(ruleDetails.getDescription());
             rule.setMinValue(ruleDetails.getMinValue());
             rule.setMaxValue(ruleDetails.getMaxValue());
-            return qualityControlRuleRepository.save(rule);
+
+            // Save the updated rule and map it back to DTO
+            QualityControlRule updatedRule = qualityControlRuleRepository.save(rule);
+            return modelMapper.map(updatedRule, QualityControlRuleDto.class);
         }
         return null;
     }

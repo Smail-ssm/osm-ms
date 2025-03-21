@@ -1,4 +1,4 @@
-package com.osm.oilproductionservice.domain;
+package com.osm.oilproductionservice.model;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
@@ -24,8 +24,7 @@ public class QualityControlResult implements Serializable {
 
     // Many-to-One relationship: each result is associated with one Delivery.
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "delivery_id", nullable = false)
-    private Delivery delivery;
+     private Delivery delivery;
 
     // Constructors
     public QualityControlResult() {
