@@ -9,11 +9,5 @@ import jakarta.persistence.Table;
 @JsonTypeName("wastetype")
 public class WasteType extends BaseType {
 
-    public WasteType() {
-        super();
-    }
 
-    public WasteType(String name, String description) {
-        super(name, description); // 'id' is automatically handled by JPA
-    }
 }

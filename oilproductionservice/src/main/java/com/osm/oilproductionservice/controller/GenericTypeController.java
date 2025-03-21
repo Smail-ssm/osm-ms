@@ -1,8 +1,8 @@
 package com.osm.oilproductionservice.controller;
 
- import com.osm.oilproductionservice.dto.ApiResponse;
- import com.osm.oilproductionservice.dto.BaseTypeDto;
- import com.osm.oilproductionservice.service.GenericTypeService;
+import com.osm.oilproductionservice.dto.ApiResponse;
+import com.osm.oilproductionservice.dto.genericDTO.BaseTypeDto;
+import com.osm.oilproductionservice.service.GenericTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,11 +20,10 @@ public class GenericTypeController {
         this.genericTypeService = genericTypeService;
     }
 
-    // Create a new type (e.g., WasteType, SupplierTypeEntity, OliveLotStatusType)
-    @PostMapping("/{type}")
-    public ResponseEntity<ApiResponse<BaseTypeDto>> createType(@PathVariable String type, @RequestBody BaseTypeDto baseType) {
+     @PostMapping("/")
+    public ResponseEntity<ApiResponse<BaseTypeDto>> createType( @RequestBody BaseTypeDto baseType) {
         try {
-            BaseTypeDto createdType = (BaseTypeDto) genericTypeService.createType(baseType, type);
+            BaseTypeDto createdType = genericTypeService.createType(baseType);
             ApiResponse<BaseTypeDto> response = new ApiResponse<>(true, "Type created successfully", createdType);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
@@ -37,7 +36,7 @@ public class GenericTypeController {
     @GetMapping("/{type}")
     public ResponseEntity<ApiResponse<List<Object>>> getAllTypes(@PathVariable String type) {
         try {
-            List<Object> types = (List<Object>) genericTypeService.getAllTypes(type);
+            List<Object> types = genericTypeService.getAllTypes(type);
             ApiResponse<List<Object>> response = new ApiResponse<>(true, "Types fetched successfully", types);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
@@ -59,10 +58,10 @@ public class GenericTypeController {
     }
 
     // Update a type by ID
-    @PutMapping("/{type}/{id}")
-    public ResponseEntity<ApiResponse<BaseTypeDto>> updateType(@PathVariable String type, @PathVariable Long id, @RequestBody BaseTypeDto baseType) {
+    @PutMapping("/")
+    public ResponseEntity<ApiResponse<BaseTypeDto>> updateType(  @RequestBody BaseTypeDto baseType) {
         try {
-            BaseTypeDto updatedType = genericTypeService.updateType(id, baseType, type);
+            BaseTypeDto updatedType = genericTypeService.updateType(  baseType);
             if (updatedType != null) {
                 ApiResponse<BaseTypeDto> response = new ApiResponse<>(true, "Type updated successfully", updatedType);
                 return ResponseEntity.ok(response);

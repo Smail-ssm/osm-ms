@@ -1,5 +1,8 @@
 package com.osm.oilproductionservice.dto;
 
+import com.osm.oilproductionservice.dto.genericDTO.RegionDto;
+import com.osm.oilproductionservice.dto.genericDTO.SupplierTypeDto;
+
 import java.io.Serializable;
 import java.util.Set;
 

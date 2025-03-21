@@ -10,11 +10,4 @@ import jakarta.persistence.Table;
 
 public class SupplierType extends BaseType {
 
-    public SupplierType() {
-        super();
-    }
-
-    public SupplierType(String name, String description) {
-        super(name, description); // 'id' is automatically handled by JPA
-    }
 }

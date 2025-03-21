@@ -49,7 +49,7 @@ import java.util.Set;
     // One-to-many relationship with Delivery (Supplier has many deliveries)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = {"oliveLots", "paymentStatus", "transactionType", "region", "variety", "storageUnit", "supplier"}, allowSetters = true)
+    @JsonIgnoreProperties(value = {"oliveLots", "paymentStatus", "transactionType", "region", "oliveVariety", "storageUnit", "supplier"}, allowSetters = true)
     private Set<Delivery> deliveries = new HashSet<>();
 
     // Many-to-one relationship with SupplierType (Supplier has one type)

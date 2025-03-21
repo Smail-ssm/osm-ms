@@ -22,6 +22,7 @@ public class DeliveryService {
     private final DeliveryRepository deliveryRepository;
     private final ModelMapper modelMapper;
     private final QualityControlResultRepository qualityControlResultRepository;
+
     public DeliveryService(DeliveryRepository deliveryRepository, ModelMapper modelMapper, QualityControlResultRepository qualityControlResultRepository) {
         this.deliveryRepository = deliveryRepository;
         this.modelMapper = modelMapper;
@@ -38,16 +39,14 @@ public class DeliveryService {
         // Map new QC Results from DTO if provided
         if (deliveryDto.getQualityControlResults() != null) {
 
-            Set<QualityControlResult> results = deliveryDto.getQualityControlResults().stream().map(
-                    item-> {
-                        QualityControlResult  res= modelMapper.map(item, QualityControlResult.class);
-                        res.setDelivery(savedDelivery);
-                        return res;
-                    }
-            ).collect(Collectors.toSet());
+            Set<QualityControlResult> results = deliveryDto.getQualityControlResults().stream().map(item -> {
+                QualityControlResult res = modelMapper.map(item, QualityControlResult.class);
+                res.setDelivery(savedDelivery);
+                return res;
+            }).collect(Collectors.toSet());
             qualityControlResultRepository.saveAll(results);
         }
-         return modelMapper.map(savedDelivery, DeliveryDto.class);
+        return modelMapper.map(savedDelivery, DeliveryDto.class);
     }
 
     /**
@@ -55,37 +54,29 @@ public class DeliveryService {
      */
     public DeliveryDto updateDelivery(Long id, DeliveryDto deliveryDto) {
 
-        return getDeliveryDto(id, deliveryDto);
-    }
+        return deliveryRepository.findById(id).map(existingDelivery -> {
+            // Map basic DTO fields to the existing entity
+            modelMapper.map(deliveryDto, existingDelivery);
 
-    private DeliveryDto getDeliveryDto(Long id, DeliveryDto deliveryDto) {
-        return deliveryRepository.findById(id)
-                .map(existingDelivery -> {
-                    // Map basic DTO fields to the existing entity
-                    modelMapper.map(deliveryDto, existingDelivery);
+            // Clear existing QualityControlResults if present
+            existingDelivery.getQualityControlResults().clear();
 
-                    // Clear existing QualityControlResults if present
-                    existingDelivery.getQualityControlResults().clear();
+            // Map new QC Results from DTO if provided
+            if (deliveryDto.getQualityControlResults() != null) {
 
-                    // Map new QC Results from DTO if provided
-                    if (deliveryDto.getQualityControlResults() != null) {
-
-                        Set<QualityControlResult> results = deliveryDto.getQualityControlResults().stream().map(
-                                item->  {
-                                    QualityControlResult  res= modelMapper.map(item, QualityControlResult.class);
-                                    res.setDelivery(existingDelivery);
-                                    return res;
-                                }
-                        ).collect(Collectors.toSet());
-                        qualityControlResultRepository.saveAll(results);
-                    }
+                Set<QualityControlResult> results = deliveryDto.getQualityControlResults().stream().map(item -> {
+                    QualityControlResult res = modelMapper.map(item, QualityControlResult.class);
+                    res.setDelivery(existingDelivery);
+                    return res;
+                }).collect(Collectors.toSet());
+                qualityControlResultRepository.saveAll(results);
+            }
 
 
-                    // Save and return updated entity mapped to DTO
-                    Delivery updatedDelivery = deliveryRepository.save(existingDelivery);
-                    return modelMapper.map(updatedDelivery, DeliveryDto.class);
-                })
-                .orElse(null);
+            // Save and return updated entity mapped to DTO
+            Delivery updatedDelivery = deliveryRepository.save(existingDelivery);
+            return modelMapper.map(updatedDelivery, DeliveryDto.class);
+        }).orElse(null);
     }
 
 
@@ -93,9 +84,7 @@ public class DeliveryService {
      * Get a delivery by ID.
      */
     public DeliveryDto getDelivery(Long id) {
-        return deliveryRepository.findById(id)
-                .map(delivery -> modelMapper.map(delivery, DeliveryDto.class))
-                .orElse(null);
+        return deliveryRepository.findById(id).map(delivery -> modelMapper.map(delivery, DeliveryDto.class)).orElse(null);
     }
 
     /**

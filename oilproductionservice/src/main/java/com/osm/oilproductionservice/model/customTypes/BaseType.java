@@ -1,6 +1,5 @@
 package com.osm.oilproductionservice.model.customTypes;
 
-
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
@@ -10,22 +9,33 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,             // Use the subtype name for serialization/deserialization
+        include = JsonTypeInfo.As.PROPERTY,     // Embed it as a property in the JSON object
+        property = "type"                       // Name of the property that holds the subtype identifier
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = WasteType.class,      name = "wastetype"),
+        @JsonSubTypes.Type(value = SupplierType.class,   name = "suppliertype"),  // CHANGED HERE
+        @JsonSubTypes.Type(value = Region.class,         name = "region"),
+        @JsonSubTypes.Type(value = OliveVariety.class,   name = "oliveVariety")
+})
 public abstract class BaseType {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  // You can also use AUTO or UUID strategy depending on your DB
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name; // The name of the type (e.g., WasteType, FarmerType)
-    private String type; // The name of the type (e.g., WasteType, FarmerType)
-    private String description; // Description of the type
+
+    private String name;
+    private String type;  // This field is used to store the JSON discriminator itself
+    private String description;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
+
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    /**
-     * Constructs a new object.
-     */
     public BaseType() {
         super();
     }
@@ -33,18 +43,6 @@ public abstract class BaseType {
     public BaseType(String name, String description) {
         this.name = name;
         this.description = description;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
     }
 
     public BaseType(Long id, String name, String type, String description, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -56,6 +54,39 @@ public abstract class BaseType {
         this.updatedAt = updatedAt;
     }
 
+    // Getters and setters...
+
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
@@ -63,37 +94,17 @@ public abstract class BaseType {
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
-
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     @Override
     public String toString() {
-        return "BaseType{" + "id=" + id + ", name='" + name + '\'' + ", description='" + description + '\'' + '}';
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
+        return "BaseType{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

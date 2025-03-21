@@ -6,14 +6,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "variety")
-@JsonTypeName("variety")
+@JsonTypeName("oliveVariety")
 public class OliveVariety extends BaseType {
 
-    public OliveVariety() {
-        super();
-    }
-
-    public OliveVariety(String name, String description) {
-        super(name, description);
-    }
 }

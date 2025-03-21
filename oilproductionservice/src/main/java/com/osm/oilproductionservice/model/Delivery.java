@@ -46,7 +46,7 @@ public class Delivery implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Region region;
     @ManyToOne(fetch = FetchType.LAZY)
-    private OliveVariety variety;
+    private OliveVariety oliveVariety;
     private String storageUnit;
     @ManyToOne(optional = false)
     private Supplier supplier;
@@ -73,7 +73,7 @@ public class Delivery implements Serializable {
     }
 
     public void setQualityControlResults(Set<QualityControlResult> qualityControlResults) {
-         this.qualityControlResults.clear();
+        this.qualityControlResults.clear();
         if (qualityControlResults != null) {
             this.qualityControlResults.addAll(qualityControlResults);
         }
@@ -221,12 +221,12 @@ public class Delivery implements Serializable {
         this.region = region;
     }
 
-    public OliveVariety getVariety() {
-        return variety;
+    public OliveVariety getOliveVariety() {
+        return oliveVariety;
     }
 
-    public void setVariety(OliveVariety variety) {
-        this.variety = variety;
+    public void setOliveVariety(OliveVariety variety) {
+        this.oliveVariety = variety;
     }
 
     public String getStorageUnit() {

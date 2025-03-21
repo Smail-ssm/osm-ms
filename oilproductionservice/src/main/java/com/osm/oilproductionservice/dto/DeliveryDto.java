@@ -1,5 +1,7 @@
 package com.osm.oilproductionservice.dto;
 
+import com.osm.oilproductionservice.dto.genericDTO.OliveVarietyDto;
+import com.osm.oilproductionservice.dto.genericDTO.RegionDto;
 import com.osm.oilproductionservice.enums.OliveLotStatus;
 
 import java.time.LocalDateTime;
@@ -16,7 +18,7 @@ public class DeliveryDto {
     private Float oliveQuantity; // Quantity of olives delivered
     private Float oilQuantity; // Quantity of oil extracted
     private RegionDto region; // ID of the region (custom type)
-    private OliveVarietyDto variety;
+    private OliveVarietyDto oliveVariety;
     private String storageUnit;
     private SupplierDto supplier; // ID of the supplier
     private Float unitPrice; // Price per unit of olive oil
@@ -28,7 +30,7 @@ public class DeliveryDto {
     public DeliveryDto() {
     }
 
-    public DeliveryDto(Long id, String receiptNumber, String lotNumber, LocalDateTime deliveryDate, OliveLotStatus status, String globalLotNumber, Float oliveQuantity, Float oilQuantity, RegionDto region, OliveVarietyDto variety, String storageUnit, SupplierDto supplier, Float unitPrice, Float price, Float paidAmount, Float unpaidAmount, Set<QualityControlResultDto> qualityControlResults) {
+    public DeliveryDto(Long id, String receiptNumber, String lotNumber, LocalDateTime deliveryDate, OliveLotStatus status, String globalLotNumber, Float oliveQuantity, Float oilQuantity, RegionDto region, OliveVarietyDto oliveVariety, String storageUnit, SupplierDto supplier, Float unitPrice, Float price, Float paidAmount, Float unpaidAmount, Set<QualityControlResultDto> qualityControlResults) {
         this.id = id;
         this.receiptNumber = receiptNumber;
         this.lotNumber = lotNumber;
@@ -38,7 +40,7 @@ public class DeliveryDto {
         this.oliveQuantity = oliveQuantity;
         this.oilQuantity = oilQuantity;
         this.region = region;
-        this.variety = variety;
+        this.oliveVariety = oliveVariety;
         this.storageUnit = storageUnit;
         this.supplier = supplier;
         this.unitPrice = unitPrice;
@@ -128,12 +130,12 @@ public class DeliveryDto {
         this.region = region;
     }
 
-    public OliveVarietyDto getVariety() {
-        return variety;
+    public OliveVarietyDto getOliveVariety() {
+        return oliveVariety;
     }
 
-    public void setVariety(OliveVarietyDto variety) {
-        this.variety = variety;
+    public void setOliveVariety(OliveVarietyDto oliveVariety) {
+        this.oliveVariety = oliveVariety;
     }
 
     public String getStorageUnit() {
