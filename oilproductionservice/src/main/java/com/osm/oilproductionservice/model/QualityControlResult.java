@@ -15,8 +15,8 @@ public class QualityControlResult implements Serializable {
     private Long id;
 
     // The identifier of the quality rule (e.g., could be a foreign key from a rule table or a code)
-    @Column(name = "rule_id", nullable = false)
-    private Long ruleId;
+     @ManyToOne(fetch = FetchType.LAZY)
+    private QualityControlRule rule;
 
     // The value measured by the quality controller for this rule
     @Column(name = "measured_value", nullable = false)
@@ -30,8 +30,8 @@ public class QualityControlResult implements Serializable {
     public QualityControlResult() {
     }
 
-    public QualityControlResult(Long ruleId, Float measuredValue, Delivery delivery) {
-        this.ruleId = ruleId;
+    public QualityControlResult(QualityControlRule rule, Float measuredValue, Delivery delivery) {
+        this.rule = rule;
         this.measuredValue = measuredValue;
         this.delivery = delivery;
     }
@@ -45,12 +45,12 @@ public class QualityControlResult implements Serializable {
         this.id = id;
     }
 
-    public Long getRuleId() {
-        return ruleId;
+    public QualityControlRule getRule() {
+        return rule;
     }
 
-    public void setRuleId(Long ruleId) {
-        this.ruleId = ruleId;
+    public void setRule(QualityControlRule ruleId) {
+        this.rule = ruleId;
     }
 
     public Float getMeasuredValue() {

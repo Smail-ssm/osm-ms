@@ -20,7 +20,7 @@ public class QualityControlRule implements Serializable {
     @Column(name = "rule_key", nullable = false)
     private String ruleKey;
     @Column(name = "is_oil_qc", nullable = false)
-    private Boolean isOilQc;
+    private boolean isOilQc;
     // A user-friendly name for the rule, e.g., "Infestation Percentage"
     @Column(name = "rule_name", nullable = false)
     private String ruleName;
@@ -36,11 +36,11 @@ public class QualityControlRule implements Serializable {
     @ManyToOne
     private Delivery delivery;
 
-    public Boolean getOilQc() {
+    public boolean getOilQc() {
         return isOilQc;
     }
 
-    public void setOilQc(Boolean oilQc) {
+    public void setOilQc(boolean oilQc) {
         isOilQc = oilQc;
     }
 

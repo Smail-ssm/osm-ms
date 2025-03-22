@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 public class QualityControlResultDto implements Serializable {
     Long id;
-    Long ruleId;
+    QualityControlRuleDto rule;
     Float measuredValue;
 
     public Long getId() {
@@ -19,13 +19,7 @@ public class QualityControlResultDto implements Serializable {
         this.id = id;
     }
 
-    public Long getRuleId() {
-        return ruleId;
-    }
 
-    public void setRuleId(Long ruleId) {
-        this.ruleId = ruleId;
-    }
 
     public Float getMeasuredValue() {
         return measuredValue;
@@ -38,9 +32,17 @@ public class QualityControlResultDto implements Serializable {
     public QualityControlResultDto() {
     }
 
-    public QualityControlResultDto(Long id, Long ruleId, Float measuredValue) {
+    public QualityControlResultDto(Long id, QualityControlRuleDto rule, Float measuredValue) {
         this.id = id;
-        this.ruleId = ruleId;
+        this.rule = rule;
         this.measuredValue = measuredValue;
+    }
+
+    public QualityControlRuleDto getRule() {
+        return rule;
+    }
+
+    public void setRule(QualityControlRuleDto rule) {
+        this.rule = rule;
     }
 }

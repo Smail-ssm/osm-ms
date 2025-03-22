@@ -17,11 +17,11 @@ public class QualityControlRuleDto {
         this.ruleKey = ruleKey;
     }
 
-    public Boolean getOilQc() {
+    public boolean getOilQc() {
         return isOilQc;
     }
 
-    public void setOilQc(Boolean oilQc) {
+    public void setOilQc(boolean oilQc) {
         isOilQc = oilQc;
     }
 
@@ -59,7 +59,7 @@ public class QualityControlRuleDto {
 
     private Long id; // Unique identifier for the rule (optional for creation)
     private String ruleKey; // Technical key for the rule (e.g., "infestation_percentage")
-    private Boolean isOilQc; // Indicates if the rule applies to oil quality control
+    private boolean isOilQc; // Indicates if the rule applies to oil quality control
     private String ruleName; // User-friendly name for the rule (e.g., "Infestation Percentage")
     private String description; // Description of the rule's purpose
     private Float minValue; // Minimum acceptable value for the rule
@@ -68,7 +68,7 @@ public class QualityControlRuleDto {
     public QualityControlRuleDto() {
     }
 
-    public QualityControlRuleDto(Long id, String ruleKey, Boolean isOilQc, String ruleName, String description, Float minValue, Float maxValue) {
+    public QualityControlRuleDto(Long id, String ruleKey, boolean isOilQc, String ruleName, String description, Float minValue, Float maxValue) {
         this.id = id;
         this.ruleKey = ruleKey;
         this.isOilQc = isOilQc;

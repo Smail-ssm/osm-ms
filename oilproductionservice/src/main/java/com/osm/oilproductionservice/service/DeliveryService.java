@@ -1,18 +1,19 @@
 package com.osm.oilproductionservice.service;
 
-import com.osm.oilproductionservice.dto.QualityControlResultDto;
-import com.osm.oilproductionservice.model.Delivery;
 import com.osm.oilproductionservice.dto.DeliveryDto;
+import com.osm.oilproductionservice.model.Delivery;
 import com.osm.oilproductionservice.model.QualityControlResult;
 import com.osm.oilproductionservice.repository.DeliveryRepository;
 import com.osm.oilproductionservice.repository.QualityControlResultRepository;
-import com.osm.oilproductionservice.repository.QualityControlRuleRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -53,30 +54,27 @@ public class DeliveryService {
      * Update an existing delivery.
      */
     public DeliveryDto updateDelivery(Long id, DeliveryDto deliveryDto) {
+        Delivery existingDelivery = deliveryRepository.findById(id).orElseThrow();
+        qualityControlResultRepository.deleteAll(qualityControlResultRepository.findAllByDelivery(existingDelivery));
+        modelMapper.map(deliveryDto, existingDelivery);
+        existingDelivery.setQualityControlResults(null);
+        List<QualityControlResult> qcr = new ArrayList<>();
+        if (deliveryDto.getQualityControlResults() != null) {
 
-        return deliveryRepository.findById(id).map(existingDelivery -> {
-            // Map basic DTO fields to the existing entity
-            modelMapper.map(deliveryDto, existingDelivery);
+            Set<QualityControlResult> results = deliveryDto.getQualityControlResults().stream().map(item -> {
+                QualityControlResult res = modelMapper.map(item, QualityControlResult.class);
+                res.setDelivery(existingDelivery);
+                return res;
+            }).collect(Collectors.toSet());
+            qcr = qualityControlResultRepository.saveAll(results);
+        }
+        var s=new HashSet<>(qcr);
+//
+        existingDelivery.setQualityControlResults(s);
+//        // Save and return updated entity mapped to DTO
+        Delivery updatedDelivery = deliveryRepository.save(existingDelivery);
+        return modelMapper.map(updatedDelivery, DeliveryDto.class);
 
-            // Clear existing QualityControlResults if present
-            existingDelivery.getQualityControlResults().clear();
-
-            // Map new QC Results from DTO if provided
-            if (deliveryDto.getQualityControlResults() != null) {
-
-                Set<QualityControlResult> results = deliveryDto.getQualityControlResults().stream().map(item -> {
-                    QualityControlResult res = modelMapper.map(item, QualityControlResult.class);
-                    res.setDelivery(existingDelivery);
-                    return res;
-                }).collect(Collectors.toSet());
-                qualityControlResultRepository.saveAll(results);
-            }
-
-
-            // Save and return updated entity mapped to DTO
-            Delivery updatedDelivery = deliveryRepository.save(existingDelivery);
-            return modelMapper.map(updatedDelivery, DeliveryDto.class);
-        }).orElse(null);
     }
 
 

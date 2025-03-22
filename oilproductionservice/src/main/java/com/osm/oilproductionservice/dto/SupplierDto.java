@@ -17,7 +17,6 @@ public class SupplierDto implements Serializable {
     String phone;
     String email;
     String address;
-    RegionDto region;
 
     public Long getId() {
         return id;
@@ -67,13 +66,7 @@ public class SupplierDto implements Serializable {
         this.address = address;
     }
 
-    public RegionDto getRegion() {
-        return region;
-    }
 
-    public void setRegion(RegionDto region) {
-        this.region = region;
-    }
 
 
 
@@ -96,8 +89,7 @@ public class SupplierDto implements Serializable {
         this.phone = phone;
         this.email = email;
         this.address = address;
-        this.region = region;
-        this.suppliertype = suppliertype;
+         this.suppliertype = suppliertype;
     }
 
     SupplierTypeDto suppliertype;
