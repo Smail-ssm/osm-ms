@@ -1,12 +1,7 @@
 package com.osm.oilproductionservice.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.osm.oilproductionservice.model.customTypes.Region;
-import com.osm.oilproductionservice.model.customTypes.SupplierType;
-import jakarta.annotation.Nullable;
+import com.xdev.xdevbase.entities.BaseEntity;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -17,60 +12,36 @@ import java.util.Set;
 @Entity
 @Table(name = "supplier")
 
-  public class Supplier  {
+public class Supplier extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
 
-    
-    @Column(name = "name", nullable = false)
     private String name;
-    
-    @Column(name = "lastname", nullable = false)
+
     private String lastname;
 
-    @Column(name = "phone")
     private String phone;
-    @Nullable
-    @Column(name = "email")
     private String email;
 
-    @Column(name = "address")
     private String address;
 
-    // Many-to-one relationship with Region (a Supplier is linked to one Region)
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "region_id")  // This creates a foreign key column in the supplier table
-    @JsonIgnoreProperties(value = {"suppliers"})
-    private Region region;
 
     // One-to-many relationship with Delivery (Supplier has many deliveries)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = {"oliveLots", "paymentStatus", "transactionType", "region", "oliveVariety", "storageUnit", "supplier"}, allowSetters = true)
     private Set<Delivery> deliveries = new HashSet<>();
 
     // Many-to-one relationship with SupplierType (Supplier has one type)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "suppliertype_id")
-    private SupplierType suppliertype;
+    private BaseType suppliertype;
 
     // Calculated fields (no persistence, calculated at runtime)
-    @Transient
     private Float totalOliveQuantity;
 
-    @Transient
     private Float totalOilQuantity;
 
-    @Transient
     private Float totalPaidAmount;
 
-    @Transient
     private Float totalUnpaidAmount;
 
-    @Transient
     private Float totalDebt;
 
     // Methods to calculate totals based on deliveries
@@ -116,13 +87,22 @@ import java.util.Set;
         return totalDebt;
     }
 
-    // Getters and setters for the rest of the fields
-    public Long getId() {
-        return id;
+    public Supplier() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Supplier(String name, String lastname, String phone, String email, String address, Set<Delivery> deliveries, BaseType suppliertype, Float totalOliveQuantity, Float totalOilQuantity, Float totalPaidAmount, Float totalUnpaidAmount, Float totalDebt) {
+        this.name = name;
+        this.lastname = lastname;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.deliveries = deliveries;
+        this.suppliertype = suppliertype;
+        this.totalOliveQuantity = totalOliveQuantity;
+        this.totalOilQuantity = totalOilQuantity;
+        this.totalPaidAmount = totalPaidAmount;
+        this.totalUnpaidAmount = totalUnpaidAmount;
+        this.totalDebt = totalDebt;
     }
 
     public String getName() {
@@ -149,12 +129,11 @@ import java.util.Set;
         this.phone = phone;
     }
 
-    @Nullable
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(@Nullable String email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -166,14 +145,6 @@ import java.util.Set;
         this.address = address;
     }
 
-    public Region getRegion() {
-        return region;
-    }
-
-    public void setRegion(Region region) {
-        this.region = region;
-    }
-
     public Set<Delivery> getDeliveries() {
         return deliveries;
     }
@@ -182,11 +153,31 @@ import java.util.Set;
         this.deliveries = deliveries;
     }
 
-    public SupplierType getSuppliertype() {
+    public BaseType getSuppliertype() {
         return suppliertype;
     }
 
-    public void setSuppliertype(SupplierType suppliertype) {
+    public void setSuppliertype(BaseType suppliertype) {
         this.suppliertype = suppliertype;
+    }
+
+    public void setTotalOliveQuantity(Float totalOliveQuantity) {
+        this.totalOliveQuantity = totalOliveQuantity;
+    }
+
+    public void setTotalOilQuantity(Float totalOilQuantity) {
+        this.totalOilQuantity = totalOilQuantity;
+    }
+
+    public void setTotalPaidAmount(Float totalPaidAmount) {
+        this.totalPaidAmount = totalPaidAmount;
+    }
+
+    public void setTotalUnpaidAmount(Float totalUnpaidAmount) {
+        this.totalUnpaidAmount = totalUnpaidAmount;
+    }
+
+    public void setTotalDebt(Float totalDebt) {
+        this.totalDebt = totalDebt;
     }
 }

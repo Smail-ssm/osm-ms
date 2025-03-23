@@ -2,30 +2,24 @@ package com.osm.oilproductionservice.constants;
 
 
 public enum TypeCategory {
-    WASTETYPE("wastetype"),
-    REGION("region"),
-    SUPPLIERTYPE("suppliertype"),
-    OLIVEVARIETY("oliveVariety"),
-    OLIVELOTSTATUSTYPE("olivelotstatustype"),
-    OLIVEVARIETYTYPE("olivevarietytype");
+    WASTETYPE(1), REGION(2), SUPPLIERTYPE(3), OLIVEVARIETY(4), OLIVETYPE(5);
+    private final int value;
 
-    private final String value;
-
-    TypeCategory(String value) {
+    TypeCategory(int value) {
         this.value = value;
     }
 
-    public String getValue() {
-        return value;
-    }
-
     // Helper method to find the enum by its value
-    public static TypeCategory fromValue(String value) {
+    public static TypeCategory fromValue(int value) {
         for (TypeCategory category : values()) {
-            if (category.getValue().equalsIgnoreCase(value)) {
+            if (category.getValue() == (value)) {
                 return category;
             }
         }
         throw new IllegalArgumentException("Unknown type: " + value);
+    }
+
+    public int getValue() {
+        return value;
     }
 }

@@ -1,8 +1,7 @@
 package com.osm.oilproductionservice.model;
 
 import com.osm.oilproductionservice.enums.OliveLotStatus;
-import com.osm.oilproductionservice.model.customTypes.OliveVariety;
-import com.osm.oilproductionservice.model.customTypes.Region;
+import com.xdev.xdevbase.entities.BaseEntity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -18,46 +17,36 @@ import java.util.Set;
 @Entity
 @Table(name = "delivery")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Delivery implements Serializable {
+public class Delivery extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     // One-to-One relationship with QualityControl entity
     @OneToMany(mappedBy = "delivery")
     public Set<QualityControlResult> qualityControlResults = new HashSet<>();
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-    @Column(name = "receipt_number", nullable = false)
+
+
     private String receiptNumber;
-    @Column(name = "lot_number", nullable = false)
     private String lotNumber;
-    @Column(name = "delivery_date", nullable = false)
     private LocalDateTime deliveryDate;
     @Enumerated(EnumType.STRING)  // Use EnumType.STRING to persist the enum as a string
-    @Column(name = "status")
     private OliveLotStatus status;  // Enum field to store the status of the olive lot
-    @Column(name = "global_ot_number")
     private String globalLotNumber;
-    @Column(name = "olive_quantity")
     private Float oliveQuantity;
-    @Column(name = "oil_quantity")
     private Float oilQuantity;
+    private Float rendement;
     @ManyToOne(fetch = FetchType.LAZY)
-    private Region region;
+    private BaseType region;
     @ManyToOne(fetch = FetchType.LAZY)
-    private OliveVariety oliveVariety;
+    private BaseType oliveVariety;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private BaseType oliveType;
     private String storageUnit;
     @ManyToOne(optional = false)
     private Supplier supplier;
     // New Attributes
-    @Column(name = "unit_price")
     private Float unitPrice;      // Price per unit of olive oil
-    @Column(name = "price")
     private Float price;          // Total price for the delivery
-    @Column(name = "paid_amount")
     private Float paidAmount;     // Amount paid by the supplier
-    @Column(name = "unpaid_amount")
     private Float unpaidAmount;   // Amount that remains unpaid
 
     public Float getOilQuantity() {
@@ -97,6 +86,44 @@ public class Delivery implements Serializable {
         } else {
             this.unpaidAmount = this.price;
         }
+    }
+
+    public Float getRendement() {
+        // Ensure oilQuantity is not null and not zero to avoid division by zero
+        if (this.oilQuantity != null && this.oilQuantity != 0) {
+            // Calculate rendement as a percentage
+            this.rendement = (this.oliveQuantity / this.oilQuantity) * 100;
+        } else {
+            // If oilQuantity is null or zero, set rendement to 0
+            this.rendement = (float) 0;
+        }
+        // Return the calculated rendement as a percentage
+        return this.rendement;
+    }
+
+    public void setRendement(Float rendement) {
+        this.rendement = rendement;
+    }
+
+    public float calculateRendement() {
+        // Ensure oilQuantity is not null and not zero to avoid division by zero
+        if (this.oilQuantity != null && this.oilQuantity != 0) {
+            // Calculate rendement as a percentage
+            this.rendement = (this.oliveQuantity / this.oilQuantity) * 100;
+        } else {
+            // If oilQuantity is null or zero, set rendement to 0
+            this.rendement = (float) 0;
+        }
+        // Return the calculated rendement as a percentage
+        return this.rendement;
+    }
+
+    public BaseType getOliveType() {
+        return oliveType;
+    }
+
+    public void setOliveType(BaseType oliveType) {
+        this.oliveType = oliveType;
     }
 
     // Method to update paid amount
@@ -156,13 +183,6 @@ public class Delivery implements Serializable {
         this.supplier = supplier;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getReceiptNumber() {
         return receiptNumber;
@@ -213,20 +233,20 @@ public class Delivery implements Serializable {
         calculatePrice();  // Recalculate price when quantity changes
     }
 
-    public Region getRegion() {
+    public BaseType getRegion() {
         return region;
     }
 
-    public void setRegion(Region region) {
+    public void setRegion(BaseType region) {
         this.region = region;
     }
 
-    public OliveVariety getOliveVariety() {
+    public BaseType getOliveVariety() {
         return oliveVariety;
     }
 
-    public void setOliveVariety(OliveVariety variety) {
-        this.oliveVariety = variety;
+    public void setOliveVariety(BaseType oliveVariety) {
+        this.oliveVariety = oliveVariety;
     }
 
     public String getStorageUnit() {

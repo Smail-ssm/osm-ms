@@ -1,8 +1,0 @@
-package com.osm.oilproductionservice.repository;
-
-import com.osm.oilproductionservice.model.customTypes.WasteType;
-import org.springframework.data.jpa.repository.JpaRepository;
-
-public interface WasteTypeRepository extends JpaRepository<WasteType, Long> {
-    boolean existsByName(String name);
-}

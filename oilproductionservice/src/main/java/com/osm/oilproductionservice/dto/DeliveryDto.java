@@ -1,37 +1,37 @@
 package com.osm.oilproductionservice.dto;
 
-import com.osm.oilproductionservice.dto.genericDTO.OliveVarietyDto;
-import com.osm.oilproductionservice.dto.genericDTO.RegionDto;
+
 import com.osm.oilproductionservice.enums.OliveLotStatus;
+import com.osm.oilproductionservice.model.Delivery;
+import com.xdev.xdevbase.dtos.BaseDto;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
-public class DeliveryDto {
+public class DeliveryDto extends BaseDto<Delivery> {
 
-    private Long id; // ID of the delivery
-    private String receiptNumber; // Receipt number
-    private String lotNumber; // Lot number
-    private LocalDateTime deliveryDate; // Delivery date
-    private OliveLotStatus status; // Status of the olive lot (enum)
-    private String globalLotNumber; // Global lot number
-    private Float oliveQuantity; // Quantity of olives delivered
-    private Float oilQuantity; // Quantity of oil extracted
-    private RegionDto region; // ID of the region (custom type)
-    private OliveVarietyDto oliveVariety;
-    private String storageUnit;
-    private SupplierDto supplier; // ID of the supplier
-    private Float unitPrice; // Price per unit of olive oil
-    private Float price; // Total price for the delivery
-    private Float paidAmount; // Amount paid by the supplier
-    private Float unpaidAmount; // Amount that remains unpaid
-    private Set<QualityControlResultDto> qualityControlResults; // Expecting a collection
+
+    private String receiptNumber;
+    private String lotNumber;
+    private LocalDateTime deliveryDate;
+    private OliveLotStatus status;
+    private String globalLotNumber;
+    private Float oliveQuantity;
+    private Float oilQuantity;
+    private Float rendement;
+    private String supplierName;
+    private String regionName;
+    private String oliveVarietyName;
+    private String oliveTypeName;
+    private Float unitPrice;
+    private Float price;
+    private Float paidAmount;
+    private Float unpaidAmount;
 
     public DeliveryDto() {
     }
 
-    public DeliveryDto(Long id, String receiptNumber, String lotNumber, LocalDateTime deliveryDate, OliveLotStatus status, String globalLotNumber, Float oliveQuantity, Float oilQuantity, RegionDto region, OliveVarietyDto oliveVariety, String storageUnit, SupplierDto supplier, Float unitPrice, Float price, Float paidAmount, Float unpaidAmount, Set<QualityControlResultDto> qualityControlResults) {
-        this.id = id;
+    public DeliveryDto(String receiptNumber, String lotNumber, LocalDateTime deliveryDate, OliveLotStatus status, String globalLotNumber, Float oliveQuantity, Float oilQuantity, Float rendement, String supplierName, String regionName, String oliveVarietyName, String oliveTypeName, Float unitPrice, Float price, Float paidAmount, Float unpaidAmount) {
         this.receiptNumber = receiptNumber;
         this.lotNumber = lotNumber;
         this.deliveryDate = deliveryDate;
@@ -39,31 +39,15 @@ public class DeliveryDto {
         this.globalLotNumber = globalLotNumber;
         this.oliveQuantity = oliveQuantity;
         this.oilQuantity = oilQuantity;
-        this.region = region;
-        this.oliveVariety = oliveVariety;
-        this.storageUnit = storageUnit;
-        this.supplier = supplier;
+        this.rendement = rendement;
+        this.supplierName = supplierName;
+        this.regionName = regionName;
+        this.oliveVarietyName = oliveVarietyName;
+        this.oliveTypeName = oliveTypeName;
         this.unitPrice = unitPrice;
         this.price = price;
         this.paidAmount = paidAmount;
         this.unpaidAmount = unpaidAmount;
-        this.qualityControlResults = qualityControlResults;
-    }
-
-    public Set<QualityControlResultDto> getQualityControlResults() {
-        return qualityControlResults;
-    }
-
-    public void setQualityControlResults(Set<QualityControlResultDto> qualityControlResults) {
-        this.qualityControlResults = qualityControlResults;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getReceiptNumber() {
@@ -122,36 +106,44 @@ public class DeliveryDto {
         this.oilQuantity = oilQuantity;
     }
 
-    public RegionDto getRegion() {
-        return region;
+    public Float getRendement() {
+        return rendement;
     }
 
-    public void setRegion(RegionDto region) {
-        this.region = region;
+    public void setRendement(Float rendement) {
+        this.rendement = rendement;
     }
 
-    public OliveVarietyDto getOliveVariety() {
-        return oliveVariety;
+    public String getSupplierName() {
+        return supplierName;
     }
 
-    public void setOliveVariety(OliveVarietyDto oliveVariety) {
-        this.oliveVariety = oliveVariety;
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
     }
 
-    public String getStorageUnit() {
-        return storageUnit;
+    public String getRegionName() {
+        return regionName;
     }
 
-    public void setStorageUnit(String storageUnit) {
-        this.storageUnit = storageUnit;
+    public void setRegionName(String regionName) {
+        this.regionName = regionName;
     }
 
-    public SupplierDto getSupplier() {
-        return supplier;
+    public String getOliveVarietyName() {
+        return oliveVarietyName;
     }
 
-    public void setSupplier(SupplierDto supplier) {
-        this.supplier = supplier;
+    public void setOliveVarietyName(String oliveVarietyName) {
+        this.oliveVarietyName = oliveVarietyName;
+    }
+
+    public String getOliveTypeName() {
+        return oliveTypeName;
+    }
+
+    public void setOliveTypeName(String oliveTypeName) {
+        this.oliveTypeName = oliveTypeName;
     }
 
     public Float getUnitPrice() {
@@ -186,5 +178,5 @@ public class DeliveryDto {
         this.unpaidAmount = unpaidAmount;
     }
 
-
+    // Constructors, getters, setters
 }

@@ -61,10 +61,12 @@ Each entity type (e.g., `WasteType`, `SupplierType`, `OliveLotStatusType`) exten
 ```java
 package com.osm.oilproductionservice.model.customTypes;
 
+import com.xdev.xdevbase.entities.BaseEntity;
+
 import javax.persistence.Entity;
 
 @Entity
-public class WasteType extends BaseType {
+public class WasteType extends BaseEntity {
     private String name;
     private String description;
 
@@ -77,10 +79,12 @@ public class WasteType extends BaseType {
 ```java
 package com.osm.oilproductionservice.model.customTypes;
 
+import com.xdev.xdevbase.entities.BaseEntity;
+
 import javax.persistence.Entity;
 
 @Entity
-public class SupplierType extends BaseType {
+public class SupplierType extends BaseEntity {
     private String supplierName;
     private String supplierAddress;
 
@@ -102,7 +106,6 @@ Each entity type has a corresponding repository that interacts with the database
 ```java
 package com.osm.oilproductionservice.repository;
 
-import com.osm.oilproductionservice.model.customTypes.WasteType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface WasteTypeRepository extends JpaRepository<WasteType, Long> {
@@ -126,6 +129,7 @@ The service layer contains the business logic for handling CRUD operations on th
 ```java
 package com.osm.oilproductionservice.service;
 
+import com.osm.oilproductionservice.model.BaseType;
 import com.osm.oilproductionservice.model.customTypes.*;
 import com.osm.oilproductionservice.exception.ServiceException;
 import com.osm.oilproductionservice.repository.*;
@@ -244,10 +248,12 @@ To add a new entity to the project, follow these steps:
 ```java
 package com.osm.oilproductionservice.model.customTypes;
 
+import com.xdev.xdevbase.entities.BaseEntity;
+
 import javax.persistence.Entity;
 
 @Entity
-public class NewEntity extends BaseType {
+public class NewEntity extends BaseEntity {
     private String name;
     private String description;
 

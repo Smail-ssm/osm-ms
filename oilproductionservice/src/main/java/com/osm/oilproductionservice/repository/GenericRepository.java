@@ -1,7 +1,14 @@
 package com.osm.oilproductionservice.repository;
 
-import com.osm.oilproductionservice.model.customTypes.BaseType;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.osm.oilproductionservice.constants.TypeCategory;
+import com.osm.oilproductionservice.model.BaseType;
+import com.xdev.xdevbase.repos.BaseRepository;
+import org.springframework.stereotype.Repository;
 
-public interface GenericRepository<T extends BaseType> extends JpaRepository<T, Long> {
+import java.util.List;
+import java.util.UUID;
+
+@Repository
+public interface GenericRepository extends BaseRepository<BaseType> {
+    List<BaseType> findAllByType(TypeCategory type);
 }

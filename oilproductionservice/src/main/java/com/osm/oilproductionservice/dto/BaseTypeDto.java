@@ -1,44 +1,35 @@
 package com.osm.oilproductionservice.dto;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.osm.oilproductionservice.constants.TypeCategory;
+import com.osm.oilproductionservice.model.BaseType;
+import com.xdev.xdevbase.dtos.BaseDto;
 
 import java.time.LocalDateTime;
 
 
-public abstract class BaseTypeDto {
-    private Long id; // Unique identifier for the type
+public  class BaseTypeDto extends BaseDto<BaseType> {
     private String name; // The name of the type (e.g., "Plastic Waste", "Local Supplier")
     private String description; // Description of the type
-    private LocalDateTime createdAt; // Timestamp when the type was created
-    private LocalDateTime updatedAt; // Timestamp when the type was last updated
-    private String type;
+
+    private TypeCategory type;
     public BaseTypeDto() {
     }
 
-    public String getType() {
+    public TypeCategory getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(TypeCategory type) {
         this.type = type;
     }
 
-    public BaseTypeDto(Long id, String name, String description, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
+    public BaseTypeDto(  String name, String description, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.name = name;
         this.description = description;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -56,19 +47,5 @@ public abstract class BaseTypeDto {
         this.description = description;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 }

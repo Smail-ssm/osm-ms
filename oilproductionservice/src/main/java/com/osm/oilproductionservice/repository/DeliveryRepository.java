@@ -1,11 +1,14 @@
 package com.osm.oilproductionservice.repository;
 
+import com.osm.oilproductionservice.model.BaseType;
 import com.osm.oilproductionservice.model.Delivery;
+import com.xdev.xdevbase.repos.BaseRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface DeliveryRepository extends JpaRepository<Delivery, Long> {
+import java.util.UUID;
 
-    Page<Delivery> findByRegionId(Long regionId, Pageable pageable );
-}
+public interface DeliveryRepository extends BaseRepository<Delivery> {
+
+ }

@@ -1,10 +1,10 @@
 package com.osm.oilproductionservice.repository;
  import com.osm.oilproductionservice.model.Supplier;
+ import com.osm.oilproductionservice.test.test;
+ import com.xdev.xdevbase.repos.BaseRepository;
  import org.springframework.data.jpa.repository.JpaRepository;
 
  import java.util.List;
 
-public interface SupplierRepository extends JpaRepository<Supplier, Long> {
- List<Supplier> findSupplierByRegion_Id(Long regionId);
- // Custom queries for Supplier can go here
+public interface SupplierRepository extends BaseRepository<Supplier > {
 }

@@ -1,30 +1,24 @@
 package com.osm.oilproductionservice.dto;
 
-import com.osm.oilproductionservice.dto.genericDTO.RegionDto;
-import com.osm.oilproductionservice.dto.genericDTO.SupplierTypeDto;
+import com.osm.oilproductionservice.model.Supplier;
+import com.osm.oilproductionservice.test.test;
+import com.xdev.xdevbase.dtos.BaseDto;
 
 import java.io.Serializable;
-import java.util.Set;
 
 /**
  * DTO for {@link com.osm.oilproductionservice.model.Supplier}
  */
 
-public class SupplierDto implements Serializable {
-    Long id;
-    String name;
+public class SupplierDto extends BaseDto<Supplier> {
+     String name;
     String lastname;
     String phone;
     String email;
     String address;
 
-    public Long getId() {
-        return id;
-    }
+    BaseTypeDto suppliertype;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -71,26 +65,17 @@ public class SupplierDto implements Serializable {
 
 
 
-    public SupplierTypeDto getSuppliertype() {
+    public BaseTypeDto getSuppliertype() {
         return suppliertype;
     }
 
-    public void setSuppliertype(SupplierTypeDto suppliertype) {
+    public void setSuppliertype(BaseTypeDto suppliertype) {
         this.suppliertype = suppliertype;
     }
 
     public SupplierDto() {
     }
 
-    public SupplierDto(Long id, String name, String lastname, String phone, String email, String address, RegionDto region, Set<DeliveryDto> deliveries, SupplierTypeDto suppliertype) {
-        this.id = id;
-        this.name = name;
-        this.lastname = lastname;
-        this.phone = phone;
-        this.email = email;
-        this.address = address;
-         this.suppliertype = suppliertype;
-    }
 
-    SupplierTypeDto suppliertype;
+
 }
