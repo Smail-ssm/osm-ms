@@ -1,18 +1,11 @@
-package com.osm.oilproductionservice.model;
+package com.osm.oilproductionservice.dto.in;
 
 import com.osm.oilproductionservice.constants.OilType;
 import com.osm.oilproductionservice.constants.StorageStatus;
-import com.xdev.xdevbase.entities.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
-
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "storageUnit")
-public class StorageUnit extends BaseEntity {
+public class StorageUnitDtoIn {
+
     private String name;
     private String location;
     private String description;
@@ -20,17 +13,17 @@ public class StorageUnit extends BaseEntity {
     private Double currentVolume;
     private LocalDateTime nextMaintenanceDate;
     private LocalDateTime lastInspectionDate;
-    @Enumerated(EnumType.STRING)
     private OilType oilType;
-    @Enumerated(EnumType.STRING)
     private StorageStatus status;
     private LocalDateTime lastFillDate;
     private LocalDateTime lastEmptyDate;
 
-    public StorageUnit() {
+    public StorageUnitDtoIn() {
     }
 
-    public StorageUnit(String name, String location, String description, Double maxCapacity, Double currentVolume, LocalDateTime nextMaintenanceDate, LocalDateTime lastInspectionDate, OilType oilType, StorageStatus status, LocalDateTime lastFillDate, LocalDateTime lastEmptyDate) {
+    public StorageUnitDtoIn(String name, String location, String description, Double maxCapacity, Double currentVolume,
+                            LocalDateTime nextMaintenanceDate, LocalDateTime lastInspectionDate,
+                            OilType oilType, StorageStatus status, LocalDateTime lastFillDate, LocalDateTime lastEmptyDate) {
         this.name = name;
         this.location = location;
         this.description = description;

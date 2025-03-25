@@ -1,4 +1,4 @@
-package com.osm.oilproductionservice.dto;
+package com.osm.oilproductionservice.dto.out;
 
 import com.osm.oilproductionservice.constants.OilType;
 import com.osm.oilproductionservice.constants.StorageStatus;

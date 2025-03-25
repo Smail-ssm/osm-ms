@@ -1,9 +1,7 @@
 package com.osm.oilproductionservice.controller;
 
-import com.osm.oilproductionservice.dto.StorageUnitDto;
+import com.osm.oilproductionservice.dto.out.StorageUnitDto;
 import com.osm.oilproductionservice.model.StorageUnit;
-import com.osm.oilproductionservice.test.test;
-import com.osm.oilproductionservice.test.testDto;
 import com.xdev.xdevbase.controllers.impl.BaseControllerImpl;
 import com.xdev.xdevbase.services.BaseService;
 import org.modelmapper.ModelMapper;

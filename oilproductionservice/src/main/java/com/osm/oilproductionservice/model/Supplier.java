@@ -17,7 +17,8 @@ public class Supplier extends BaseEntity {
 
     private String name;
 
-    private String lastname;
+    private
+    String lastname;
 
     private String phone;
     private String email;
@@ -26,7 +27,7 @@ public class Supplier extends BaseEntity {
 
 
     // One-to-many relationship with Delivery (Supplier has many deliveries)
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "supplier")
     private Set<Delivery> deliveries = new HashSet<>();
 
     // Many-to-one relationship with SupplierType (Supplier has one type)

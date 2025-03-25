@@ -1,126 +1,76 @@
 package com.osm.oilproductionservice.service;
 
-import com.osm.oilproductionservice.dto.DeliveryDto;
+ import com.osm.oilproductionservice.dto.out.DeliveryDto;
+import com.osm.oilproductionservice.model.BaseType;
 import com.osm.oilproductionservice.model.Delivery;
-import com.osm.oilproductionservice.model.QualityControlResult;
+import com.osm.oilproductionservice.model.Supplier;
 import com.osm.oilproductionservice.repository.DeliveryRepository;
-import com.osm.oilproductionservice.repository.QualityControlResultRepository;
+import com.osm.oilproductionservice.repository.GenericRepository;
+import com.osm.oilproductionservice.repository.SupplierRepository;
 import com.xdev.xdevbase.repos.BaseRepository;
-import com.xdev.xdevbase.services.BaseService;
 import com.xdev.xdevbase.services.impl.BaseServiceImpl;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 @Service
-public class DeliveryService extends BaseServiceImpl<Delivery,DeliveryDto,DeliveryDto> {
-    protected DeliveryService(BaseRepository<Delivery> repository, ModelMapper modelMapper) {
+public class DeliveryService extends BaseServiceImpl<Delivery, DeliveryDto, DeliveryDto> {
+
+    private final SupplierRepository supplierRepository;
+    private final GenericRepository genericRepository;
+    private final DeliveryRepository deliveryRepository;
+
+    public DeliveryService(BaseRepository<Delivery> repository, ModelMapper modelMapper, SupplierRepository supplierRepository, GenericRepository genericRepository, DeliveryRepository deliveryRepository) {
         super(repository, modelMapper);
+        this.supplierRepository = supplierRepository;
+        this.genericRepository = genericRepository;
+        this.deliveryRepository = deliveryRepository;
     }
 
-//    private final DeliveryRepository deliveryRepository;
-//    private final ModelMapper modelMapper;
-//    private final QualityControlResultRepository qualityControlResultRepository;
+//    public DeliveryDto create(DeliveryDto dto) {
+//        // 1) Map base (non-reference) fields from DTO to Delivery entity.
+//        //    You can either map them selectively or (carefully) use ModelMapper,
+//        //    but avoid overwriting the references with null objects.
+//        Delivery delivery = new Delivery();
+//        modelMapper.map(dto, delivery);  // This should only map scalar fields, not references
 //
-//    public DeliveryService(DeliveryRepository deliveryRepository, ModelMapper modelMapper, QualityControlResultRepository qualityControlResultRepository) {
-//        this.deliveryRepository = deliveryRepository;
-//        this.modelMapper = modelMapper;
-//        this.qualityControlResultRepository = qualityControlResultRepository;
-//    }
+//        // 2) Lookup and set references using the IDs from nested DTOs.
 //
-//    /**
-//     * Create a new delivery.
-//     */
-//    public DeliveryDto createDelivery(DeliveryDto deliveryDto) {
-//        Delivery delivery = modelMapper.map(deliveryDto, Delivery.class);
-//        Delivery savedDelivery = deliveryRepository.save(delivery);
-//
-//        // Map new QC Results from DTO if provided
-//        if (deliveryDto.getQualityControlResults() != null) {
-//
-//            Set<QualityControlResult> results = deliveryDto.getQualityControlResults().stream().map(item -> {
-//                QualityControlResult res = modelMapper.map(item, QualityControlResult.class);
-//                res.setDelivery(savedDelivery);
-//                return res;
-//            }).collect(Collectors.toSet());
-//            qualityControlResultRepository.saveAll(results);
+//        // Supplier
+//        if (dto.getSupplier() != null  ) {
+//             Supplier supplier = supplierRepository.findById(dto.getSupplier())
+//                    .orElseThrow(() -> new RuntimeException("Supplier not found with id: " + dto.getSupplier()));
+//            delivery.setSupplier(supplier);
 //        }
-//        return modelMapper.map(savedDelivery, DeliveryDto.class);
-//    }
 //
-//    /**
-//     * Update an existing delivery.
-//     */
-//    public DeliveryDto updateDelivery(Long id, DeliveryDto deliveryDto) {
-//        Delivery existingDelivery = deliveryRepository.findById(id).orElseThrow();
-//        qualityControlResultRepository.deleteAll(qualityControlResultRepository.findAllByDelivery(existingDelivery));
-//        modelMapper.map(deliveryDto, existingDelivery);
-//        existingDelivery.setQualityControlResults(null);
-//        List<QualityControlResult> qcr = new ArrayList<>();
-//        if (deliveryDto.getQualityControlResults() != null) {
-//
-//            Set<QualityControlResult> results = deliveryDto.getQualityControlResults().stream().map(item -> {
-//                QualityControlResult res = modelMapper.map(item, QualityControlResult.class);
-//                res.setDelivery(existingDelivery);
-//                return res;
-//            }).collect(Collectors.toSet());
-//            qcr = qualityControlResultRepository.saveAll(results);
+//        // Region (BaseType)
+//        if (dto.getRegion() != null ){
+//             BaseType region = genericRepository.findById(dto.getRegion())
+//                    .orElseThrow(() -> new RuntimeException("Region not found with id: " + dto.getRegion()  ));
+//            delivery.setRegion(region);
 //        }
-//        var s=new HashSet<>(qcr);
-////
-//        existingDelivery.setQualityControlResults(s);
-////        // Save and return updated entity mapped to DTO
-//        Delivery updatedDelivery = deliveryRepository.save(existingDelivery);
-//        return modelMapper.map(updatedDelivery, DeliveryDto.class);
 //
-//    }
-//
-//
-//    /**
-//     * Get a delivery by ID.
-//     */
-//    public DeliveryDto getDelivery(Long id) {
-//        return deliveryRepository.findById(id).map(delivery -> modelMapper.map(delivery, DeliveryDto.class)).orElse(null);
-//    }
-//
-//    /**
-//     * Get all deliveries with pagination.
-//     */
-//    public Page<DeliveryDto> getAllDeliveries(int page, int size) {
-//        Pageable pageable = PageRequest.of(page, size);
-//        Page<Delivery> deliveryPage = deliveryRepository.findAll(pageable);
-//
-//        // Convert the Page<Delivery> to Page<DeliveryDto>
-//        return deliveryPage.map(delivery -> modelMapper.map(delivery, DeliveryDto.class));
-//    }
-//
-//    /**
-//     * Get deliveries by region ID with pagination.
-//     */
-//    public Page<DeliveryDto> getDeliveriesByRegion(Long regionId, int page, int size) {
-//        Pageable pageable = PageRequest.of(page, size);
-//        Page<Delivery> deliveryPage = deliveryRepository.findByRegionId(regionId, pageable);
-//
-//        // Convert the Page<Delivery> to Page<DeliveryDto>
-//        return deliveryPage.map(delivery -> modelMapper.map(delivery, DeliveryDto.class));
-//    }
-//
-//    /**
-//     * Delete a delivery by ID.
-//     */
-//    public boolean deleteDelivery(Long id) {
-//        if (deliveryRepository.existsById(id)) {
-//            deliveryRepository.deleteById(id);
-//            return true;
+//        // Olive Variety (BaseType)
+//        if (dto.getOliveVarietyId() != null ) {
+//            UUID oliveVarietyId =  dto.getOliveVarietyId() ;
+//            BaseType oliveVariety = genericRepository.findById(oliveVarietyId)
+//                    .orElseThrow(() -> new RuntimeException("Olive variety not found with id: " + oliveVarietyId));
+//            delivery.setOliveVariety(oliveVariety);
 //        }
-//        return false;
+//
+//        // Olive Type (BaseType)
+//        if (dto.getOliveTypeId() != null ) {
+//            UUID oliveTypeId =  dto.getOliveTypeId() ;
+//            BaseType oliveType = genericRepository.findById(oliveTypeId)
+//                    .orElseThrow(() -> new RuntimeException("Olive type not found with id: " + oliveTypeId));
+//            delivery.setOliveType(oliveType);
+//        }
+//
+//        // 3) Save the Delivery entity
+//        delivery = deliveryRepository.save(delivery);
+//
+//        // 4) Map back to DeliveryDto to return the newly created record
+//        return modelMapper.map(delivery, DeliveryDto.class);
 //    }
 }

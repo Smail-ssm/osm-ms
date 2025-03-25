@@ -1,4 +1,4 @@
-package com.osm.oilproductionservice.dto;
+package com.osm.oilproductionservice.dto.out;
 
 public class QualityControlRuleDto {
     public Long getId() {

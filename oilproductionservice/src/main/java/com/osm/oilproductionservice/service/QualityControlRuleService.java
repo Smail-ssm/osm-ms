@@ -1,7 +1,7 @@
 package com.osm.oilproductionservice.service;
 
 import com.osm.oilproductionservice.model.QualityControlRule;
-import com.osm.oilproductionservice.dto.QualityControlRuleDto;
+import com.osm.oilproductionservice.dto.out.QualityControlRuleDto;
 import com.osm.oilproductionservice.repository.QualityControlRuleRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

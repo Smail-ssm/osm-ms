@@ -1,7 +1,7 @@
 package com.osm.oilproductionservice.controller;
 
 import com.osm.oilproductionservice.dto.ApiResponse;
-import com.osm.oilproductionservice.dto.QualityControlRuleDto;
+import com.osm.oilproductionservice.dto.out.QualityControlRuleDto;
 import com.osm.oilproductionservice.service.QualityControlRuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

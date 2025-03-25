@@ -1,4 +1,4 @@
-package com.osm.oilproductionservice.dto;
+package com.osm.oilproductionservice.dto.out;
 
 import java.io.Serializable;
 

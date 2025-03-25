@@ -1,6 +1,7 @@
 package com.osm.oilproductionservice.model;
 
 import com.osm.oilproductionservice.enums.OliveLotStatus;
+import com.osm.oilproductionservice.util.LotNumberGenerator;
 import com.xdev.xdevbase.entities.BaseEntity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cache;
@@ -20,16 +21,14 @@ import java.util.Set;
 public class Delivery extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // One-to-One relationship with QualityControl entity
     @OneToMany(mappedBy = "delivery")
     public Set<QualityControlResult> qualityControlResults = new HashSet<>();
-
-
     private String receiptNumber;
+    private String deliveryNumber;
     private String lotNumber;
     private LocalDateTime deliveryDate;
-    @Enumerated(EnumType.STRING)  // Use EnumType.STRING to persist the enum as a string
-    private OliveLotStatus status;  // Enum field to store the status of the olive lot
+    @Enumerated(EnumType.STRING)
+    private OliveLotStatus status;
     private String globalLotNumber;
     private Float oliveQuantity;
     private Float oilQuantity;
@@ -48,6 +47,16 @@ public class Delivery extends BaseEntity implements Serializable {
     private Float price;          // Total price for the delivery
     private Float paidAmount;     // Amount paid by the supplier
     private Float unpaidAmount;   // Amount that remains unpaid
+
+
+    public String getDeliveryNumber() {
+        return deliveryNumber;
+    }
+
+    public void setDeliveryNumber(String deliveryNumber) {
+        this.deliveryNumber = deliveryNumber;
+
+    }
 
     public Float getOilQuantity() {
         return oilQuantity;
@@ -249,13 +258,13 @@ public class Delivery extends BaseEntity implements Serializable {
         this.oliveVariety = oliveVariety;
     }
 
-    public String getStorageUnit() {
-        return storageUnit;
+
+    @PostPersist
+    public void assignLotNumber() {
+        // Use the LotNumberGenerator to generate the lot number now that the id is set.
+        this.lotNumber = LotNumberGenerator.generateLotNumber(this);
+
+        // Optionally, if your JPA provider doesn't automatically flush changes made in @PostPersist,
+        // you might need to call an update or merge operation here to persist the new lot number.
     }
-
-    public void setStorageUnit(String storageUnit) {
-        this.storageUnit = storageUnit;
-    }
-
-
 }

@@ -33,6 +33,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="eureka" target="17" />
+      <module name="xdev-base" target="21" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -42,6 +43,7 @@
       <module name="gateway" options="-parameters" />
       <module name="oilproductionservice" options="-parameters" />
       <module name="securityservice" options="-parameters" />
+      <module name="xdev-base" options="-parameters" />
     </option>
   </component>
 </project>

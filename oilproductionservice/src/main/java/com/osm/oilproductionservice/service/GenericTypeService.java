@@ -1,7 +1,7 @@
 package com.osm.oilproductionservice.service;
 
 import com.osm.oilproductionservice.constants.TypeCategory;
-import com.osm.oilproductionservice.dto.BaseTypeDto;
+import com.osm.oilproductionservice.dto.out.BaseTypeDto;
 import com.osm.oilproductionservice.model.BaseType;
 import com.osm.oilproductionservice.repository.GenericRepository;
 import com.xdev.xdevbase.repos.BaseRepository;
@@ -9,14 +9,14 @@ import com.xdev.xdevbase.services.impl.BaseServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 
 @Service
 public class GenericTypeService extends BaseServiceImpl<BaseType, BaseTypeDto,BaseTypeDto> {
     private final GenericRepository genericRepository;
-    protected GenericTypeService(BaseRepository<BaseType> repository, ModelMapper modelMapper, GenericRepository genericRepository) {
+
+    public GenericTypeService(BaseRepository<BaseType> repository, ModelMapper modelMapper, GenericRepository genericRepository) {
         super(repository, modelMapper);
         this.genericRepository = genericRepository;
     }

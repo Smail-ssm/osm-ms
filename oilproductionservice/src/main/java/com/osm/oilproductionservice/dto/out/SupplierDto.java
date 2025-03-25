@@ -1,23 +1,19 @@
-package com.osm.oilproductionservice.dto;
+package com.osm.oilproductionservice.dto.out;
 
 import com.osm.oilproductionservice.model.Supplier;
-import com.osm.oilproductionservice.test.test;
 import com.xdev.xdevbase.dtos.BaseDto;
-
-import java.io.Serializable;
 
 /**
  * DTO for {@link com.osm.oilproductionservice.model.Supplier}
  */
 
 public class SupplierDto extends BaseDto<Supplier> {
-     String name;
-    String lastname;
-    String phone;
-    String email;
-    String address;
-
-    BaseTypeDto suppliertype;
+    private String name;
+    private String lastname;
+    private String phone;
+    private String email;
+    private String address;
+    private BaseTypeDto suppliertype;
 
 
     public String getName() {
