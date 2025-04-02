@@ -1,7 +1,7 @@
 package com.osm.oilproductionservice.service;
 
 import com.osm.oilproductionservice.constants.TypeCategory;
-import com.osm.oilproductionservice.dto.out.BaseTypeDto;
+import com.osm.oilproductionservice.dto.BaseTypeDto;
 import com.osm.oilproductionservice.model.BaseType;
 import com.osm.oilproductionservice.repository.GenericRepository;
 import com.xdev.xdevbase.repos.BaseRepository;

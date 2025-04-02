@@ -1,20 +1,22 @@
-package com.osm.oilproductionservice.dto.in;
+package com.osm.oilproductionservice.dto;
 
-public class QualityControlRuleDtoIn {
+import com.osm.oilproductionservice.model.QualityControlRule;
+import com.xdev.xdevbase.dtos.BaseDto;
 
-    // Typically, for an incoming DTO you may not require an ID when creating a new rule.
-    // For updates, you can include it if needed. Here we assume creation.
-    private String ruleKey;
-    private boolean isOilQc;
-    private String ruleName;
-    private String description;
-    private Float minValue;
-    private Float maxValue;
+public class QualityControlRuleDto extends BaseDto<QualityControlRule> {
 
-    public QualityControlRuleDtoIn() {
+
+    private String ruleKey; // Technical key for the rule (e.g., "infestation_percentage")
+    private boolean isOilQc; // Indicates if the rule applies to oil quality control
+    private String ruleName; // User-friendly name for the rule (e.g., "Infestation Percentage")
+    private String description; // Description of the rule's purpose
+    private Float minValue; // Minimum acceptable value for the rule
+    private Float maxValue; // Maximum acceptable value for the rule
+
+    public QualityControlRuleDto() {
     }
 
-    public QualityControlRuleDtoIn(String ruleKey, boolean isOilQc, String ruleName, String description, Float minValue, Float maxValue) {
+    public QualityControlRuleDto(String ruleKey, boolean isOilQc, String ruleName, String description, Float minValue, Float maxValue) {
         this.ruleKey = ruleKey;
         this.isOilQc = isOilQc;
         this.ruleName = ruleName;
@@ -31,7 +33,7 @@ public class QualityControlRuleDtoIn {
         this.ruleKey = ruleKey;
     }
 
-    public boolean isOilQc() {
+    public boolean getOilQc() {
         return isOilQc;
     }
 

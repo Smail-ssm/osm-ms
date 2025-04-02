@@ -1,18 +1,14 @@
 package com.osm.oilproductionservice.service;
 
- import com.osm.oilproductionservice.dto.out.DeliveryDto;
-import com.osm.oilproductionservice.model.BaseType;
-import com.osm.oilproductionservice.model.Delivery;
-import com.osm.oilproductionservice.model.Supplier;
-import com.osm.oilproductionservice.repository.DeliveryRepository;
+ import com.osm.oilproductionservice.dto.DeliveryDto;
+ import com.osm.oilproductionservice.model.Delivery;
+ import com.osm.oilproductionservice.repository.DeliveryRepository;
 import com.osm.oilproductionservice.repository.GenericRepository;
 import com.osm.oilproductionservice.repository.SupplierRepository;
 import com.xdev.xdevbase.repos.BaseRepository;
 import com.xdev.xdevbase.services.impl.BaseServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 public class DeliveryService extends BaseServiceImpl<Delivery, DeliveryDto, DeliveryDto> {

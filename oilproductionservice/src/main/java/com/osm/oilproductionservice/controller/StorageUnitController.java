@@ -1,6 +1,6 @@
 package com.osm.oilproductionservice.controller;
 
-import com.osm.oilproductionservice.dto.out.StorageUnitDto;
+import com.osm.oilproductionservice.dto.StorageUnitDto;
 import com.osm.oilproductionservice.model.StorageUnit;
 import com.xdev.xdevbase.controllers.impl.BaseControllerImpl;
 import com.xdev.xdevbase.services.BaseService;

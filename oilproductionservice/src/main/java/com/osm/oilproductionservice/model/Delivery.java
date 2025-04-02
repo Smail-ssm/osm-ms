@@ -20,13 +20,13 @@ import java.util.Set;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Delivery extends BaseEntity implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @OneToMany(mappedBy = "delivery")
     public Set<QualityControlResult> qualityControlResults = new HashSet<>();
     private String receiptNumber;
     private String deliveryNumber;
     private String lotNumber;
     private LocalDateTime deliveryDate;
+    private LocalDateTime trtDate;
     @Enumerated(EnumType.STRING)
     private OliveLotStatus status;
     private String globalLotNumber;
@@ -38,32 +38,69 @@ public class Delivery extends BaseEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private BaseType oliveVariety;
     @ManyToOne(fetch = FetchType.LAZY)
+    private BaseType oilType;   // For "Biologique Conventionnelle"
+
+    @ManyToOne(fetch = FetchType.LAZY)
     private BaseType oliveType;
-    private String storageUnit;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private StorageUnit storageUnit;
     @ManyToOne(optional = false)
     private Supplier supplier;
-    // New Attributes
-    private Float unitPrice;      // Price per unit of olive oil
-    private Float price;          // Total price for the delivery
-    private Float paidAmount;     // Amount paid by the supplier
-    private Float unpaidAmount;   // Amount that remains unpaid
+    @ManyToOne(optional = false)
+    private MillMachine millMachine;
+    // Pricing fields
+    private Float unitPrice;     // Price per unit of olive oil
+    private Float price;         // Total price for the delivery
+    private Float paidAmount;    // Amount paid by the supplier
+    private Float unpaidAmount;  // Amount that remains unpaid
+    // For "Tiers/Base"
+    private String tierOrBase;
+    private String parcel;
+    // For "Biologique Conventionnelle"
+    @ManyToOne(fetch = FetchType.LAZY)
+    private BaseType oilVariety;
 
+    @ManyToOne
+    private BaseType productionMethod;
 
-    public String getDeliveryNumber() {
-        return deliveryNumber;
+    public BaseType getProductionMethod() {
+        return productionMethod;
     }
 
-    public void setDeliveryNumber(String deliveryNumber) {
+    public void setProductionMethod(BaseType productionMethod) {
+        this.productionMethod = productionMethod;
+    }
+
+    public Delivery() {
+
+    }
+
+    public Delivery(Set<QualityControlResult> qualityControlResults, String receiptNumber, String deliveryNumber, String lotNumber, LocalDateTime deliveryDate, LocalDateTime trtDate, OliveLotStatus status, String globalLotNumber, Float oliveQuantity, Float oilQuantity, Float rendement, BaseType region, BaseType oliveVariety, BaseType oilType, BaseType oliveType, StorageUnit storageUnit, Supplier supplier, MillMachine millMachine, Float unitPrice, Float price, Float paidAmount, Float unpaidAmount, String tierOrBase, String parcel, BaseType oilVariety) {
+        this.qualityControlResults = qualityControlResults;
+        this.receiptNumber = receiptNumber;
         this.deliveryNumber = deliveryNumber;
-
-    }
-
-    public Float getOilQuantity() {
-        return oilQuantity;
-    }
-
-    public void setOilQuantity(Float oilQuantity) {
+        this.lotNumber = lotNumber;
+        this.deliveryDate = deliveryDate;
+        this.trtDate = trtDate;
+        this.status = status;
+        this.globalLotNumber = globalLotNumber;
+        this.oliveQuantity = oliveQuantity;
         this.oilQuantity = oilQuantity;
+        this.rendement = rendement;
+        this.region = region;
+        this.oliveVariety = oliveVariety;
+        this.oilType = oilType;
+        this.oliveType = oliveType;
+        this.storageUnit = storageUnit;
+        this.supplier = supplier;
+        this.millMachine = millMachine;
+        this.unitPrice = unitPrice;
+        this.price = price;
+        this.paidAmount = paidAmount;
+        this.unpaidAmount = unpaidAmount;
+        this.tierOrBase = tierOrBase;
+        this.parcel = parcel;
+        this.oilVariety = oilVariety;
     }
 
     public Set<QualityControlResult> getQualityControlResults() {
@@ -71,127 +108,8 @@ public class Delivery extends BaseEntity implements Serializable {
     }
 
     public void setQualityControlResults(Set<QualityControlResult> qualityControlResults) {
-        this.qualityControlResults.clear();
-        if (qualityControlResults != null) {
-            this.qualityControlResults.addAll(qualityControlResults);
-        }
+        this.qualityControlResults = qualityControlResults;
     }
-
-    // Constructor, getters, setters, etc.
-
-    // Calculate price based on olive quantity and unit price
-    public void calculatePrice() {
-        if (oliveQuantity != null && unitPrice != null) {
-            this.price = oliveQuantity * unitPrice;
-        } else {
-            this.price = 0f;
-        }
-    }
-
-    // Method to calculate the unpaid amount based on price and paid amount
-    public void calculateUnpaidAmount() {
-        if (this.price != null && this.paidAmount != null) {
-            this.unpaidAmount = this.price - this.paidAmount;
-        } else {
-            this.unpaidAmount = this.price;
-        }
-    }
-
-    public Float getRendement() {
-        // Ensure oilQuantity is not null and not zero to avoid division by zero
-        if (this.oilQuantity != null && this.oilQuantity != 0) {
-            // Calculate rendement as a percentage
-            this.rendement = (this.oliveQuantity / this.oilQuantity) * 100;
-        } else {
-            // If oilQuantity is null or zero, set rendement to 0
-            this.rendement = (float) 0;
-        }
-        // Return the calculated rendement as a percentage
-        return this.rendement;
-    }
-
-    public void setRendement(Float rendement) {
-        this.rendement = rendement;
-    }
-
-    public float calculateRendement() {
-        // Ensure oilQuantity is not null and not zero to avoid division by zero
-        if (this.oilQuantity != null && this.oilQuantity != 0) {
-            // Calculate rendement as a percentage
-            this.rendement = (this.oliveQuantity / this.oilQuantity) * 100;
-        } else {
-            // If oilQuantity is null or zero, set rendement to 0
-            this.rendement = (float) 0;
-        }
-        // Return the calculated rendement as a percentage
-        return this.rendement;
-    }
-
-    public BaseType getOliveType() {
-        return oliveType;
-    }
-
-    public void setOliveType(BaseType oliveType) {
-        this.oliveType = oliveType;
-    }
-
-    // Method to update paid amount
-    public void makePayment(Float amount) {
-        if (amount != null && amount > 0) {
-            this.paidAmount += amount;
-            calculateUnpaidAmount();  // Recalculate unpaid amount
-        }
-    }
-
-    // Method to check if the delivery is fully paid
-    public boolean isFullyPaid() {
-        return this.unpaidAmount <= 0;
-    }
-
-    // Getters and Setters for the new attributes
-    public Float getUnitPrice() {
-        return unitPrice;
-    }
-
-    public void setUnitPrice(Float unitPrice) {
-        this.unitPrice = unitPrice;
-        calculatePrice();  // Recalculate price when unit price changes
-    }
-
-    public Float getPrice() {
-        return price;
-    }
-
-    public void setPrice(Float price) {
-        this.price = price;
-    }
-
-    public Float getPaidAmount() {
-        return paidAmount;
-    }
-
-    public void setPaidAmount(Float paidAmount) {
-        this.paidAmount = paidAmount;
-        calculateUnpaidAmount();  // Recalculate unpaid amount
-    }
-
-    public Float getUnpaidAmount() {
-        return unpaidAmount;
-    }
-
-    public void setUnpaidAmount(Float unpaidAmount) {
-        this.unpaidAmount = unpaidAmount;
-    }
-
-    // Getters and Setters for existing attributes
-    public Supplier getSupplier() {
-        return this.supplier;
-    }
-
-    public void setSupplier(Supplier supplier) {
-        this.supplier = supplier;
-    }
-
 
     public String getReceiptNumber() {
         return receiptNumber;
@@ -199,6 +117,14 @@ public class Delivery extends BaseEntity implements Serializable {
 
     public void setReceiptNumber(String receiptNumber) {
         this.receiptNumber = receiptNumber;
+    }
+
+    public String getDeliveryNumber() {
+        return deliveryNumber;
+    }
+
+    public void setDeliveryNumber(String deliveryNumber) {
+        this.deliveryNumber = deliveryNumber;
     }
 
     public String getLotNumber() {
@@ -215,6 +141,14 @@ public class Delivery extends BaseEntity implements Serializable {
 
     public void setDeliveryDate(LocalDateTime deliveryDate) {
         this.deliveryDate = deliveryDate;
+    }
+
+    public LocalDateTime getTrtDate() {
+        return trtDate;
+    }
+
+    public void setTrtDate(LocalDateTime trtDate) {
+        this.trtDate = trtDate;
     }
 
     public OliveLotStatus getStatus() {
@@ -239,7 +173,22 @@ public class Delivery extends BaseEntity implements Serializable {
 
     public void setOliveQuantity(Float oliveQuantity) {
         this.oliveQuantity = oliveQuantity;
-        calculatePrice();  // Recalculate price when quantity changes
+    }
+
+    public Float getOilQuantity() {
+        return oilQuantity;
+    }
+
+    public void setOilQuantity(Float oilQuantity) {
+        this.oilQuantity = oilQuantity;
+    }
+
+    public Float getRendement() {
+        return rendement;
+    }
+
+    public void setRendement(Float rendement) {
+        this.rendement = rendement;
     }
 
     public BaseType getRegion() {
@@ -258,13 +207,105 @@ public class Delivery extends BaseEntity implements Serializable {
         this.oliveVariety = oliveVariety;
     }
 
+    public BaseType getOilType() {
+        return oilType;
+    }
 
+    public void setOilType(BaseType oilType) {
+        this.oilType = oilType;
+    }
+
+    public BaseType getOliveType() {
+        return oliveType;
+    }
+
+    public void setOliveType(BaseType oliveType) {
+        this.oliveType = oliveType;
+    }
+
+    public StorageUnit getStorageUnit() {
+        return storageUnit;
+    }
+
+    public void setStorageUnit(StorageUnit storageUnit) {
+        this.storageUnit = storageUnit;
+    }
+
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+    }
+
+    public Float getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(Float unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
+    }
+
+    public Float getPaidAmount() {
+        return paidAmount;
+    }
+
+    public void setPaidAmount(Float paidAmount) {
+        this.paidAmount = paidAmount;
+    }
+
+    public Float getUnpaidAmount() {
+        return unpaidAmount;
+    }
+
+    public void setUnpaidAmount(Float unpaidAmount) {
+        this.unpaidAmount = unpaidAmount;
+    }
+
+    public String getTierOrBase() {
+        return tierOrBase;
+    }
+
+    public void setTierOrBase(String tierOrBase) {
+        this.tierOrBase = tierOrBase;
+    }
+
+    public String getParcel() {
+        return parcel;
+    }
+
+    public void setParcel(String parcel) {
+        this.parcel = parcel;
+    }
+
+    public BaseType getOilVariety() {
+        return oilVariety;
+    }
+
+    public void setOilVariety(BaseType oilVariety) {
+        this.oilVariety = oilVariety;
+    }
+
+    // Example: PostPersist logic for lot number
     @PostPersist
     public void assignLotNumber() {
-        // Use the LotNumberGenerator to generate the lot number now that the id is set.
         this.lotNumber = LotNumberGenerator.generateLotNumber(this);
+    }
 
-        // Optionally, if your JPA provider doesn't automatically flush changes made in @PostPersist,
-        // you might need to call an update or merge operation here to persist the new lot number.
+    public MillMachine getMillMachine() {
+        return millMachine;
+    }
+
+    public void setMillMachine(MillMachine millMachine) {
+        this.millMachine = millMachine;
     }
 }

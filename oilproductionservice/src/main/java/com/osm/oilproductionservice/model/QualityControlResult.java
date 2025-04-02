@@ -1,18 +1,16 @@
 package com.osm.oilproductionservice.model;
 
+import com.xdev.xdevbase.entities.BaseEntity;
 import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "quality_control_result")
-public class QualityControlResult implements Serializable {
+public class QualityControlResult extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+
 
     // The identifier of the quality rule (e.g., could be a foreign key from a rule table or a code)
      @ManyToOne(fetch = FetchType.LAZY)
@@ -36,14 +34,6 @@ public class QualityControlResult implements Serializable {
         this.delivery = delivery;
     }
 
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public QualityControlRule getRule() {
         return rule;

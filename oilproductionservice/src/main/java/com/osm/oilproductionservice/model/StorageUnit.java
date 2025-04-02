@@ -1,36 +1,40 @@
 package com.osm.oilproductionservice.model;
 
-import com.osm.oilproductionservice.constants.OilType;
 import com.osm.oilproductionservice.constants.StorageStatus;
 import com.xdev.xdevbase.entities.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "storageUnit")
+@Table(name = "storage_unit")
 public class StorageUnit extends BaseEntity {
+
     private String name;
     private String location;
     private String description;
-    private Double maxCapacity;
-    private Double currentVolume;
+
+    private Double maxCapacity = 0.0;
+    private Double currentVolume = 0.0;
+
     private LocalDateTime nextMaintenanceDate;
     private LocalDateTime lastInspectionDate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+     private BaseType oilType; // OIL_VARIETY
+
     @Enumerated(EnumType.STRING)
-    private OilType oilType;
-    @Enumerated(EnumType.STRING)
-    private StorageStatus status;
+    private StorageStatus status  ;
+
     private LocalDateTime lastFillDate;
     private LocalDateTime lastEmptyDate;
 
     public StorageUnit() {
     }
 
-    public StorageUnit(String name, String location, String description, Double maxCapacity, Double currentVolume, LocalDateTime nextMaintenanceDate, LocalDateTime lastInspectionDate, OilType oilType, StorageStatus status, LocalDateTime lastFillDate, LocalDateTime lastEmptyDate) {
+    // Constructors, Getters, Setters — all can stay
+
+    public StorageUnit(String name, String location, String description, Double maxCapacity, Double currentVolume, LocalDateTime nextMaintenanceDate, LocalDateTime lastInspectionDate, BaseType oilType, StorageStatus status, LocalDateTime lastFillDate, LocalDateTime lastEmptyDate) {
         this.name = name;
         this.location = location;
         this.description = description;
@@ -42,6 +46,13 @@ public class StorageUnit extends BaseEntity {
         this.status = status;
         this.lastFillDate = lastFillDate;
         this.lastEmptyDate = lastEmptyDate;
+    }
+
+    // Utility: Get % of fill used (can help for alerts/warnings)
+    public double getFillPercentage() {
+        return maxCapacity != null && maxCapacity > 0
+                ? (currentVolume / maxCapacity) * 100.0
+                : 0.0;
     }
 
     public String getName() {
@@ -100,11 +111,11 @@ public class StorageUnit extends BaseEntity {
         this.lastInspectionDate = lastInspectionDate;
     }
 
-    public OilType getOilType() {
+    public BaseType getOilType() {
         return oilType;
     }
 
-    public void setOilType(OilType oilType) {
+    public void setOilType(BaseType oilType) {
         this.oilType = oilType;
     }
 

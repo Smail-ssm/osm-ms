@@ -1,6 +1,5 @@
-package com.osm.oilproductionservice.dto.out;
+package com.osm.oilproductionservice.dto;
 
-import com.osm.oilproductionservice.constants.OilType;
 import com.osm.oilproductionservice.constants.StorageStatus;
 import com.osm.oilproductionservice.model.StorageUnit;
 import com.xdev.xdevbase.dtos.BaseDto;
@@ -10,20 +9,31 @@ import jakarta.persistence.Enumerated;
 import java.time.LocalDateTime;
 
 public class StorageUnitDto extends BaseDto<StorageUnit> {
+
     private String name;
     private String location;
     private String description;
-    private Double maxCapacity;
-    private Double currentVolume;
+
+    private Double maxCapacity = 0.0;
+    private Double currentVolume = 0.0;
+
     private LocalDateTime nextMaintenanceDate;
     private LocalDateTime lastInspectionDate;
-    private OilType oilType;
-    @Enumerated(EnumType.STRING)
-    private StorageStatus status;
+
+    private BaseTypeDto oilType;
+    private StorageStatus status = StorageStatus.AVAILABLE;
+
     private LocalDateTime lastFillDate;
     private LocalDateTime lastEmptyDate;
 
-    public StorageUnitDto(String name, String location, String description, Double maxCapacity, Double currentVolume, LocalDateTime nextMaintenanceDate, LocalDateTime lastInspectionDate, OilType oilType, StorageStatus status, LocalDateTime lastFillDate, LocalDateTime lastEmptyDate) {
+    // Optional helper for client-side rendering
+    public double getFillPercentage() {
+        return maxCapacity != null && maxCapacity > 0
+                ? (currentVolume / maxCapacity) * 100.0
+                : 0.0;
+    }
+
+    public StorageUnitDto(String name, String location, String description, Double maxCapacity, Double currentVolume, LocalDateTime nextMaintenanceDate, LocalDateTime lastInspectionDate, BaseTypeDto oilType, StorageStatus status, LocalDateTime lastFillDate, LocalDateTime lastEmptyDate) {
         this.name = name;
         this.location = location;
         this.description = description;
@@ -96,11 +106,11 @@ public class StorageUnitDto extends BaseDto<StorageUnit> {
         this.lastInspectionDate = lastInspectionDate;
     }
 
-    public OilType getOilType() {
+    public BaseTypeDto getOilType() {
         return oilType;
     }
 
-    public void setOilType(OilType oilType) {
+    public void setOilType(BaseTypeDto oilType) {
         this.oilType = oilType;
     }
 

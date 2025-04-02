@@ -1,40 +1,34 @@
 package com.osm.oilproductionservice.model;
 
 
+import com.xdev.xdevbase.entities.BaseEntity;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
 
 @Entity
 @Table(name = "quality_control_rule")
-public class QualityControlRule implements Serializable {
+public class QualityControlRule extends BaseEntity implements Serializable {
 
-    private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
 
     // A technical key for the rule, e.g., "infestation_percentage"
-    @Column(name = "rule_key", nullable = false)
-    private String ruleKey;
-    @Column(name = "is_oil_qc", nullable = false)
-    private boolean isOilQc;
+     private String ruleKey;
+     private boolean isOilQc;
     // A user-friendly name for the rule, e.g., "Infestation Percentage"
-    @Column(name = "rule_name", nullable = false)
-    private String ruleName;
+     private String ruleName;
     // A description of the rule to explain its purpose
-    @Column(name = "description")
-    private String description;
+     private String description;
     // The minimum acceptable value for the rule (typically 0)
-    @Column(name = "min_value", nullable = false)
-    private Float minValue;
+     private Float minValue;
     // The maximum acceptable value for the rule (typically 100)
-    @Column(name = "max_value", nullable = false)
-    private Float maxValue;
+     private Float maxValue;
     @ManyToOne
     private Delivery delivery;
+
+    public QualityControlRule() {
+
+    }
 
     public boolean getOilQc() {
         return isOilQc;
@@ -46,12 +40,27 @@ public class QualityControlRule implements Serializable {
 
     // Getters and Setters
 
-    public Long getId() {
-        return id;
+
+    public boolean isOilQc() {
+        return isOilQc;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Delivery getDelivery() {
+        return delivery;
+    }
+
+    public void setDelivery(Delivery delivery) {
+        this.delivery = delivery;
+    }
+
+    public QualityControlRule(String ruleKey, boolean isOilQc, String ruleName, String description, Float minValue, Float maxValue, Delivery delivery) {
+        this.ruleKey = ruleKey;
+        this.isOilQc = isOilQc;
+        this.ruleName = ruleName;
+        this.description = description;
+        this.minValue = minValue;
+        this.maxValue = maxValue;
+        this.delivery = delivery;
     }
 
     public String getRuleKey() {

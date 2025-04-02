@@ -3,7 +3,6 @@ package com.osm.oilproductionservice.util;
 import com.osm.oilproductionservice.model.BaseType;
 import com.osm.oilproductionservice.model.Delivery;
 
-import static com.osm.oilproductionservice.constants.TypeCategory.OLIVETYPE;
 
 public class LotNumberGenerator {
 
@@ -25,7 +24,7 @@ public class LotNumberGenerator {
         // Format the ID part (e.g., 9 becomes "09")
 
         // Get the olive type code. Customize this to fetch the actual code from your BaseType.
-        String oliveTypeCode = getOliveTypeCode(delivery.getOliveType() );
+        String oliveTypeCode = getOliveTypeCode(delivery.getOliveVariety() );
 
         // Extract the last two digits of the delivery year.
         int fullYear = delivery.getDeliveryDate().getYear();

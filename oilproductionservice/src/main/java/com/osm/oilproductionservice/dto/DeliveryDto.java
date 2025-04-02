@@ -1,4 +1,4 @@
-package com.osm.oilproductionservice.dto.out;
+package com.osm.oilproductionservice.dto;
 
 
 import com.osm.oilproductionservice.enums.OliveLotStatus;
@@ -6,32 +6,49 @@ import com.osm.oilproductionservice.model.Delivery;
 import com.xdev.xdevbase.dtos.BaseDto;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 public class DeliveryDto extends BaseDto<Delivery> {
 
 
+    public Set<QualityControlResultDto> qualityControlResults = new HashSet<>();
+
     private String receiptNumber;
     private String lotNumber;
     private LocalDateTime deliveryDate;
-    private LocalDateTime triturationDate;
+    private LocalDateTime trtDate;
+
     private OliveLotStatus status;
+
+    // Existing field (kept as is)
     private StorageUnitDto storageUnit;
+
     private String globalLotNumber;
     private Float oliveQuantity;
     private Float oilQuantity;
     private String deliveryNumber;
     private Float rendement;
-     private Float unitPrice;
+    private Float unitPrice;
     private Float price;
     private Float paidAmount;
     private Float unpaidAmount;
-
     private BaseTypeDto region;
     private BaseTypeDto oliveVariety;
-    private BaseTypeDto oliveType;
+    private BaseTypeDto oilVariety;   // For "Biologique Conventionnelle"
+    private BaseTypeDto productionMethod;   // For "Biologique Conventionnelle"
     private SupplierDto supplier;
 
-    public DeliveryDto() {
+    private String tierOrBase;      // For "Tiers/Base"
+    private String parcel;          // For "Parcelle"
+    private MillMachineDto millMachine;
+
+    public Set<QualityControlResultDto> getQualityControlResults() {
+        return qualityControlResults;
+    }
+
+    public void setQualityControlResults(Set<QualityControlResultDto> qualityControlResults) {
+        this.qualityControlResults = qualityControlResults;
     }
 
     public String getReceiptNumber() {
@@ -58,12 +75,12 @@ public class DeliveryDto extends BaseDto<Delivery> {
         this.deliveryDate = deliveryDate;
     }
 
-    public LocalDateTime getTriturationDate() {
-        return triturationDate;
+    public LocalDateTime getTrtDate() {
+        return trtDate;
     }
 
-    public void setTriturationDate(LocalDateTime triturationDate) {
-        this.triturationDate = triturationDate;
+    public void setTrtDate(LocalDateTime trtDate) {
+        this.trtDate = trtDate;
     }
 
     public OliveLotStatus getStatus() {
@@ -170,12 +187,20 @@ public class DeliveryDto extends BaseDto<Delivery> {
         this.oliveVariety = oliveVariety;
     }
 
-    public BaseTypeDto getOliveType() {
-        return oliveType;
+    public BaseTypeDto getOilVariety() {
+        return oilVariety;
     }
 
-    public void setOliveType(BaseTypeDto oliveType) {
-        this.oliveType = oliveType;
+    public void setOilVariety(BaseTypeDto oilVariety) {
+        this.oilVariety = oilVariety;
+    }
+
+    public BaseTypeDto getProductionMethod() {
+        return productionMethod;
+    }
+
+    public void setProductionMethod(BaseTypeDto productionMethod) {
+        this.productionMethod = productionMethod;
     }
 
     public SupplierDto getSupplier() {
@@ -186,11 +211,32 @@ public class DeliveryDto extends BaseDto<Delivery> {
         this.supplier = supplier;
     }
 
-    public DeliveryDto(String receiptNumber, String lotNumber, LocalDateTime deliveryDate, LocalDateTime triturationDate, OliveLotStatus status, StorageUnitDto storageUnit, String globalLotNumber, Float oliveQuantity, Float oilQuantity, String deliveryNumber, Float rendement, Float unitPrice, Float price, Float paidAmount, Float unpaidAmount, BaseTypeDto region, BaseTypeDto oliveVariety, BaseTypeDto oliveType, SupplierDto supplier) {
+    public String getTierOrBase() {
+        return tierOrBase;
+    }
+
+    public void setTierOrBase(String tierOrBase) {
+        this.tierOrBase = tierOrBase;
+    }
+
+    public String getParcel() {
+        return parcel;
+    }
+
+    public void setParcel(String parcel) {
+        this.parcel = parcel;
+    }
+
+    public DeliveryDto() {
+    }
+
+    public DeliveryDto(Set<QualityControlResultDto> qualityControlResults, String receiptNumber, String lotNumber, LocalDateTime deliveryDate, LocalDateTime trtDate, OliveLotStatus status, StorageUnitDto storageUnit, String globalLotNumber, Float oliveQuantity, Float oilQuantity, String deliveryNumber, Float rendement, Float unitPrice, Float price, Float paidAmount, Float unpaidAmount, BaseTypeDto region, BaseTypeDto oliveVariety, BaseTypeDto oilVariety, BaseTypeDto productionMethod, SupplierDto supplier, String tierOrBase, String parcel,
+                       MillMachineDto millMachine) {
+        this.qualityControlResults = qualityControlResults;
         this.receiptNumber = receiptNumber;
         this.lotNumber = lotNumber;
         this.deliveryDate = deliveryDate;
-        this.triturationDate = triturationDate;
+        this.trtDate = trtDate;
         this.status = status;
         this.storageUnit = storageUnit;
         this.globalLotNumber = globalLotNumber;
@@ -204,7 +250,19 @@ public class DeliveryDto extends BaseDto<Delivery> {
         this.unpaidAmount = unpaidAmount;
         this.region = region;
         this.oliveVariety = oliveVariety;
-        this.oliveType = oliveType;
+        this.oilVariety = oilVariety;
+        this.productionMethod = productionMethod;
         this.supplier = supplier;
+        this.tierOrBase = tierOrBase;
+        this.parcel = parcel;
+        this.millMachine = millMachine;
+    }
+
+    public MillMachineDto getMillMachine() {
+        return millMachine;
+    }
+
+    public void setMillMachine(MillMachineDto millMachine) {
+        this.millMachine = millMachine;
     }
 }

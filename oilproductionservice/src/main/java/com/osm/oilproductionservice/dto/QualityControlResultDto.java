@@ -1,4 +1,4 @@
-package com.osm.oilproductionservice.dto.out;
+package com.osm.oilproductionservice.dto;
 
 import java.io.Serializable;
 
@@ -7,34 +7,18 @@ import java.io.Serializable;
  */
 
 public class QualityControlResultDto implements Serializable {
-    Long id;
     QualityControlRuleDto rule;
     Float measuredValue;
 
-    public Long getId() {
-        return id;
+
+    public QualityControlResultDto() {
     }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-
 
     public Float getMeasuredValue() {
         return measuredValue;
     }
 
     public void setMeasuredValue(Float measuredValue) {
-        this.measuredValue = measuredValue;
-    }
-
-    public QualityControlResultDto() {
-    }
-
-    public QualityControlResultDto(Long id, QualityControlRuleDto rule, Float measuredValue) {
-        this.id = id;
-        this.rule = rule;
         this.measuredValue = measuredValue;
     }
 
