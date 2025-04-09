@@ -1,5 +1,6 @@
 package com.osm.oilproductionservice.model;
 
+import com.osm.oilproductionservice.enums.DeliveryType;
 import com.osm.oilproductionservice.enums.OliveLotStatus;
 import com.osm.oilproductionservice.util.LotNumberGenerator;
 import com.xdev.xdevbase.entities.BaseEntity;
@@ -24,6 +25,8 @@ public class Delivery extends BaseEntity implements Serializable {
     public Set<QualityControlResult> qualityControlResults = new HashSet<>();
     private String receiptNumber;
     private String deliveryNumber;
+    @Enumerated(EnumType.STRING)
+    private DeliveryType deliveryType;
     private String lotNumber;
     private LocalDateTime deliveryDate;
     private LocalDateTime trtDate;
@@ -36,22 +39,24 @@ public class Delivery extends BaseEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private BaseType region;
     @ManyToOne(fetch = FetchType.LAZY)
+    private Transporter transporter;
+    @ManyToOne(fetch = FetchType.LAZY)
     private BaseType oliveVariety;
     @ManyToOne(fetch = FetchType.LAZY)
     private BaseType oilType;   // For "Biologique Conventionnelle"
-
+    private Integer sackCount;  // or containerCount, if broader
     @ManyToOne(fetch = FetchType.LAZY)
     private BaseType oliveType;
     @ManyToOne(fetch = FetchType.LAZY)
     private StorageUnit storageUnit;
-    @ManyToOne(optional = false)
-    private Supplier supplier;
-    @ManyToOne(optional = false)
+    @ManyToOne
+    private SupplierType supplierType;
+    @ManyToOne
     private MillMachine millMachine;
     // Pricing fields
     private Float unitPrice;     // Price per unit of olive oil
     private Float price;         // Total price for the delivery
-    private Float paidAmount;    // Amount paid by the supplier
+    private Float paidAmount;    // Amount paid by the Supplier
     private Float unpaidAmount;  // Amount that remains unpaid
     // For "Tiers/Base"
     private String tierOrBase;
@@ -59,26 +64,17 @@ public class Delivery extends BaseEntity implements Serializable {
     // For "Biologique Conventionnelle"
     @ManyToOne(fetch = FetchType.LAZY)
     private BaseType oilVariety;
-
     @ManyToOne
     private BaseType productionMethod;
-
-    public BaseType getProductionMethod() {
-        return productionMethod;
-    }
-
-    public void setProductionMethod(BaseType productionMethod) {
-        this.productionMethod = productionMethod;
-    }
-
     public Delivery() {
 
     }
 
-    public Delivery(Set<QualityControlResult> qualityControlResults, String receiptNumber, String deliveryNumber, String lotNumber, LocalDateTime deliveryDate, LocalDateTime trtDate, OliveLotStatus status, String globalLotNumber, Float oliveQuantity, Float oilQuantity, Float rendement, BaseType region, BaseType oliveVariety, BaseType oilType, BaseType oliveType, StorageUnit storageUnit, Supplier supplier, MillMachine millMachine, Float unitPrice, Float price, Float paidAmount, Float unpaidAmount, String tierOrBase, String parcel, BaseType oilVariety) {
+    public Delivery(Set<QualityControlResult> qualityControlResults, String receiptNumber, String deliveryNumber, DeliveryType deliveryType, String lotNumber, LocalDateTime deliveryDate, LocalDateTime trtDate, OliveLotStatus status, String globalLotNumber, Float oliveQuantity, Float oilQuantity, Float rendement, BaseType region, Transporter transporter, BaseType oliveVariety, BaseType oilType, Integer sackCount, BaseType oliveType, StorageUnit storageUnit, SupplierType supplierType, MillMachine millMachine, Float unitPrice, Float price, Float paidAmount, Float unpaidAmount, String tierOrBase, String parcel, BaseType oilVariety, BaseType productionMethod) {
         this.qualityControlResults = qualityControlResults;
         this.receiptNumber = receiptNumber;
         this.deliveryNumber = deliveryNumber;
+        this.deliveryType = deliveryType;
         this.lotNumber = lotNumber;
         this.deliveryDate = deliveryDate;
         this.trtDate = trtDate;
@@ -88,11 +84,13 @@ public class Delivery extends BaseEntity implements Serializable {
         this.oilQuantity = oilQuantity;
         this.rendement = rendement;
         this.region = region;
+        this.transporter = transporter;
         this.oliveVariety = oliveVariety;
         this.oilType = oilType;
+        this.sackCount = sackCount;
         this.oliveType = oliveType;
         this.storageUnit = storageUnit;
-        this.supplier = supplier;
+        this.supplierType = supplierType;
         this.millMachine = millMachine;
         this.unitPrice = unitPrice;
         this.price = price;
@@ -101,6 +99,31 @@ public class Delivery extends BaseEntity implements Serializable {
         this.tierOrBase = tierOrBase;
         this.parcel = parcel;
         this.oilVariety = oilVariety;
+        this.productionMethod = productionMethod;
+    }
+
+    public Integer getSackCount() {
+        return sackCount;
+    }
+
+    public void setSackCount(Integer sackCount) {
+        this.sackCount = sackCount;
+    }
+
+    public SupplierType getSupplierType() {
+        return supplierType;
+    }
+
+    public void setSupplierType(SupplierType supplierType) {
+        this.supplierType = supplierType;
+    }
+
+    public BaseType getProductionMethod() {
+        return productionMethod;
+    }
+
+    public void setProductionMethod(BaseType productionMethod) {
+        this.productionMethod = productionMethod;
     }
 
     public Set<QualityControlResult> getQualityControlResults() {
@@ -231,12 +254,12 @@ public class Delivery extends BaseEntity implements Serializable {
         this.storageUnit = storageUnit;
     }
 
-    public Supplier getSupplier() {
-        return supplier;
+    public SupplierType getSupplier() {
+        return supplierType;
     }
 
-    public void setSupplier(Supplier supplier) {
-        this.supplier = supplier;
+    public void setSupplier(SupplierType Supplier) {
+        this.supplierType = Supplier;
     }
 
     public Float getUnitPrice() {
@@ -307,5 +330,13 @@ public class Delivery extends BaseEntity implements Serializable {
 
     public void setMillMachine(MillMachine millMachine) {
         this.millMachine = millMachine;
+    }
+
+    public DeliveryType getDeliveryType() {
+        return deliveryType;
+    }
+
+    public void setDeliveryType(DeliveryType deliveryType) {
+        this.deliveryType = deliveryType;
     }
 }

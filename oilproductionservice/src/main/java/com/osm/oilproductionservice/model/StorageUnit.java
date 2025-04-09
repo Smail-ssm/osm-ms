@@ -21,10 +21,10 @@ public class StorageUnit extends BaseEntity {
     private LocalDateTime lastInspectionDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-     private BaseType oilType; // OIL_VARIETY
+    private BaseType oilType; // OIL_VARIETY
 
     @Enumerated(EnumType.STRING)
-    private StorageStatus status  ;
+    private StorageStatus status;
 
     private LocalDateTime lastFillDate;
     private LocalDateTime lastEmptyDate;

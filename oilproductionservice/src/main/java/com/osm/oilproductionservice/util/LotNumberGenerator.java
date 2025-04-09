@@ -8,7 +8,7 @@ public class LotNumberGenerator {
 
     /**
      * Generates a lot number based on the delivery's auto-generated id, olive type code, and delivery year.
-     *
+     * <p>
      * Format: [ID as two digits][Olive Type Code][Year as two digits]
      * Example: if delivery id is 9, olive type code is "OC", and delivery year is 2024, the lot number becomes "09OC24".
      *
@@ -24,7 +24,7 @@ public class LotNumberGenerator {
         // Format the ID part (e.g., 9 becomes "09")
 
         // Get the olive type code. Customize this to fetch the actual code from your BaseType.
-        String oliveTypeCode = getOliveTypeCode(delivery.getOliveVariety() );
+        String oliveTypeCode = getOliveTypeCode(delivery.getOliveVariety());
 
         // Extract the last two digits of the delivery year.
         int fullYear = delivery.getDeliveryDate().getYear();

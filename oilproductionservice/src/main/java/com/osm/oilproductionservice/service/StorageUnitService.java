@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class StorageUnitService extends BaseServiceImpl<StorageUnit, StorageUnitDto, StorageUnitDto> {
     private final StorageUnitRepo storageUnitRepo;
+
     public StorageUnitService(BaseRepository<StorageUnit> repository, ModelMapper modelMapper, StorageUnitRepo storageUnitRepo) {
         super(repository, modelMapper);
         this.storageUnitRepo = storageUnitRepo;

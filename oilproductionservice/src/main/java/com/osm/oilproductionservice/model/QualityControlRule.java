@@ -2,7 +2,8 @@ package com.osm.oilproductionservice.model;
 
 
 import com.xdev.xdevbase.entities.BaseEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 import java.io.Serializable;
 
@@ -11,26 +12,39 @@ import java.io.Serializable;
 public class QualityControlRule extends BaseEntity implements Serializable {
 
 
-
     // A technical key for the rule, e.g., "infestation_percentage"
-     private String ruleKey;
-     private boolean isOilQc;
+    private String ruleKey;
+    private boolean isOilQc;
     // A user-friendly name for the rule, e.g., "Infestation Percentage"
-     private String ruleName;
+    private String ruleName;
     // A description of the rule to explain its purpose
-     private String description;
+    private String description;
     // The minimum acceptable value for the rule (typically 0)
-     private Float minValue;
+    private Float minValue;
     // The maximum acceptable value for the rule (typically 100)
-     private Float maxValue;
-    @ManyToOne
-    private Delivery delivery;
+    private Float maxValue;
+
 
     public QualityControlRule() {
 
     }
 
+    public QualityControlRule(String ruleKey, boolean isOilQc, String ruleName, String description, Float minValue, Float maxValue) {
+        this.ruleKey = ruleKey;
+        this.isOilQc = isOilQc;
+        this.ruleName = ruleName;
+        this.description = description;
+        this.minValue = minValue;
+        this.maxValue = maxValue;
+    }
+
     public boolean getOilQc() {
+        return isOilQc;
+    }
+
+    // Getters and Setters
+
+    public boolean isOilQc() {
         return isOilQc;
     }
 
@@ -38,30 +52,7 @@ public class QualityControlRule extends BaseEntity implements Serializable {
         isOilQc = oilQc;
     }
 
-    // Getters and Setters
 
-
-    public boolean isOilQc() {
-        return isOilQc;
-    }
-
-    public Delivery getDelivery() {
-        return delivery;
-    }
-
-    public void setDelivery(Delivery delivery) {
-        this.delivery = delivery;
-    }
-
-    public QualityControlRule(String ruleKey, boolean isOilQc, String ruleName, String description, Float minValue, Float maxValue, Delivery delivery) {
-        this.ruleKey = ruleKey;
-        this.isOilQc = isOilQc;
-        this.ruleName = ruleName;
-        this.description = description;
-        this.minValue = minValue;
-        this.maxValue = maxValue;
-        this.delivery = delivery;
-    }
 
     public String getRuleKey() {
         return ruleKey;

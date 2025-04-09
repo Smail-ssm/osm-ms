@@ -1,7 +1,10 @@
 package com.osm.oilproductionservice.model;
 
 import com.xdev.xdevbase.entities.BaseEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -13,11 +16,11 @@ public class MachinePlan extends BaseEntity implements Serializable {
 
     // Link to the mill machine that will process the delivery
     @ManyToOne(fetch = FetchType.LAZY)
-     private MillMachine machine;
+    private MillMachine machine;
 
     // Link to the delivery assigned to this plan
     @ManyToOne(fetch = FetchType.LAZY)
-     private Delivery delivery;
+    private Delivery delivery;
 
     // Planned start and end times for processing
     private LocalDateTime plannedStartTime;

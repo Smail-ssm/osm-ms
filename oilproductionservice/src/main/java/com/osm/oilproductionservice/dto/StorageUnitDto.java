@@ -3,8 +3,6 @@ package com.osm.oilproductionservice.dto;
 import com.osm.oilproductionservice.constants.StorageStatus;
 import com.osm.oilproductionservice.model.StorageUnit;
 import com.xdev.xdevbase.dtos.BaseDto;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 
 import java.time.LocalDateTime;
 
@@ -26,13 +24,6 @@ public class StorageUnitDto extends BaseDto<StorageUnit> {
     private LocalDateTime lastFillDate;
     private LocalDateTime lastEmptyDate;
 
-    // Optional helper for client-side rendering
-    public double getFillPercentage() {
-        return maxCapacity != null && maxCapacity > 0
-                ? (currentVolume / maxCapacity) * 100.0
-                : 0.0;
-    }
-
     public StorageUnitDto(String name, String location, String description, Double maxCapacity, Double currentVolume, LocalDateTime nextMaintenanceDate, LocalDateTime lastInspectionDate, BaseTypeDto oilType, StorageStatus status, LocalDateTime lastFillDate, LocalDateTime lastEmptyDate) {
         this.name = name;
         this.location = location;
@@ -48,6 +39,13 @@ public class StorageUnitDto extends BaseDto<StorageUnit> {
     }
 
     public StorageUnitDto() {
+    }
+
+    // Optional helper for client-side rendering
+    public double getFillPercentage() {
+        return maxCapacity != null && maxCapacity > 0
+                ? (currentVolume / maxCapacity) * 100.0
+                : 0.0;
     }
 
     public String getName() {

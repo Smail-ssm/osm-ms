@@ -2,16 +2,10 @@ package com.osm.oilproductionservice.service;
 
 import com.osm.oilproductionservice.dto.QualityControlRuleDto;
 import com.osm.oilproductionservice.model.QualityControlRule;
- import com.osm.oilproductionservice.repository.QualityControlRuleRepository;
 import com.xdev.xdevbase.repos.BaseRepository;
 import com.xdev.xdevbase.services.impl.BaseServiceImpl;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class QualityControlRuleService extends BaseServiceImpl<QualityControlRule, QualityControlRuleDto, QualityControlRuleDto> {

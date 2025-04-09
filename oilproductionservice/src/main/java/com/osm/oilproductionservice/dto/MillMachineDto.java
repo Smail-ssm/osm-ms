@@ -1,7 +1,6 @@
 package com.osm.oilproductionservice.dto;
 
 
-import com.osm.oilproductionservice.model.Delivery;
 import com.osm.oilproductionservice.model.MillMachine;
 import com.xdev.xdevbase.dtos.BaseDto;
 
@@ -9,7 +8,7 @@ import java.time.LocalDateTime;
 
 public class MillMachineDto extends BaseDto<MillMachine> {
 
-     private String name;
+    private String name;
     private String machineType;
     private String manufacturer;
     private String model;
@@ -26,10 +25,10 @@ public class MillMachineDto extends BaseDto<MillMachine> {
     }
 
     // Parameterized constructor
-    public MillMachineDto(  String name, String machineType, String manufacturer, String model,
+    public MillMachineDto(String name, String machineType, String manufacturer, String model,
                           String serialNumber, Double capacity, String operatingStatus, Long hoursOperated,
                           LocalDateTime lastMaintenanceDate, LocalDateTime nextMaintenanceDate, String description) {
-         this.name = name;
+        this.name = name;
         this.machineType = machineType;
         this.manufacturer = manufacturer;
         this.model = model;
@@ -43,7 +42,6 @@ public class MillMachineDto extends BaseDto<MillMachine> {
     }
 
     // Getters and Setters
-
 
 
     public String getName() {

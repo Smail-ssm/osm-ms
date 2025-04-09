@@ -1,9 +1,7 @@
 package com.osm.oilproductionservice.controller;
 
 
-import com.osm.oilproductionservice.dto.DeliveryDto;
 import com.osm.oilproductionservice.dto.MillMachineDto;
-import com.osm.oilproductionservice.model.Delivery;
 import com.osm.oilproductionservice.model.MillMachine;
 import com.osm.oilproductionservice.service.DeliveryService;
 import com.xdev.xdevbase.controllers.impl.BaseControllerImpl;
@@ -18,7 +16,7 @@ public class MillMachineController extends BaseControllerImpl<MillMachine, MillM
 
     private final DeliveryService deliveryService;
 
-    public MillMachineController(BaseService<MillMachine, MillMachineDto, MillMachineDto>  baseService, ModelMapper modelMapper, DeliveryService deliveryService) {
+    public MillMachineController(BaseService<MillMachine, MillMachineDto, MillMachineDto> baseService, ModelMapper modelMapper, DeliveryService deliveryService) {
         super(baseService, modelMapper);
         this.deliveryService = deliveryService;
     }

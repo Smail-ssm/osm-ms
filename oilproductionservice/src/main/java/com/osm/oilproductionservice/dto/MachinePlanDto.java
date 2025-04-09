@@ -17,6 +17,19 @@ public class MachinePlanDto extends BaseDto<MachinePlan> {
     private String receiptNumber;
     private String lotNumber;
 
+    public MachinePlanDto() {
+    }
+
+    public MachinePlanDto(MillMachineDto machine, DeliveryDto delivery, LocalDateTime plannedStartTime, LocalDateTime plannedEndTime, String status, String receiptNumber, String lotNumber) {
+        this.machine = machine;
+        this.delivery = delivery;
+        this.plannedStartTime = plannedStartTime;
+        this.plannedEndTime = plannedEndTime;
+        this.status = status;
+        this.receiptNumber = receiptNumber;
+        this.lotNumber = lotNumber;
+    }
+
     public MillMachineDto getMachine() {
         return machine;
     }
@@ -70,19 +83,6 @@ public class MachinePlanDto extends BaseDto<MachinePlan> {
     }
 
     public void setLotNumber(String lotNumber) {
-        this.lotNumber = lotNumber;
-    }
-
-    public MachinePlanDto() {
-    }
-
-    public MachinePlanDto(MillMachineDto machine, DeliveryDto delivery, LocalDateTime plannedStartTime, LocalDateTime plannedEndTime, String status, String receiptNumber, String lotNumber) {
-        this.machine = machine;
-        this.delivery = delivery;
-        this.plannedStartTime = plannedStartTime;
-        this.plannedEndTime = plannedEndTime;
-        this.status = status;
-        this.receiptNumber = receiptNumber;
         this.lotNumber = lotNumber;
     }
 }

@@ -13,7 +13,7 @@ import java.util.List;
 
 
 @Service
-public class GenericTypeService extends BaseServiceImpl<BaseType, BaseTypeDto,BaseTypeDto> {
+public class GenericTypeService extends BaseServiceImpl<BaseType, BaseTypeDto, BaseTypeDto> {
     private final GenericRepository genericRepository;
 
     public GenericTypeService(BaseRepository<BaseType> repository, ModelMapper modelMapper, GenericRepository genericRepository) {
@@ -22,9 +22,8 @@ public class GenericTypeService extends BaseServiceImpl<BaseType, BaseTypeDto,Ba
     }
 
 
-
     public List<BaseType> getAllTypes(TypeCategory type) {
 
         return this.genericRepository.findAllByType(type);
-        }
     }
+}

@@ -1,8 +1,12 @@
 package com.osm.oilproductionservice.dto;
 
 
+import com.osm.oilproductionservice.enums.DeliveryType;
 import com.osm.oilproductionservice.enums.OliveLotStatus;
+import com.osm.oilproductionservice.model.BaseType;
 import com.osm.oilproductionservice.model.Delivery;
+import com.osm.oilproductionservice.model.SupplierType;
+import com.osm.oilproductionservice.model.Transporter;
 import com.xdev.xdevbase.dtos.BaseDto;
 
 import java.time.LocalDateTime;
@@ -37,11 +41,20 @@ public class DeliveryDto extends BaseDto<Delivery> {
     private BaseTypeDto oliveVariety;
     private BaseTypeDto oilVariety;   // For "Biologique Conventionnelle"
     private BaseTypeDto productionMethod;   // For "Biologique Conventionnelle"
-    private SupplierDto supplier;
 
     private String tierOrBase;      // For "Tiers/Base"
     private String parcel;          // For "Parcelle"
     private MillMachineDto millMachine;
+    private Integer sackCount;
+    private Transporter transporter;
+    private BaseType oilType;
+    private BaseType oliveType;
+    private SupplierType supplierType;
+    private DeliveryType deliveryType;
+
+    public DeliveryDto() {
+    }
+
 
     public Set<QualityControlResultDto> getQualityControlResults() {
         return qualityControlResults;
@@ -203,13 +216,6 @@ public class DeliveryDto extends BaseDto<Delivery> {
         this.productionMethod = productionMethod;
     }
 
-    public SupplierDto getSupplier() {
-        return supplier;
-    }
-
-    public void setSupplier(SupplierDto supplier) {
-        this.supplier = supplier;
-    }
 
     public String getTierOrBase() {
         return tierOrBase;
@@ -227,42 +233,59 @@ public class DeliveryDto extends BaseDto<Delivery> {
         this.parcel = parcel;
     }
 
-    public DeliveryDto() {
-    }
-
-    public DeliveryDto(Set<QualityControlResultDto> qualityControlResults, String receiptNumber, String lotNumber, LocalDateTime deliveryDate, LocalDateTime trtDate, OliveLotStatus status, StorageUnitDto storageUnit, String globalLotNumber, Float oliveQuantity, Float oilQuantity, String deliveryNumber, Float rendement, Float unitPrice, Float price, Float paidAmount, Float unpaidAmount, BaseTypeDto region, BaseTypeDto oliveVariety, BaseTypeDto oilVariety, BaseTypeDto productionMethod, SupplierDto supplier, String tierOrBase, String parcel,
-                       MillMachineDto millMachine) {
-        this.qualityControlResults = qualityControlResults;
-        this.receiptNumber = receiptNumber;
-        this.lotNumber = lotNumber;
-        this.deliveryDate = deliveryDate;
-        this.trtDate = trtDate;
-        this.status = status;
-        this.storageUnit = storageUnit;
-        this.globalLotNumber = globalLotNumber;
-        this.oliveQuantity = oliveQuantity;
-        this.oilQuantity = oilQuantity;
-        this.deliveryNumber = deliveryNumber;
-        this.rendement = rendement;
-        this.unitPrice = unitPrice;
-        this.price = price;
-        this.paidAmount = paidAmount;
-        this.unpaidAmount = unpaidAmount;
-        this.region = region;
-        this.oliveVariety = oliveVariety;
-        this.oilVariety = oilVariety;
-        this.productionMethod = productionMethod;
-        this.supplier = supplier;
-        this.tierOrBase = tierOrBase;
-        this.parcel = parcel;
-        this.millMachine = millMachine;
-    }
-
     public MillMachineDto getMillMachine() {
         return millMachine;
     }
 
     public void setMillMachine(MillMachineDto millMachine) {
         this.millMachine = millMachine;
+    }
+
+    public Integer getSackCount() {
+        return sackCount;
+    }
+
+    public void setSackCount(Integer sackCount) {
+        this.sackCount = sackCount;
+    }
+
+    public Transporter getTransporter() {
+        return transporter;
+    }
+
+    public void setTransporter(Transporter transporter) {
+        this.transporter = transporter;
+    }
+
+    public BaseType getOilType() {
+        return oilType;
+    }
+
+    public void setOilType(BaseType oilType) {
+        this.oilType = oilType;
+    }
+
+    public BaseType getOliveType() {
+        return oliveType;
+    }
+
+    public void setOliveType(BaseType oliveType) {
+        this.oliveType = oliveType;
+    }
+
+    public SupplierType getSupplierType() {
+        return supplierType;
+    }
+
+    public void setSupplierType(SupplierType supplierType) {
+        this.supplierType = supplierType;
+    }
+
+    public DeliveryType getDeliveryType() {
+        return deliveryType;
+    }
+
+    public void setDeliveryType(DeliveryType deliveryType) {
+        this.deliveryType = deliveryType;
     }
 }

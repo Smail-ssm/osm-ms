@@ -1,5 +1,6 @@
 package com.osm.oilproductionservice.dto;
 
+import com.osm.oilproductionservice.model.BaseTypeDto;
 import com.osm.oilproductionservice.model.Supplier;
 import com.xdev.xdevbase.dtos.BaseDto;
 
@@ -13,7 +14,7 @@ public class SupplierDto extends BaseDto<Supplier> {
     private String phone;
     private String email;
     private String address;
-    private BaseTypeDto suppliertype;
+    private BaseTypeDto region;
 
 
     public SupplierDto() {
@@ -59,12 +60,13 @@ public class SupplierDto extends BaseDto<Supplier> {
         this.address = address;
     }
 
-    public BaseTypeDto getSuppliertype() {
-        return suppliertype;
+
+    public BaseTypeDto getRegion() {
+        return region;
     }
 
-    public void setSuppliertype(BaseTypeDto suppliertype) {
-        this.suppliertype = suppliertype;
+    public void setRegion(BaseTypeDto region) {
+        this.region = region;
     }
 
 

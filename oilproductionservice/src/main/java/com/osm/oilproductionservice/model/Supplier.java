@@ -24,15 +24,13 @@ public class Supplier extends BaseEntity {
     private String email;
 
     private String address;
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    private BaseType region;
 
     // One-to-many relationship with Delivery (Supplier has many deliveries)
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "supplier")
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<Delivery> deliveries = new HashSet<>();
 
-    // Many-to-one relationship with SupplierType (Supplier has one type)
-    @ManyToOne(fetch = FetchType.LAZY)
-    private BaseType suppliertype;
 
     // Calculated fields (no persistence, calculated at runtime)
     private Float totalOliveQuantity;
@@ -47,6 +45,24 @@ public class Supplier extends BaseEntity {
 
     // Methods to calculate totals based on deliveries
 
+    public Supplier() {
+    }
+
+    public Supplier(String name, String lastname, String phone, String email, String address, BaseType region, Set<Delivery> deliveries, Float totalOliveQuantity, Float totalOilQuantity, Float totalPaidAmount, Float totalUnpaidAmount, Float totalDebt) {
+        this.name = name;
+        this.lastname = lastname;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.region = region;
+        this.deliveries = deliveries;
+        this.totalOliveQuantity = totalOliveQuantity;
+        this.totalOilQuantity = totalOilQuantity;
+        this.totalPaidAmount = totalPaidAmount;
+        this.totalUnpaidAmount = totalUnpaidAmount;
+        this.totalDebt = totalDebt;
+    }
+
     public Float getTotalOliveQuantity() {
         totalOliveQuantity = 0f;
         for (Delivery delivery : deliveries) {
@@ -54,6 +70,7 @@ public class Supplier extends BaseEntity {
         }
         return totalOliveQuantity;
     }
+
 
     public Float getTotalOilQuantity() {
         totalOilQuantity = 0f;
@@ -63,6 +80,7 @@ public class Supplier extends BaseEntity {
         return totalOilQuantity;
     }
 
+
     public Float getTotalPaidAmount() {
         totalPaidAmount = 0f;
         for (Delivery delivery : deliveries) {
@@ -71,6 +89,10 @@ public class Supplier extends BaseEntity {
             }
         }
         return totalPaidAmount;
+    }
+
+    public void setTotalPaidAmount(Float totalPaidAmount) {
+        this.totalPaidAmount = totalPaidAmount;
     }
 
     public Float getTotalUnpaidAmount() {
@@ -83,26 +105,16 @@ public class Supplier extends BaseEntity {
         return totalUnpaidAmount;
     }
 
+    public void setTotalUnpaidAmount(Float totalUnpaidAmount) {
+        this.totalUnpaidAmount = totalUnpaidAmount;
+    }
+
     public Float getTotalDebt() {
         totalDebt = getTotalUnpaidAmount() - getTotalPaidAmount();
         return totalDebt;
     }
 
-    public Supplier() {
-    }
-
-    public Supplier(String name, String lastname, String phone, String email, String address, Set<Delivery> deliveries, BaseType suppliertype, Float totalOliveQuantity, Float totalOilQuantity, Float totalPaidAmount, Float totalUnpaidAmount, Float totalDebt) {
-        this.name = name;
-        this.lastname = lastname;
-        this.phone = phone;
-        this.email = email;
-        this.address = address;
-        this.deliveries = deliveries;
-        this.suppliertype = suppliertype;
-        this.totalOliveQuantity = totalOliveQuantity;
-        this.totalOilQuantity = totalOilQuantity;
-        this.totalPaidAmount = totalPaidAmount;
-        this.totalUnpaidAmount = totalUnpaidAmount;
+    public void setTotalDebt(Float totalDebt) {
         this.totalDebt = totalDebt;
     }
 
@@ -154,13 +166,6 @@ public class Supplier extends BaseEntity {
         this.deliveries = deliveries;
     }
 
-    public BaseType getSuppliertype() {
-        return suppliertype;
-    }
-
-    public void setSuppliertype(BaseType suppliertype) {
-        this.suppliertype = suppliertype;
-    }
 
     public void setTotalOliveQuantity(Float totalOliveQuantity) {
         this.totalOliveQuantity = totalOliveQuantity;
@@ -170,15 +175,11 @@ public class Supplier extends BaseEntity {
         this.totalOilQuantity = totalOilQuantity;
     }
 
-    public void setTotalPaidAmount(Float totalPaidAmount) {
-        this.totalPaidAmount = totalPaidAmount;
+    public BaseType getRegion() {
+        return region;
     }
 
-    public void setTotalUnpaidAmount(Float totalUnpaidAmount) {
-        this.totalUnpaidAmount = totalUnpaidAmount;
-    }
-
-    public void setTotalDebt(Float totalDebt) {
-        this.totalDebt = totalDebt;
+    public void setRegion(BaseType region) {
+        this.region = region;
     }
 }

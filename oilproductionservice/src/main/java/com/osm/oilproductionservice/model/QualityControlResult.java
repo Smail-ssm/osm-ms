@@ -2,6 +2,7 @@ package com.osm.oilproductionservice.model;
 
 import com.xdev.xdevbase.entities.BaseEntity;
 import jakarta.persistence.*;
+
 import java.io.Serializable;
 
 @Entity
@@ -11,9 +12,8 @@ public class QualityControlResult extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
 
-
     // The identifier of the quality rule (e.g., could be a foreign key from a rule table or a code)
-     @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private QualityControlRule rule;
 
     // The value measured by the quality controller for this rule
@@ -22,7 +22,7 @@ public class QualityControlResult extends BaseEntity implements Serializable {
 
     // Many-to-One relationship: each result is associated with one Delivery.
     @ManyToOne(fetch = FetchType.LAZY)
-     private Delivery delivery;
+    private Delivery delivery;
 
     // Constructors
     public QualityControlResult() {

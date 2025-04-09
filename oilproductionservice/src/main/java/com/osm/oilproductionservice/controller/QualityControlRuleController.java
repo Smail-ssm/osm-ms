@@ -1,23 +1,16 @@
 package com.osm.oilproductionservice.controller;
 
-import com.osm.oilproductionservice.dto.ApiResponse;
-import com.osm.oilproductionservice.dto.MillMachineDto;
 import com.osm.oilproductionservice.dto.QualityControlRuleDto;
-import com.osm.oilproductionservice.model.MillMachine;
 import com.osm.oilproductionservice.model.QualityControlRule;
-import com.osm.oilproductionservice.service.QualityControlRuleService;
 import com.xdev.xdevbase.controllers.impl.BaseControllerImpl;
 import com.xdev.xdevbase.services.BaseService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/production/qualitycontrolrules")
-public class QualityControlRuleController  extends BaseControllerImpl<QualityControlRule, QualityControlRuleDto, QualityControlRuleDto>  {
+public class QualityControlRuleController extends BaseControllerImpl<QualityControlRule, QualityControlRuleDto, QualityControlRuleDto> {
     public QualityControlRuleController(BaseService<QualityControlRule, QualityControlRuleDto, QualityControlRuleDto> baseService, ModelMapper modelMapper) {
         super(baseService, modelMapper);
     }

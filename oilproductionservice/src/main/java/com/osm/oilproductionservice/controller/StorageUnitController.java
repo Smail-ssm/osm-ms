@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/production/storage-units")
 
-public class StorageUnitController extends BaseControllerImpl<StorageUnit, StorageUnitDto,StorageUnitDto> {
-    public StorageUnitController(BaseService<StorageUnit, StorageUnitDto,StorageUnitDto> baseService, ModelMapper modelMapper) {
+public class StorageUnitController extends BaseControllerImpl<StorageUnit, StorageUnitDto, StorageUnitDto> {
+    public StorageUnitController(BaseService<StorageUnit, StorageUnitDto, StorageUnitDto> baseService, ModelMapper modelMapper) {
         super(baseService, modelMapper);
     }
 }
