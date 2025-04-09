@@ -1,0 +1,178 @@
+package com.osm.securityservice.userManagement.service;
+
+import com.osm.securityservice.userManagement.data.UserRepository;
+import com.osm.securityservice.userManagement.dtos.OUTDTO.ConfirmationCodeDTO;
+import com.osm.securityservice.userManagement.dtos.OUTDTO.OSMUserDTO;
+import com.osm.securityservice.userManagement.dtos.OUTDTO.OSMUserOUTDTO;
+import com.osm.securityservice.userManagement.dtos.OUTDTO.UpdatePasswordDTO;
+import com.osm.securityservice.userManagement.models.ConfirmationCode;
+import com.osm.securityservice.userManagement.models.OSMUser;
+import com.osm.securityservice.userManagement.models.enums.ConfirmationCodeType;
+import com.osm.securityservice.userManagement.models.enums.ConfirmationMethod;
+import com.xdev.mailSender.models.MailRequest;
+import com.xdev.mailSender.services.MailService;
+import com.xdev.xdevbase.repos.BaseRepository;
+import com.xdev.xdevbase.services.impl.BaseServiceImpl;
+import org.modelmapper.ModelMapper;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.security.auth.login.AccountLockedException;
+import javax.security.auth.login.CredentialExpiredException;
+import java.security.SecureRandom;
+import java.util.UUID;
+
+@Service
+public class UserService extends BaseServiceImpl<OSMUser, OSMUserDTO, OSMUserOUTDTO> implements UserDetailsService {
+    private final UserRepository userRepository;
+    private final MailService mailService;
+    private final ConfirmationCodeService confirmationCodeService;
+    private final PasswordEncoder passwordEncoder;
+
+    protected UserService(BaseRepository<OSMUser> repository, ModelMapper modelMapper, UserRepository userRepository, MailService mailService, ConfirmationCodeService confirmationCodeService, PasswordEncoder passwordEncoder) {
+        super(repository, modelMapper);
+        this.userRepository = userRepository;
+        this.mailService = mailService;
+        this.confirmationCodeService = confirmationCodeService;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
+    }
+
+    @Transactional
+    public OSMUserOUTDTO addUser(OSMUserOUTDTO userDTO) throws Exception {
+        validateUserDTO(userDTO);
+        String rawPassword = generateSecureCode(8);
+        String hashedPassword = passwordEncoder.encode(rawPassword);
+        OSMUser user = modelMapper.map(userDTO, OSMUser.class);
+        user.setPassword(hashedPassword);
+        sendConfirmation(userDTO, rawPassword);
+        OSMUser savedUser = userRepository.save(user);
+        return modelMapper.map(savedUser, OSMUserOUTDTO.class);
+    }
+
+    public OSMUser getByUsername(String username) {
+        return userRepository.findByUsername(username).orElse(null);
+    }
+
+    private void sendConfirmation(OSMUserOUTDTO userDTO, String rawPassword) throws Exception {
+        switch (userDTO.getConfirmationMethod()) {
+            case EMAIL -> {
+                MailRequest mailRequest = new MailRequest();
+                mailRequest.setTo(userDTO.getEmail());
+                mailRequest.setSubject("Compte OSM");
+                mailRequest.setBody(String.format("Username: %s\nPassword: %s", userDTO.getUsername(), rawPassword));
+                mailService.sendEmail(mailRequest);
+            }
+            case PHONE -> {
+                //TODO send sms message
+            }
+            default -> throw new IllegalArgumentException("Unsupported confirmation method");
+        }
+    }
+
+    public OSMUserOUTDTO resetPassword(String identifier) throws Exception {
+        OSMUser user = userRepository.findByPhoneOrEmailIgnoreCase(identifier).orElse(null);
+        if (user != null) {
+            if (user.isLocked())
+                throw new AccountLockedException("Invalid input");
+            if (user.getEmail().toLowerCase().equals(identifier)) {
+                String code = generateRandomCode();
+                ConfirmationCode confirmationCode = new ConfirmationCode();
+                confirmationCode.setCode(code);
+                confirmationCode.setUser(user);
+                confirmationCode.setConfirmationCodeType(ConfirmationCodeType.RESETPASSWORD);
+                saveConfirmationCode(confirmationCode);
+                MailRequest mailrequest = new MailRequest();
+                mailrequest.setTo(user.getEmail());
+                mailrequest.setSubject("Password reset");
+                mailrequest.setBody("Code: " + code);
+                mailService.sendEmail(mailrequest);
+            } else {
+                //TODO send to phone number
+            }
+            return modelMapper.map(user, OSMUserOUTDTO.class);
+
+        } else {
+            throw new IllegalArgumentException("Invalid input");
+        }
+    }
+
+    private ConfirmationCode saveConfirmationCode(ConfirmationCode code) {
+        ConfirmationCode existedCode = confirmationCodeService.getByConfirmationCodeTypeAndUser(ConfirmationCodeType.RESETPASSWORD, code.getUser());
+        if (existedCode != null) {
+            existedCode.setCode(code.getCode());
+            ConfirmationCodeDTO codeDTO = confirmationCodeService.save(modelMapper.map(existedCode, ConfirmationCodeDTO.class));
+            return modelMapper.map(codeDTO, ConfirmationCode.class);
+        }
+        ConfirmationCodeDTO codeDTO = confirmationCodeService.save(modelMapper.map(code, ConfirmationCodeDTO.class));
+        return modelMapper.map(codeDTO, ConfirmationCode.class);
+    }
+
+
+    public boolean validateResetCode(String code, UUID userId) throws Exception {
+        OSMUser user = userRepository.findById(userId).orElse(null);
+        if (user == null)
+            throw new IllegalArgumentException("Invalid code");
+
+        ConfirmationCode existedCode = confirmationCodeService.getByConfirmationCodeTypeAndUser(ConfirmationCodeType.RESETPASSWORD, user);
+        if (existedCode == null || !existedCode.getCode().equals(code)) {
+            throw new IllegalArgumentException("Invalid code");
+        }
+        if (existedCode.isExpired()) {
+            throw new CredentialExpiredException("Expired code");
+        }
+        return true;
+    }
+
+    public void updatePassword(UpdatePasswordDTO dto, UUID userId) {
+        OSMUser user = userRepository.findById(userId).orElse(null);
+        if (user == null)
+            throw new IllegalArgumentException("Invalid user");
+        if (!dto.getNewPassword().equals(dto.getOldPassword())) {
+            if (!dto.getNewPassword().equals(dto.getNewPasswordConfirmation())) {
+                throw new IllegalArgumentException("Invalid password");
+            }
+            user.setPassword(dto.getNewPassword());
+            userRepository.save(user);
+        }
+    }
+
+    private void validateUserDTO(OSMUserOUTDTO userDTO) {
+        if (userDTO == null) {
+            throw new IllegalArgumentException("User data must not be null");
+        }
+        if (userDTO.getUsername() == null || userDTO.getUsername().isBlank()) {
+            throw new IllegalArgumentException("Username is required");
+        }
+        if (userDTO.getConfirmationMethod() == null) {
+            throw new IllegalArgumentException("Confirmation method is required");
+        }
+        if (userDTO.getConfirmationMethod() == ConfirmationMethod.EMAIL && (userDTO.getEmail() == null || userDTO.getEmail().isBlank())) {
+            throw new IllegalArgumentException("Email is required for email confirmation");
+        }
+    }
+
+    public String generateSecureCode(int length) {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        SecureRandom random = new SecureRandom();
+        StringBuilder sb = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            sb.append(chars.charAt(random.nextInt(chars.length())));
+        }
+        return sb.toString();
+    }
+
+    public String generateRandomCode() {
+        int code = (int) (Math.random() * 900_000) + 100_000; // range: 100000–999999
+        return String.valueOf(code);
+    }
+}
