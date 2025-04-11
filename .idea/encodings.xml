@@ -4,6 +4,7 @@
     <file url="file://$PROJECT_DIR$/../osm-ms-parent/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../osm-ms-parent/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../osm-ms-parent/xdev-base/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../osm-ms-parent/xdev-security/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/discoveryserver/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/eureka/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/gateway/src/main/java" charset="UTF-8" />
