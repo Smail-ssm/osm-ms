@@ -6,7 +6,7 @@ import jakarta.persistence.Entity;
 
 @Entity
 public class BaseType extends BaseEntity {
-    private String name; // The name of the type (e.g., "Plastic Waste", "Local Supplier")
+    private String name; // The name of the type (e.g., "Plastic Waste", "Local SupplierInfo")
     private String description; // Description of the type
 
     private TypeCategory type;

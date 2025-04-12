@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/oilproductionservice/oilproductionservice.iml" filepath="$PROJECT_DIR$/oilproductionservice/oilproductionservice.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/osm-ms.iml" filepath="$PROJECT_DIR$/.idea/osm-ms.iml" />
+      <module fileurl="file://$PROJECT_DIR$/securityservice/securityservice.iml" filepath="$PROJECT_DIR$/securityservice/securityservice.iml" />
     </modules>
   </component>
 </project>

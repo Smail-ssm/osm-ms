@@ -1,17 +1,17 @@
 package com.osm.oilproductionservice.dto;
 
-import com.osm.oilproductionservice.model.Delivery;
+import com.osm.oilproductionservice.model.UnifiedDelivery;
 
 public class DeliveryWithNextIdDto {
-    private final Delivery delivery;
+    private final UnifiedDelivery delivery;
     private final Long nextId;
 
-    public DeliveryWithNextIdDto(Delivery delivery, Long nextId) {
+    public DeliveryWithNextIdDto(UnifiedDelivery delivery, Long nextId) {
         this.delivery = delivery;
         this.nextId = nextId;
     }
 
-    public Delivery getDelivery() {
+    public UnifiedDelivery getDelivery() {
         return delivery;
     }
 

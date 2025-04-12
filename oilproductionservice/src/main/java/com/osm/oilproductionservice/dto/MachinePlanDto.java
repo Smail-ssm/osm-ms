@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 public class MachinePlanDto extends BaseDto<MachinePlan> {
 
     private MillMachineDto machine;
-    private DeliveryDto delivery;
+    private UnifiedDeliveryDTO delivery;
     private LocalDateTime plannedStartTime;
     private LocalDateTime plannedEndTime;
     private String status;
@@ -20,7 +20,7 @@ public class MachinePlanDto extends BaseDto<MachinePlan> {
     public MachinePlanDto() {
     }
 
-    public MachinePlanDto(MillMachineDto machine, DeliveryDto delivery, LocalDateTime plannedStartTime, LocalDateTime plannedEndTime, String status, String receiptNumber, String lotNumber) {
+    public MachinePlanDto(MillMachineDto machine, UnifiedDeliveryDTO delivery, LocalDateTime plannedStartTime, LocalDateTime plannedEndTime, String status, String receiptNumber, String lotNumber) {
         this.machine = machine;
         this.delivery = delivery;
         this.plannedStartTime = plannedStartTime;
@@ -38,11 +38,11 @@ public class MachinePlanDto extends BaseDto<MachinePlan> {
         this.machine = machine;
     }
 
-    public DeliveryDto getDelivery() {
+    public UnifiedDeliveryDTO getDelivery() {
         return delivery;
     }
 
-    public void setDelivery(DeliveryDto delivery) {
+    public void setDelivery(UnifiedDeliveryDTO delivery) {
         this.delivery = delivery;
     }
 

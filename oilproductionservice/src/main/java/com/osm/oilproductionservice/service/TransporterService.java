@@ -17,18 +17,18 @@ public class TransporterService extends BaseServiceImpl<Transporter, Transporter
     }
 
 //    public DeliveryDto create(DeliveryDto dto) {
-//        // 1) Map base (non-reference) fields from DTO to Delivery entity.
+//        // 1) Map base (non-reference) fields from DTO to UnifiedDelivery entity.
 //        //    You can either map them selectively or (carefully) use ModelMapper,
 //        //    but avoid overwriting the references with null objects.
-//        Delivery delivery = new Delivery();
+//        UnifiedDelivery delivery = new UnifiedDelivery();
 //        modelMapper.map(dto, delivery);  // This should only map scalar fields, not references
 //
 //        // 2) Lookup and set references using the IDs from nested DTOs.
 //
-//        // Supplier
+//        // SupplierInfo
 //        if (dto.getSupplier() != null  ) {
-//             Supplier supplier = supplierRepository.findById(dto.getSupplier())
-//                    .orElseThrow(() -> new RuntimeException("Supplier not found with id: " + dto.getSupplier()));
+//             SupplierInfo supplier = supplierRepository.findById(dto.getSupplier())
+//                    .orElseThrow(() -> new RuntimeException("SupplierInfo not found with id: " + dto.getSupplier()));
 //            delivery.setSupplier(supplier);
 //        }
 //
@@ -55,7 +55,7 @@ public class TransporterService extends BaseServiceImpl<Transporter, Transporter
 //            delivery.setOliveType(oliveType);
 //        }
 //
-//        // 3) Save the Delivery entity
+//        // 3) Save the UnifiedDelivery entity
 //        delivery = deliveryRepository.save(delivery);
 //
 //        // 4) Map back to DeliveryDto to return the newly created record

@@ -43,8 +43,9 @@ public class AuthServerConfig {
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = getOAuth2AuthorizationServerConfigurer();
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/oauth2/**", "/jwks", "/.well-known/**", "/actuator/**", "/v3/api-docs/**", "swagger-ui/**", "/swagger-resources/**").permitAll()
-                        .anyRequest().authenticated()
+//                        .requestMatchers("/oauth2/**", "/jwks", "/.well-known/**", "/actuator/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
+//                        .anyRequest().authenticated()
+                                .anyRequest().permitAll()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))

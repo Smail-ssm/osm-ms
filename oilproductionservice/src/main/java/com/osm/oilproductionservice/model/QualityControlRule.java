@@ -53,7 +53,6 @@ public class QualityControlRule extends BaseEntity implements Serializable {
     }
 
 
-
     public String getRuleKey() {
         return ruleKey;
     }

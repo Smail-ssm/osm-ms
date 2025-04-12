@@ -161,7 +161,7 @@ public class GenericTypeService {
 
             case "suppliertype":
                 if (supplierTypeEntityRepository.existsByName(((SupplierType) baseType).getName())) {
-                    throw new ServiceException("A SupplierType with this name already exists.");
+                    throw new ServiceException("A Supplier with this name already exists.");
                 }
                 return supplierTypeEntityRepository.save((SupplierType) baseType);
 

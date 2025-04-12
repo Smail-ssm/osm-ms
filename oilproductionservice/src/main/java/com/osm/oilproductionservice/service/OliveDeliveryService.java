@@ -13,13 +13,11 @@
 //@Service
 //public class UnifiedDeliveryService extends BaseServiceImpl<UnifiedDelivery, UnifiedDeliveryDTO, UnifiedDeliveryDTO> {
 //
-//    private final GenericRepository genericRepository;
-//    private final DeliveryRepository deliveryRepository;
 //
-//    public UnifiedDeliveryService(BaseRepository<UnifiedDelivery> repository, ModelMapper modelMapper, GenericRepository genericRepository, DeliveryRepository deliveryRepository) {
+//
+//    public UnifiedDeliveryService(BaseRepository<UnifiedDelivery> repository, ModelMapper modelMapper   ) {
 //        super(repository, modelMapper);
-//        this.genericRepository = genericRepository;
-//        this.deliveryRepository = deliveryRepository;
+//
 //    }
 //
 /// /    public DeliveryDto create(DeliveryDto dto) {

@@ -28,8 +28,9 @@ public class GatewaySecurityConfig {
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .cors(httpSecurityCorsConfigurer -> new CorsGlobalConfiguration())
                 .authorizeExchange(exchanges -> exchanges
-                        .pathMatchers("/oauth2/**", "/jwks", "/.well-known/**", "/actuator/**", "/v3/api-docs/**", "swagger-ui/**", "/swagger-resources/**").permitAll()
-                        .anyExchange().authenticated()
+//                        .pathMatchers("/oauth2/**", "/jwks", "/.well-known/**", "/actuator/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
+//                        .anyExchange().authenticated()
+                                .anyExchange().permitAll()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt

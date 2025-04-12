@@ -20,15 +20,15 @@ public class QualityControlResult extends BaseEntity implements Serializable {
     @Column(name = "measured_value", nullable = false)
     private Float measuredValue;
 
-    // Many-to-One relationship: each result is associated with one Delivery.
+    // Many-to-One relationship: each result is associated with one UnifiedDelivery.
     @ManyToOne(fetch = FetchType.LAZY)
-    private Delivery delivery;
+    private UnifiedDelivery delivery;
 
     // Constructors
     public QualityControlResult() {
     }
 
-    public QualityControlResult(QualityControlRule rule, Float measuredValue, Delivery delivery) {
+    public QualityControlResult(QualityControlRule rule, Float measuredValue, UnifiedDelivery delivery) {
         this.rule = rule;
         this.measuredValue = measuredValue;
         this.delivery = delivery;
@@ -51,11 +51,11 @@ public class QualityControlResult extends BaseEntity implements Serializable {
         this.measuredValue = measuredValue;
     }
 
-    public Delivery getDelivery() {
+    public UnifiedDelivery getDelivery() {
         return delivery;
     }
 
-    public void setDelivery(Delivery delivery) {
+    public void setDelivery(UnifiedDelivery delivery) {
         this.delivery = delivery;
     }
 }

@@ -23,7 +23,7 @@ public class Transporter extends BaseEntity implements
     private String licenseNumber;
     private String address;
     @ManyToOne(optional = false)
-    private Delivery deliveries;
+    private UnifiedDelivery deliveries;
 
     public Transporter() {
     }
@@ -78,11 +78,11 @@ public class Transporter extends BaseEntity implements
         this.address = address;
     }
 
-    public Delivery getDeliveries() {
+    public UnifiedDelivery getDeliveries() {
         return deliveries;
     }
 
-    public void setDeliveries(Delivery deliveries) {
+    public void setDeliveries(UnifiedDelivery deliveries) {
         this.deliveries = deliveries;
     }
 }

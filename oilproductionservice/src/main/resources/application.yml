@@ -6,15 +6,19 @@ spring:
     banner-mode: console
 
   datasource:
-    url: jdbc:mysql://localhost:3306/osm_production
-    username: root
+    url: jdbc:postgresql://localhost:5432/osmproduction
+    username: postgres
     password: root
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
   data:
     jdbc:
-      dialect: mysql
+      dialect: postgresql
   mail:
     host: smtp.gmail.com
     port: 587

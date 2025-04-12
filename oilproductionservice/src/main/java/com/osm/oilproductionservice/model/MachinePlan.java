@@ -20,7 +20,7 @@ public class MachinePlan extends BaseEntity implements Serializable {
 
     // Link to the delivery assigned to this plan
     @ManyToOne(fetch = FetchType.LAZY)
-    private Delivery delivery;
+    private UnifiedDelivery delivery;
 
     // Planned start and end times for processing
     private LocalDateTime plannedStartTime;
@@ -32,7 +32,7 @@ public class MachinePlan extends BaseEntity implements Serializable {
     public MachinePlan() {
     }
 
-    public MachinePlan(MillMachine machine, Delivery delivery, LocalDateTime plannedStartTime,
+    public MachinePlan(MillMachine machine, UnifiedDelivery delivery, LocalDateTime plannedStartTime,
                        LocalDateTime plannedEndTime, String status) {
         this.machine = machine;
         this.delivery = delivery;
@@ -52,11 +52,11 @@ public class MachinePlan extends BaseEntity implements Serializable {
         this.machine = machine;
     }
 
-    public Delivery getDelivery() {
+    public UnifiedDelivery getDelivery() {
         return delivery;
     }
 
-    public void setDelivery(Delivery delivery) {
+    public void setDelivery(UnifiedDelivery delivery) {
         this.delivery = delivery;
     }
 
