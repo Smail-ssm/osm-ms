@@ -1,4 +1,4 @@
-package com.osm.oilproductionservice.constants;
+package com.osm.oilproductionservice.enums;
 
 
 /**

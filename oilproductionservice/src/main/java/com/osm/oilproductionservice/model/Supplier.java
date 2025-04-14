@@ -1,47 +1,49 @@
 package com.osm.oilproductionservice.model;
 
 import com.xdev.xdevbase.entities.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 /**
- * A SupplierInfo.
+ * A Supplier.
  */
 @Entity
 @Table(name = "supplier")
-
 public class Supplier extends BaseEntity {
 
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "supplier_info_id", nullable = false)
     private SupplierInfo supplierInfo;
+
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private BaseType genericSuppliertype;
+    @JoinColumn(name = "generic_suppliertype_id", nullable = false)
+    private BaseType genericSupplierType;
 
 
-    public Supplier(SupplierInfo supplierInfo, BaseType genericSuppliertype) {
+    public Supplier(SupplierInfo supplierInfo, BaseType genericSupplierType) {
         this.supplierInfo = supplierInfo;
-        this.genericSuppliertype = genericSuppliertype;
+        this.genericSupplierType = genericSupplierType;
     }
 
     public Supplier() {
 
     }
 
-    public SupplierInfo getSupplier() {
+
+    public SupplierInfo getSupplierInfo() {
         return supplierInfo;
     }
 
-    public void setSupplier(SupplierInfo supplierInfo) {
+    public void setSupplierInfo(SupplierInfo supplierInfo) {
         this.supplierInfo = supplierInfo;
     }
 
-    public BaseType getGenericSuppliertype() {
-        return genericSuppliertype;
+    public BaseType getGenericSupplierType() {
+        return genericSupplierType;
     }
 
-    public void setGenericSuppliertype(BaseType genericSuppliertype) {
-        this.genericSuppliertype = genericSuppliertype;
+    public void setGenericSupplierType(BaseType genericSupplierType) {
+        this.genericSupplierType = genericSupplierType;
     }
+
+
 }

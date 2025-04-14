@@ -3,9 +3,6 @@ package com.osm.oilproductionservice.model;
 import com.xdev.xdevbase.entities.BaseEntity;
 import jakarta.persistence.*;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * A SupplierInfo.
  */
@@ -18,19 +15,11 @@ public class SupplierInfo extends BaseEntity {
     private String phone;
     private String email;
     private String address;
+    private String rib;
+    private String bankName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private BaseType region;
-    // One-to-many relationship with UnifiedDelivery (SupplierInfo has many deliveries)
-    @OneToMany(fetch = FetchType.LAZY)
-    private Set<UnifiedDelivery> deliveries = new HashSet<>();
-//    // Associations to child deliveries
-//    @OneToMany(mappedBy = "supplier", fetch = FetchType.LAZY)
-//    private Set<UnifiedDelivery> oliveDeliveries = new HashSet<>();
-//
-//    @OneToMany(mappedBy = "supplier", fetch = FetchType.LAZY)
-//    private Set<UnifiedDelivery> oilDeliveries = new HashSet<>();
-
     // Calculated fields (not persisted)
     @Transient
     private Float totalOliveQuantity;
@@ -46,6 +35,70 @@ public class SupplierInfo extends BaseEntity {
     public SupplierInfo() {
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getRib() {
+        return rib;
+    }
+
+    public void setRib(String rib) {
+        this.rib = rib;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public BaseType getRegion() {
+        return region;
+    }
+
+    public void setRegion(BaseType region) {
+        this.region = region;
+    }
+
     // Standard getters and setters for basic fields
 
     // Calculated totals based on child class values
@@ -53,28 +106,6 @@ public class SupplierInfo extends BaseEntity {
     /**
      * Sums the olive quantity from all olive deliveries.
      */
-    public Float getTotalOliveQuantity() {
-        totalOliveQuantity = 0f;
-        for (UnifiedDelivery delivery : deliveries) {
-            totalOliveQuantity += delivery.getOliveQuantity();
-        }
-        return totalOliveQuantity;
-    }
-
-    public void setTotalOliveQuantity(Float totalOliveQuantity) {
-        this.totalOliveQuantity = totalOliveQuantity;
-    }
-
-    /**
-     * Sums the oil quantity from all oil deliveries.
-     */
-    public Float getTotalOilQuantity() {
-        totalOilQuantity = 0f;
-        for (UnifiedDelivery delivery : deliveries) {
-            totalOilQuantity += delivery.getOilQuantity();
-        }
-        return totalOilQuantity;
-    }
 
     public void setTotalOilQuantity(Float totalOilQuantity) {
         this.totalOilQuantity = totalOilQuantity;
@@ -84,15 +115,7 @@ public class SupplierInfo extends BaseEntity {
      * Sums the paid amounts from all oil deliveries.
      * (Assuming olive deliveries do not carry financial fields.)
      */
-    public Float getTotalPaidAmount() {
-        totalPaidAmount = 0f;
-        for (UnifiedDelivery delivery : deliveries) {
-            if (delivery.getPaidAmount() != null) {
-                totalPaidAmount += delivery.getPaidAmount();
-            }
-        }
-        return totalPaidAmount;
-    }
+
 
     public void setTotalPaidAmount(Float totalPaidAmount) {
         this.totalPaidAmount = totalPaidAmount;
@@ -101,15 +124,7 @@ public class SupplierInfo extends BaseEntity {
     /**
      * Sums the unpaid amounts from all oil deliveries.
      */
-    public Float getTotalUnpaidAmount() {
-        totalUnpaidAmount = 0f;
-        for (UnifiedDelivery delivery : deliveries) {
-            if (delivery.getUnpaidAmount() != null) {
-                totalUnpaidAmount += delivery.getUnpaidAmount();
-            }
-        }
-        return totalUnpaidAmount;
-    }
+
 
     public void setTotalUnpaidAmount(Float totalUnpaidAmount) {
         this.totalUnpaidAmount = totalUnpaidAmount;
@@ -118,10 +133,7 @@ public class SupplierInfo extends BaseEntity {
     /**
      * Calculates total debt (for example, as the difference between unpaid and paid amounts).
      */
-    public Float getTotalDebt() {
-        totalDebt = getTotalUnpaidAmount() - getTotalPaidAmount();
-        return totalDebt;
-    }
+
 
     public void setTotalDebt(Float totalDebt) {
         this.totalDebt = totalDebt;

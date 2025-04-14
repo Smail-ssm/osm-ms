@@ -1,4 +1,4 @@
-package com.osm.oilproductionservice.constants;
+package com.osm.oilproductionservice.enums;
 
 
 public enum TypeCategory {
@@ -6,6 +6,8 @@ public enum TypeCategory {
     REGION,               // Geographic regions or zones
     SUPPLIER_TYPE,        // Farmer, Cooperative, Trader, etc.
     OLIVE_VARIETY,        // Arbequina, Koroneiki, etc.
-    PRODUCTION_METHOD,    // Extra Virgin, Pomace, etc.
-    OIL_VARIETY,          // Named oils like Arbequina, Picual, blends
+    PRODUCTION_METHOD,
+    OPERATION_TYPE,// Extra Virgin, Pomace, etc.
+    OIL_VARIETY,
+    OLIVE_TYPE,
 }

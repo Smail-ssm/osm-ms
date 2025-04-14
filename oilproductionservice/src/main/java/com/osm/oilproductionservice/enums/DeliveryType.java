@@ -7,8 +7,8 @@ package com.osm.oilproductionservice.enums;
 
 public enum DeliveryType {
 
-    oil,
-    olive,
+    OIL,
+    OLIVE,
 
 
 }

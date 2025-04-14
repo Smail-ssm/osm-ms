@@ -2,7 +2,6 @@ package com.osm.oilproductionservice.dto;
 
 import com.osm.oilproductionservice.enums.DeliveryType;
 import com.osm.oilproductionservice.enums.OliveLotStatus;
-import com.osm.oilproductionservice.enums.OperationType;
 import com.osm.oilproductionservice.model.QualityControlResult;
 import com.osm.oilproductionservice.model.UnifiedDelivery;
 import com.xdev.xdevbase.dtos.BaseDto;
@@ -47,7 +46,7 @@ public class UnifiedDeliveryDTO extends BaseDto<UnifiedDelivery> {
 
     // --- Olive Delivery Specific Fields ---
     private LocalDateTime trtDate;
-    private OperationType operationType;
+    private BaseTypeDto operationType;
     private BaseTypeDto oliveVariety;
     private int sackCount;
     private BaseTypeDto oliveType;
@@ -57,7 +56,7 @@ public class UnifiedDeliveryDTO extends BaseDto<UnifiedDelivery> {
     private Float oliveQuantity;
     private String parcel;
 
-    public UnifiedDeliveryDTO(String deliveryNumber, DeliveryType deliveryType, String lotNumber, LocalDateTime deliveryDate, String region, float poidsBrute, float poidsNet, String matriculeCamion, String etatCamion, SupplierDto supplier, Set<QualityControlResult> qualityControlResults, String globalLotNumber, BaseTypeDto oilVariety, Float oilQuantity, Float unitPrice, Float price, Float paidAmount, Float unpaidAmount, StorageUnitDto storageUnit, BaseTypeDto oilType, LocalDateTime trtDate, OperationType operationType, BaseTypeDto oliveVariety, int sackCount, BaseTypeDto oliveType, OliveLotStatus status, Float rendement, MillMachineDto millMachine, Float oliveQuantity, String parcel) {
+    public UnifiedDeliveryDTO(String deliveryNumber, DeliveryType deliveryType, String lotNumber, LocalDateTime deliveryDate, String region, float poidsBrute, float poidsNet, String matriculeCamion, String etatCamion, SupplierDto supplier, Set<QualityControlResult> qualityControlResults, String globalLotNumber, BaseTypeDto oilVariety, Float oilQuantity, Float unitPrice, Float price, Float paidAmount, Float unpaidAmount, StorageUnitDto storageUnit, BaseTypeDto oilType, LocalDateTime trtDate, BaseTypeDto operationType, BaseTypeDto oliveVariety, int sackCount, BaseTypeDto oliveType, OliveLotStatus status, Float rendement, MillMachineDto millMachine, Float oliveQuantity, String parcel) {
         this.deliveryNumber = deliveryNumber;
         this.deliveryType = deliveryType;
         this.lotNumber = lotNumber;
@@ -258,11 +257,11 @@ public class UnifiedDeliveryDTO extends BaseDto<UnifiedDelivery> {
         this.trtDate = trtDate;
     }
 
-    public OperationType getOperationType() {
+    public BaseTypeDto getOperationType() {
         return operationType;
     }
 
-    public void setOperationType(OperationType operationType) {
+    public void setOperationType(BaseTypeDto operationType) {
         this.operationType = operationType;
     }
 

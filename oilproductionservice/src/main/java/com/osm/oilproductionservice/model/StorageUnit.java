@@ -1,6 +1,6 @@
 package com.osm.oilproductionservice.model;
 
-import com.osm.oilproductionservice.constants.StorageStatus;
+import com.osm.oilproductionservice.enums.StorageStatus;
 import com.xdev.xdevbase.entities.BaseEntity;
 import jakarta.persistence.*;
 

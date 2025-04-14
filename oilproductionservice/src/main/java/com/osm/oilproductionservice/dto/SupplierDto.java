@@ -8,28 +8,23 @@ import com.xdev.xdevbase.dtos.BaseDto;
  */
 
 public class SupplierDto extends BaseDto<Supplier> {
-    private SupplierInfoDto supplier;
-    private BaseTypeDto genericSuppliertype;
+    private SupplierInfoDto supplierInfo;
+    private BaseTypeDto genericSupplierType;
 
-    public SupplierDto(SupplierInfoDto supplier, BaseTypeDto genericSuppliertype) {
-        this.supplier = supplier;
-        this.genericSuppliertype = genericSuppliertype;
+
+    public SupplierInfoDto getSupplierInfo() {
+        return supplierInfo;
     }
 
-    public SupplierInfoDto getSupplier() {
-        return supplier;
+    public void setSupplierInfo(SupplierInfoDto supplierInfo) {
+        this.supplierInfo = supplierInfo;
     }
 
-    public void setSupplier(SupplierInfoDto supplier) {
-        this.supplier = supplier;
+    public BaseTypeDto getGenericSupplierType() {
+        return genericSupplierType;
     }
 
-    public BaseTypeDto getGenericSuppliertype() {
-        return genericSuppliertype;
+    public void setGenericSupplierType(BaseTypeDto genericSupplierType) {
+        this.genericSupplierType = genericSupplierType;
     }
-
-    public void setGenericSuppliertype(BaseTypeDto genericSuppliertype) {
-        this.genericSuppliertype = genericSuppliertype;
-    }
-
 }

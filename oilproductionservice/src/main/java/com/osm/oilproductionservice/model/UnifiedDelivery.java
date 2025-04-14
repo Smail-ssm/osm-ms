@@ -2,7 +2,6 @@ package com.osm.oilproductionservice.model;
 
 import com.osm.oilproductionservice.enums.DeliveryType;
 import com.osm.oilproductionservice.enums.OliveLotStatus;
-import com.osm.oilproductionservice.enums.OperationType;
 import com.xdev.xdevbase.entities.BaseEntity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cache;
@@ -68,9 +67,8 @@ public class UnifiedDelivery extends BaseEntity implements Serializable {
 
     // --- Olive Delivery Specific Fields ---
     private LocalDateTime trtDate;   // Treatment date for olive delivery
-
-    @Enumerated(EnumType.STRING)
-    private OperationType operationType;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private BaseType operationType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private BaseType oliveVariety;
@@ -116,7 +114,7 @@ public class UnifiedDelivery extends BaseEntity implements Serializable {
                            StorageUnit storageUnit,
                            BaseType oilType,
                            LocalDateTime trtDate,
-                           OperationType operationType,
+                           BaseType operationType,
                            BaseType oliveVariety,
                            int sackCount,
                            BaseType oliveType,
@@ -327,11 +325,11 @@ public class UnifiedDelivery extends BaseEntity implements Serializable {
         this.trtDate = trtDate;
     }
 
-    public OperationType getOperationType() {
+    public BaseType getOperationType() {
         return operationType;
     }
 
-    public void setOperationType(OperationType operationType) {
+    public void setOperationType(BaseType operationType) {
         this.operationType = operationType;
     }
 

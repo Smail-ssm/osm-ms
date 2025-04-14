@@ -1,6 +1,6 @@
 package com.osm.oilproductionservice.model;
 
-import com.osm.oilproductionservice.constants.TypeCategory;
+import com.osm.oilproductionservice.enums.TypeCategory;
 import com.xdev.xdevbase.entities.BaseEntity;
 import jakarta.persistence.Entity;
 
@@ -10,6 +10,16 @@ public class BaseType extends BaseEntity {
     private String description; // Description of the type
 
     private TypeCategory type;
+
+    public BaseType(String name, String description, TypeCategory type) {
+        this.name = name;
+        this.description = description;
+        this.type = type;
+    }
+
+    public BaseType() {
+
+    }
 
     public String getName() {
         return name;

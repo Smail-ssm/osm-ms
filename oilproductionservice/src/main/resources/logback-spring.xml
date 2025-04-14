@@ -10,12 +10,12 @@
 
     <!-- Set the logging level for the parent module package to DEBUG -->
     <logger name="com.xdev" level="DEBUG" additivity="false">
-        <appender-ref ref="Console" />
+        <appender-ref ref="Console"/>
     </logger>
 
     <!-- Root logger configuration -->
     <root level="debug">
-        <appender-ref ref="Console" />
+        <appender-ref ref="Console"/>
     </root>
 
 </configuration>

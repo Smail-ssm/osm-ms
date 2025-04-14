@@ -12,8 +12,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories(basePackages = {"com.xdev", "com.xdev.xdevbase", "com.osm.oilproductionservice"}, repositoryFactoryBeanClass = EnversRevisionRepositoryFactoryBean.class)
 public class OilproductionserviceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(OilproductionserviceApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(OilproductionserviceApplication.class, args);
+    }
 
 }

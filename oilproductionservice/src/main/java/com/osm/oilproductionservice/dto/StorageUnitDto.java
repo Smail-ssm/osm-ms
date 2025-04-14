@@ -1,6 +1,6 @@
 package com.osm.oilproductionservice.dto;
 
-import com.osm.oilproductionservice.constants.StorageStatus;
+import com.osm.oilproductionservice.enums.StorageStatus;
 import com.osm.oilproductionservice.model.StorageUnit;
 import com.xdev.xdevbase.dtos.BaseDto;
 

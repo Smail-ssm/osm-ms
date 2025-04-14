@@ -14,6 +14,8 @@ public class SupplierInfoDto extends BaseDto<SupplierInfo> {
     private String email;
     private String address;
     private BaseTypeDto region;
+    private String rib;
+    private String bankName;
 
 
     public SupplierInfoDto() {
@@ -68,5 +70,19 @@ public class SupplierInfoDto extends BaseDto<SupplierInfo> {
         this.region = region;
     }
 
+    public String getRib() {
+        return rib;
+    }
 
+    public void setRib(String rib) {
+        this.rib = rib;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
 }

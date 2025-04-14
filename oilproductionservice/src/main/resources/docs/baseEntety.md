@@ -1,9 +1,11 @@
-
 # Project Documentation
 
 ## Overview
 
-This project provides a framework for managing multiple types of entities that share common properties and behavior through a base class. The system allows for operations such as creating, updating, deleting, and retrieving different types of entities (e.g., `WasteType`, `SupplierType`, `OliveLotStatusType`, `OliveVarietyType`) that extend a shared base class called `BaseType`.
+This project provides a framework for managing multiple types of entities that share common properties and behavior
+through a base class. The system allows for operations such as creating, updating, deleting, and retrieving different
+types of entities (e.g., `WasteType`, `SupplierType`, `OliveLotStatusType`, `OliveVarietyType`) that extend a shared
+base class called `BaseType`.
 
 The main components of the project include:
 
@@ -16,7 +18,8 @@ The main components of the project include:
 
 ## 1. **Base Class (`BaseType`)**
 
-The `BaseType` class acts as a parent class for all entity types, encapsulating shared fields like `id`, `createdAt`, and `updatedAt`. This class is abstract and not directly mapped to the database.
+The `BaseType` class acts as a parent class for all entity types, encapsulating shared fields like `id`, `createdAt`,
+and `updatedAt`. This class is abstract and not directly mapped to the database.
 
 ### Code Example: `BaseType`
 
@@ -47,14 +50,18 @@ public abstract class BaseType {
 ```
 
 ### Key Points:
-- **`@MappedSuperclass`**: This annotation makes `BaseType` a non-entity superclass, but its fields are inherited by subclasses.
-- **`@CreationTimestamp`** and **`@UpdateTimestamp`**: These annotations automatically populate `createdAt` and `updatedAt` fields when an entity is created or updated.
+
+- **`@MappedSuperclass`**: This annotation makes `BaseType` a non-entity superclass, but its fields are inherited by
+  subclasses.
+- **`@CreationTimestamp`** and **`@UpdateTimestamp`**: These annotations automatically populate `createdAt` and
+  `updatedAt` fields when an entity is created or updated.
 
 ---
 
 ## 2. **Entity Classes**
 
-Each entity type (e.g., `WasteType`, `SupplierType`, `OliveLotStatusType`) extends `BaseType` and adds its own unique fields.
+Each entity type (e.g., `WasteType`, `SupplierType`, `OliveLotStatusType`) extends `BaseType` and adds its own unique
+fields.
 
 ### Example: `WasteType`
 
@@ -93,13 +100,16 @@ public class SupplierType extends BaseEntity {
 ```
 
 ### Explanation:
-- Each specific entity class inherits from `BaseType` and can define additional attributes (e.g., `name`, `description`, `supplierName`).
+
+- Each specific entity class inherits from `BaseType` and can define additional attributes (e.g., `name`, `description`,
+  `supplierName`).
 
 ---
 
 ## 3. **Repository Layer**
 
-Each entity type has a corresponding repository that interacts with the database. These repositories extend `JpaRepository`, providing standard CRUD operations and custom query methods.
+Each entity type has a corresponding repository that interacts with the database. These repositories extend
+`JpaRepository`, providing standard CRUD operations and custom query methods.
 
 ### Example: `WasteTypeRepository`
 
@@ -114,15 +124,18 @@ public interface WasteTypeRepository extends JpaRepository<WasteType, Long> {
 ```
 
 ### Explanation:
+
 - **`existsByName`**: A custom query method to check if a `WasteType` entity already exists with the given name.
 
-Similarly, repositories for `SupplierType`, `OliveLotStatusType`, and `OliveVarietyType` also provide methods for interacting with the database, such as checking for existing records.
+Similarly, repositories for `SupplierType`, `OliveLotStatusType`, and `OliveVarietyType` also provide methods for
+interacting with the database, such as checking for existing records.
 
 ---
 
 ## 4. **Service Layer**
 
-The service layer contains the business logic for handling CRUD operations on the entities. It uses repositories to interact with the database and provides methods to manage the entities.
+The service layer contains the business logic for handling CRUD operations on the entities. It uses repositories to
+interact with the database and provides methods to manage the entities.
 
 ### Example: `GenericTypeService`
 
@@ -187,14 +200,17 @@ public class GenericTypeService {
 ```
 
 ### Explanation:
-- The `createType` method checks if an entity already exists by its name before saving it. If the entity exists, a `ServiceException` is thrown.
+
+- The `createType` method checks if an entity already exists by its name before saving it. If the entity exists, a
+  `ServiceException` is thrown.
 - The service layer interacts with the repository layer to perform CRUD operations on each type of entity.
 
 ---
 
 ## 5. **Exception Handling**
 
-A centralized exception handling mechanism is implemented using a `@ControllerAdvice` class to capture and handle any errors thrown in the service layer.
+A centralized exception handling mechanism is implemented using a `@ControllerAdvice` class to capture and handle any
+errors thrown in the service layer.
 
 ### Example: Global Exception Handler
 
@@ -241,7 +257,8 @@ To add a new entity to the project, follow these steps:
 
 ### 1. **Create the Entity Class**
 
-- Create a new class that extends `BaseType`. Add the specific fields and business logic that are relevant to your new entity.
+- Create a new class that extends `BaseType`. Add the specific fields and business logic that are relevant to your new
+  entity.
 
 #### Example: `NewEntity`
 
@@ -263,7 +280,8 @@ public class NewEntity extends BaseEntity {
 
 ### 2. **Create the Repository Interface**
 
-- Create a new repository interface that extends `JpaRepository`. Add any custom query methods needed (e.g., `existsByName`).
+- Create a new repository interface that extends `JpaRepository`. Add any custom query methods needed (e.g.,
+  `existsByName`).
 
 #### Example: `NewEntityRepository`
 
@@ -280,7 +298,8 @@ public interface NewEntityRepository extends JpaRepository<NewEntity, Long> {
 
 ### 3. **Update the Service Layer**
 
-- Add logic to the `GenericTypeService` class to handle operations for the new entity. This includes checks for existing entities and saving new instances.
+- Add logic to the `GenericTypeService` class to handle operations for the new entity. This includes checks for existing
+  entities and saving new instances.
 
 #### Example Update to `GenericTypeService`
 
@@ -301,12 +320,16 @@ public Object createType(BaseType baseType, String type) {
 
 ### 4. **Testing**
 
-- Once the entity, repository, and service layer are updated, ensure you write appropriate test cases to validate the functionality of your new entity.
+- Once the entity, repository, and service layer are updated, ensure you write appropriate test cases to validate the
+  functionality of your new entity.
 
 ---
 
 ## Conclusion
 
-This project utilizes a common `BaseType` class for shared fields across multiple entity types, allowing for streamlined management of various entities with different attributes. The repository and service layers work together to ensure that CRUD operations are performed efficiently, and centralized exception handling ensures a consistent response for any errors encountered.
+This project utilizes a common `BaseType` class for shared fields across multiple entity types, allowing for streamlined
+management of various entities with different attributes. The repository and service layers work together to ensure that
+CRUD operations are performed efficiently, and centralized exception handling ensures a consistent response for any
+errors encountered.
 
 ---
