@@ -5,6 +5,7 @@ import com.osm.oilproductionservice.enums.OliveLotStatus;
 import com.osm.oilproductionservice.model.QualityControlResult;
 import com.osm.oilproductionservice.model.UnifiedDelivery;
 import com.xdev.xdevbase.dtos.BaseDto;
+import jakarta.annotation.Nullable;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -21,42 +22,56 @@ public class UnifiedDeliveryDTO extends BaseDto<UnifiedDelivery> {
     private LocalDateTime deliveryDate;
 
     // For the DTO, you may choose to represent complex objects (e.g. BaseType region) as Strings (e.g., region name)
-    private String region;
+    private BaseTypeDto region;
     private float poidsBrute;
     private float poidsNet;
     private String matriculeCamion;
     private String etatCamion;
     // Represent supplierType as a string for simplification (or use a nested DTO if needed)
+
     private SupplierDto supplier;
     // Quality control results can be represented as IDs, summaries, or a list of DTOs
-    private Set<QualityControlResult> qualityControlResults;
 
     // --- Oil Delivery Specific Fields ---
     // This field is common to both oil and olive deliveries if needed
     private String globalLotNumber;
     // Represent oil-specific associations (could be names or IDs)
+
     private BaseTypeDto oilVariety;
+
     private Float oilQuantity;
+
     private Float unitPrice;
+
     private Float price;
+
     private Float paidAmount;
+
     private Float unpaidAmount;
-    private StorageUnitDto storageUnit;
+
     private BaseTypeDto oilType;
 
     // --- Olive Delivery Specific Fields ---
+
     private LocalDateTime trtDate;
-    private BaseTypeDto operationType;
+
+
     private BaseTypeDto oliveVariety;
+
     private int sackCount;
+
     private BaseTypeDto oliveType;
+
     private OliveLotStatus status;
+
     private Float rendement;
-    private MillMachineDto millMachine;
+
+
     private Float oliveQuantity;
+
     private String parcel;
 
-    public UnifiedDeliveryDTO(String deliveryNumber, DeliveryType deliveryType, String lotNumber, LocalDateTime deliveryDate, String region, float poidsBrute, float poidsNet, String matriculeCamion, String etatCamion, SupplierDto supplier, Set<QualityControlResult> qualityControlResults, String globalLotNumber, BaseTypeDto oilVariety, Float oilQuantity, Float unitPrice, Float price, Float paidAmount, Float unpaidAmount, StorageUnitDto storageUnit, BaseTypeDto oilType, LocalDateTime trtDate, BaseTypeDto operationType, BaseTypeDto oliveVariety, int sackCount, BaseTypeDto oliveType, OliveLotStatus status, Float rendement, MillMachineDto millMachine, Float oliveQuantity, String parcel) {
+    public UnifiedDeliveryDTO(String deliveryNumber, DeliveryType deliveryType, String lotNumber, LocalDateTime deliveryDate, BaseTypeDto region, float poidsBrute, float poidsNet, String matriculeCamion, String etatCamion, SupplierDto supplier, String globalLotNumber, BaseTypeDto oilVariety, Float oilQuantity, Float unitPrice, Float price, Float paidAmount, Float unpaidAmount, BaseTypeDto oilType, LocalDateTime trtDate, BaseTypeDto oliveVariety, int sackCount, BaseTypeDto oliveType, OliveLotStatus status, Float rendement, Float oliveQuantity, String parcel) {
         this.deliveryNumber = deliveryNumber;
         this.deliveryType = deliveryType;
         this.lotNumber = lotNumber;
@@ -67,7 +82,6 @@ public class UnifiedDeliveryDTO extends BaseDto<UnifiedDelivery> {
         this.matriculeCamion = matriculeCamion;
         this.etatCamion = etatCamion;
         this.supplier = supplier;
-        this.qualityControlResults = qualityControlResults;
         this.globalLotNumber = globalLotNumber;
         this.oilVariety = oilVariety;
         this.oilQuantity = oilQuantity;
@@ -75,16 +89,14 @@ public class UnifiedDeliveryDTO extends BaseDto<UnifiedDelivery> {
         this.price = price;
         this.paidAmount = paidAmount;
         this.unpaidAmount = unpaidAmount;
-        this.storageUnit = storageUnit;
         this.oilType = oilType;
         this.trtDate = trtDate;
-        this.operationType = operationType;
         this.oliveVariety = oliveVariety;
         this.sackCount = sackCount;
         this.oliveType = oliveType;
         this.status = status;
         this.rendement = rendement;
-        this.millMachine = millMachine;
+
         this.oliveQuantity = oliveQuantity;
         this.parcel = parcel;
     }
@@ -121,11 +133,11 @@ public class UnifiedDeliveryDTO extends BaseDto<UnifiedDelivery> {
         this.deliveryDate = deliveryDate;
     }
 
-    public String getRegion() {
+    public BaseTypeDto getRegion() {
         return region;
     }
 
-    public void setRegion(String region) {
+    public void setRegion(BaseTypeDto region) {
         this.region = region;
     }
 
@@ -167,14 +179,6 @@ public class UnifiedDeliveryDTO extends BaseDto<UnifiedDelivery> {
 
     public void setSupplier(SupplierDto supplier) {
         this.supplier = supplier;
-    }
-
-    public Set<QualityControlResult> getQualityControlResults() {
-        return qualityControlResults;
-    }
-
-    public void setQualityControlResults(Set<QualityControlResult> qualityControlResults) {
-        this.qualityControlResults = qualityControlResults;
     }
 
     public String getGlobalLotNumber() {
@@ -233,13 +237,6 @@ public class UnifiedDeliveryDTO extends BaseDto<UnifiedDelivery> {
         this.unpaidAmount = unpaidAmount;
     }
 
-    public StorageUnitDto getStorageUnit() {
-        return storageUnit;
-    }
-
-    public void setStorageUnit(StorageUnitDto storageUnit) {
-        this.storageUnit = storageUnit;
-    }
 
     public BaseTypeDto getOilType() {
         return oilType;
@@ -257,13 +254,6 @@ public class UnifiedDeliveryDTO extends BaseDto<UnifiedDelivery> {
         this.trtDate = trtDate;
     }
 
-    public BaseTypeDto getOperationType() {
-        return operationType;
-    }
-
-    public void setOperationType(BaseTypeDto operationType) {
-        this.operationType = operationType;
-    }
 
     public BaseTypeDto getOliveVariety() {
         return oliveVariety;
@@ -305,13 +295,6 @@ public class UnifiedDeliveryDTO extends BaseDto<UnifiedDelivery> {
         this.rendement = rendement;
     }
 
-    public MillMachineDto getMillMachine() {
-        return millMachine;
-    }
-
-    public void setMillMachine(MillMachineDto millMachine) {
-        this.millMachine = millMachine;
-    }
 
     public Float getOliveQuantity() {
         return oliveQuantity;
