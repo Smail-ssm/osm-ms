@@ -32,8 +32,6 @@ public class SupplierInfo extends BaseEntity {
     @Transient
     private Float totalDebt;
 
-    public SupplierInfo() {
-    }
 
     public String getName() {
         return name;

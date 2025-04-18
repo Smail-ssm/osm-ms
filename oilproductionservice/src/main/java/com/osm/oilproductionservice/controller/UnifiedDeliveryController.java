@@ -1,19 +1,15 @@
 package com.osm.oilproductionservice.controller;
 
 
-import com.osm.oilproductionservice.dto.SupplierDto;
 import com.osm.oilproductionservice.dto.UnifiedDeliveryDTO;
-import com.osm.oilproductionservice.model.Supplier;
 import com.osm.oilproductionservice.model.UnifiedDelivery;
 import com.osm.oilproductionservice.service.UnifiedDeliveryService;
-import com.xdev.xdevbase.apiDTOs.ApiResponse;
 import com.xdev.xdevbase.controllers.impl.BaseControllerImpl;
 import com.xdev.xdevbase.services.BaseService;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/production/deliveries")

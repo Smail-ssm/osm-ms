@@ -19,14 +19,7 @@ public class Supplier extends BaseEntity {
     private BaseType genericSupplierType;
 
 
-    public Supplier(SupplierInfo supplierInfo, BaseType genericSupplierType) {
-        this.supplierInfo = supplierInfo;
-        this.genericSupplierType = genericSupplierType;
-    }
 
-    public Supplier() {
-
-    }
 
 
     public SupplierInfo getSupplierInfo() {

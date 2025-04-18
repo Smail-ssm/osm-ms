@@ -2,13 +2,10 @@ package com.osm.oilproductionservice.dto;
 
 import com.osm.oilproductionservice.enums.DeliveryType;
 import com.osm.oilproductionservice.enums.OliveLotStatus;
-import com.osm.oilproductionservice.model.QualityControlResult;
 import com.osm.oilproductionservice.model.UnifiedDelivery;
 import com.xdev.xdevbase.dtos.BaseDto;
-import jakarta.annotation.Nullable;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 /**
  * DTO for UnifiedDelivery.
@@ -71,35 +68,6 @@ public class UnifiedDeliveryDTO extends BaseDto<UnifiedDelivery> {
 
     private String parcel;
 
-    public UnifiedDeliveryDTO(String deliveryNumber, DeliveryType deliveryType, String lotNumber, LocalDateTime deliveryDate, BaseTypeDto region, float poidsBrute, float poidsNet, String matriculeCamion, String etatCamion, SupplierDto supplier, String globalLotNumber, BaseTypeDto oilVariety, Float oilQuantity, Float unitPrice, Float price, Float paidAmount, Float unpaidAmount, BaseTypeDto oilType, LocalDateTime trtDate, BaseTypeDto oliveVariety, int sackCount, BaseTypeDto oliveType, OliveLotStatus status, Float rendement, Float oliveQuantity, String parcel) {
-        this.deliveryNumber = deliveryNumber;
-        this.deliveryType = deliveryType;
-        this.lotNumber = lotNumber;
-        this.deliveryDate = deliveryDate;
-        this.region = region;
-        this.poidsBrute = poidsBrute;
-        this.poidsNet = poidsNet;
-        this.matriculeCamion = matriculeCamion;
-        this.etatCamion = etatCamion;
-        this.supplier = supplier;
-        this.globalLotNumber = globalLotNumber;
-        this.oilVariety = oilVariety;
-        this.oilQuantity = oilQuantity;
-        this.unitPrice = unitPrice;
-        this.price = price;
-        this.paidAmount = paidAmount;
-        this.unpaidAmount = unpaidAmount;
-        this.oilType = oilType;
-        this.trtDate = trtDate;
-        this.oliveVariety = oliveVariety;
-        this.sackCount = sackCount;
-        this.oliveType = oliveType;
-        this.status = status;
-        this.rendement = rendement;
-
-        this.oliveQuantity = oliveQuantity;
-        this.parcel = parcel;
-    }
 
     public String getDeliveryNumber() {
         return deliveryNumber;

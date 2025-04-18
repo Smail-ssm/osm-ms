@@ -17,10 +17,6 @@ public class SupplierInfoDto extends BaseDto<SupplierInfo> {
     private String rib;
     private String bankName;
 
-
-    public SupplierInfoDto() {
-    }
-
     public String getName() {
         return name;
     }

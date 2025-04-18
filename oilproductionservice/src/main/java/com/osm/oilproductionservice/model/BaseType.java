@@ -11,11 +11,6 @@ public class BaseType extends BaseEntity {
 
     private TypeCategory type;
 
-    public BaseType(String name, String description, TypeCategory type) {
-        this.name = name;
-        this.description = description;
-        this.type = type;
-    }
 
     public BaseType() {
 
