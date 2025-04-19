@@ -1,5 +1,6 @@
 package com.osm.oilproductionservice.dto;
 
+import com.osm.oilproductionservice.enums.RuleType;
 import com.osm.oilproductionservice.model.QualityControlRule;
 import com.xdev.xdevbase.dtos.BaseDto;
 
@@ -7,23 +8,13 @@ public class QualityControlRuleDto extends BaseDto<QualityControlRule> {
 
 
     private String ruleKey; // Technical key for the rule (e.g., "infestation_percentage")
-    private boolean isOilQc; // Indicates if the rule applies to oil quality control
+    private Boolean oilQc; // Indicates if the rule applies to oil quality control
     private String ruleName; // User-friendly name for the rule (e.g., "Infestation Percentage")
     private String description; // Description of the rule's purpose
     private Float minValue; // Minimum acceptable value for the rule
     private Float maxValue; // Maximum acceptable value for the rule
-
-    public QualityControlRuleDto() {
-    }
-
-    public QualityControlRuleDto(String ruleKey, boolean isOilQc, String ruleName, String description, Float minValue, Float maxValue) {
-        this.ruleKey = ruleKey;
-        this.isOilQc = isOilQc;
-        this.ruleName = ruleName;
-        this.description = description;
-        this.minValue = minValue;
-        this.maxValue = maxValue;
-    }
+    private RuleType ruleType;
+    private Boolean booleanValue;
 
     public String getRuleKey() {
         return ruleKey;
@@ -33,12 +24,12 @@ public class QualityControlRuleDto extends BaseDto<QualityControlRule> {
         this.ruleKey = ruleKey;
     }
 
-    public boolean getOilQc() {
-        return isOilQc;
+    public Boolean getOilQc() {
+        return oilQc;
     }
 
-    public void setOilQc(boolean oilQc) {
-        isOilQc = oilQc;
+    public void setOilQc(Boolean oilQc) {
+        this.oilQc = oilQc;
     }
 
     public String getRuleName() {
@@ -71,5 +62,21 @@ public class QualityControlRuleDto extends BaseDto<QualityControlRule> {
 
     public void setMaxValue(Float maxValue) {
         this.maxValue = maxValue;
+    }
+
+    public RuleType getRuleType() {
+        return ruleType;
+    }
+
+    public void setRuleType(RuleType ruleType) {
+        this.ruleType = ruleType;
+    }
+
+    public Boolean getBooleanValue() {
+        return booleanValue;
+    }
+
+    public void setBooleanValue(Boolean booleanValue) {
+        this.booleanValue = booleanValue;
     }
 }
