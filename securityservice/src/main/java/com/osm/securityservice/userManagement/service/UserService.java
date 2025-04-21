@@ -159,6 +159,9 @@ public class UserService extends BaseServiceImpl<OSMUser, OSMUserDTO, OSMUserOUT
         if (userDTO.getConfirmationMethod() == ConfirmationMethod.EMAIL && (userDTO.getEmail() == null || userDTO.getEmail().isBlank())) {
             throw new IllegalArgumentException("Email is required for email confirmation");
         }
+        if (userDTO.getConfirmationMethod() == ConfirmationMethod.PHONE && (userDTO.getPhoneNumber() == null || userDTO.getPhoneNumber().isBlank())) {
+            throw new IllegalArgumentException("Phone number is required for phone confirmation");
+        }
     }
 
     public String generateSecureCode(int length) {

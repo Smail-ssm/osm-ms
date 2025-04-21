@@ -81,7 +81,7 @@ class CustomRefreshTokenAuthenticationProvider implements AuthenticationProvider
         OSMUser user = userService.getByUsername(username);
 
         if (user == null || user.isLocked()) {
-            throw new OAuth2AuthenticationException(OAuth2ErrorCodes.UNAUTHORIZED_CLIENT);
+            throw new OAuth2AuthenticationException(OAuth2ErrorCodes.ACCESS_DENIED);
         }
 
         // Validate client
