@@ -13,12 +13,14 @@ import org.springframework.security.oauth2.server.authorization.OAuth2Authorizat
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
 public class AuthServerConfig {
 
+    private final AuthenticationEntryPoint authenticationEntryPoint;
     private final CorsConfigurationSource corsConfigurationSource;
     private final RegisteredClientRepository registeredClientRepository;
     private final OAuth2AuthorizationService authorizationService;
@@ -27,7 +29,8 @@ public class AuthServerConfig {
     private final CustomTokenRequestConverter customTokenRequestConverter;
     private final UserService userService;
 
-    public AuthServerConfig(CorsConfigurationSource corsConfigurationSource, RegisteredClientRepository registeredClientRepository, OAuth2AuthorizationService authorizationService, OAuth2TokenGenerator<?> tokenGenerator, AuthenticationManager authenticationManager, CustomTokenRequestConverter customTokenRequestConverter, UserService userService) {
+    public AuthServerConfig(AuthenticationEntryPoint authenticationEntryPoint, CorsConfigurationSource corsConfigurationSource, RegisteredClientRepository registeredClientRepository, OAuth2AuthorizationService authorizationService, OAuth2TokenGenerator<?> tokenGenerator, AuthenticationManager authenticationManager, CustomTokenRequestConverter customTokenRequestConverter, UserService userService) {
+        this.authenticationEntryPoint = authenticationEntryPoint;
         this.corsConfigurationSource = corsConfigurationSource;
         this.registeredClientRepository = registeredClientRepository;
         this.authorizationService = authorizationService;
@@ -42,6 +45,9 @@ public class AuthServerConfig {
     ) throws Exception {
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = getOAuth2AuthorizationServerConfigurer();
         http
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(authenticationEntryPoint)
+                )
                 .authorizeHttpRequests(auth -> auth
 //                        .requestMatchers("/oauth2/**", "/jwks", "/.well-known/**", "/actuator/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
 //                        .anyRequest().authenticated()
