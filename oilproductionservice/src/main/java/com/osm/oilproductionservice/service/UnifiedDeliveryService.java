@@ -46,4 +46,27 @@ public class UnifiedDeliveryService extends BaseServiceImpl<UnifiedDelivery, Uni
         // Map back to DTO and return
         return modelMapper.map(savedDelivery, UnifiedDeliveryDTO.class);
     }
+
+    @Override
+    public UnifiedDeliveryDTO update(UnifiedDeliveryDTO dto) {
+        // 1. Load existing entity or fail
+        UnifiedDelivery existing = deliveryRepository.findById(dto.getId())
+                .orElseThrow(() -> new RuntimeException("UnifiedDelivery not found with id: " + dto.getId()));
+
+        modelMapper.map(dto, existing);
+        if (dto.getSupplier() != null && dto.getSupplier().getId() != null) {
+            Supplier supplier = supplierRepository.findById(dto.getSupplier().getId())
+                    .orElseThrow(() -> new RuntimeException("Supplier not found with id: " + dto.getSupplier().getId()));
+            existing.setSupplierType(supplier);
+        } else {
+            existing.setSupplierType(null);
+        }
+
+        // 4. Persist changes
+        UnifiedDelivery updated = deliveryRepository.saveAndFlush(existing);
+
+        // 5. Map back to DTO and return
+        return modelMapper.map(updated, UnifiedDeliveryDTO.class);
+    }
+
 }
