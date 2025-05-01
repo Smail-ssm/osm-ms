@@ -1,12 +1,13 @@
 package com.osm.oilproductionservice.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.osm.oilproductionservice.enums.DeliveryType;
 import com.osm.oilproductionservice.enums.OliveLotStatus;
 import com.xdev.xdevbase.entities.BaseEntity;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -44,31 +45,32 @@ public class UnifiedDelivery extends BaseEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Supplier supplier;
 
+    @OneToMany(mappedBy = "delivery", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<QualityControlResult> qualityControlResults = new HashSet<>();
+
     // --- Oil Delivery Specific Fields ---
     // Note: globalLotNumber is common to both oil and olive deliveries.
     private String globalLotNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
-
-    private BaseType oilVariety;
-    // The variety of oil
+    private BaseType oilVariety; // The variety of oil
     private Float oilQuantity;   // In appropriate unit, e.g., liters
 
     private Float unitPrice;
-
     private Float price;
-
     private Float paidAmount;
-
     private Float unpaidAmount;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private StorageUnit storageUnit;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private BaseType oilType;   // E.g., Extra Virgin, Virgin, etc.
 
     // --- Olive Delivery Specific Fields ---
     private LocalDateTime trtDate;   // Treatment date for olive delivery
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    private BaseType operationType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private BaseType oliveVariety;
@@ -81,8 +83,9 @@ public class UnifiedDelivery extends BaseEntity implements Serializable {
     private OliveLotStatus status;  // Status of the olive lot
 
     // Additional fields found in the UnifiedDelivery constructor, if needed
-    private Float rendement;
-    // Yield or performance measure
+    private Float rendement; // Yield or performance measure
+    @ManyToOne(fetch = FetchType.LAZY)
+    private MillMachine millMachine;
     private Float oliveQuantity;
     private String parcel;
 
@@ -102,6 +105,7 @@ public class UnifiedDelivery extends BaseEntity implements Serializable {
                            String matriculeCamion,
                            String etatCamion,
                            Supplier supplier,
+                           Set<QualityControlResult> qualityControlResults,
                            String globalLotNumber,
                            BaseType oilVariety,
                            Float oilQuantity,
@@ -109,13 +113,16 @@ public class UnifiedDelivery extends BaseEntity implements Serializable {
                            Float price,
                            Float paidAmount,
                            Float unpaidAmount,
+                           StorageUnit storageUnit,
                            BaseType oilType,
                            LocalDateTime trtDate,
+                           BaseType operationType,
                            BaseType oliveVariety,
                            int sackCount,
                            BaseType oliveType,
                            OliveLotStatus status,
                            Float rendement,
+                           MillMachine millMachine,
                            Float oliveQuantity,
                            String parcel) {
         this.deliveryNumber = deliveryNumber;
@@ -126,6 +133,7 @@ public class UnifiedDelivery extends BaseEntity implements Serializable {
         this.matriculeCamion = matriculeCamion;
         this.etatCamion = etatCamion;
         this.supplier = supplier;
+        this.qualityControlResults = qualityControlResults;
         this.globalLotNumber = globalLotNumber;
         this.oilVariety = oilVariety;
         this.oilQuantity = oilQuantity;
@@ -133,14 +141,16 @@ public class UnifiedDelivery extends BaseEntity implements Serializable {
         this.price = price;
         this.paidAmount = paidAmount;
         this.unpaidAmount = unpaidAmount;
+        this.storageUnit = storageUnit;
         this.oilType = oilType;
         this.trtDate = trtDate;
+        this.operationType = operationType;
         this.oliveVariety = oliveVariety;
         this.sackCount = sackCount;
         this.oliveType = oliveType;
         this.status = status;
         this.rendement = rendement;
-
+        this.millMachine = millMachine;
         this.oliveQuantity = oliveQuantity;
         this.parcel = parcel;
     }
@@ -171,10 +181,11 @@ public class UnifiedDelivery extends BaseEntity implements Serializable {
         this.lotNumber = lotNumber;
     }
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     public LocalDateTime getDeliveryDate() {
         return deliveryDate;
     }
-
     public void setDeliveryDate(LocalDateTime deliveryDate) {
         this.deliveryDate = deliveryDate;
     }
@@ -227,7 +238,13 @@ public class UnifiedDelivery extends BaseEntity implements Serializable {
         this.supplier = supplier;
     }
 
+    public Set<QualityControlResult> getQualityControlResults() {
+        return qualityControlResults;
+    }
 
+    public void setQualityControlResults(Set<QualityControlResult> qualityControlResults) {
+        this.qualityControlResults = qualityControlResults;
+    }
 
     // Oil-specific getters and setters
     public String getGlobalLotNumber() {
@@ -286,6 +303,13 @@ public class UnifiedDelivery extends BaseEntity implements Serializable {
         this.unpaidAmount = unpaidAmount;
     }
 
+    public StorageUnit getStorageUnit() {
+        return storageUnit;
+    }
+
+    public void setStorageUnit(StorageUnit storageUnit) {
+        this.storageUnit = storageUnit;
+    }
 
     public BaseType getOilType() {
         return oilType;
@@ -296,6 +320,8 @@ public class UnifiedDelivery extends BaseEntity implements Serializable {
     }
 
     // Olive-specific getters and setters
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     public LocalDateTime getTrtDate() {
         return trtDate;
     }
@@ -304,7 +330,17 @@ public class UnifiedDelivery extends BaseEntity implements Serializable {
         this.trtDate = trtDate;
     }
 
+    public BaseType getOperationType() {
+        return operationType;
+    }
 
+    public void setOperationType(BaseType operationType) {
+        this.operationType = operationType;
+    }
+
+    public BaseType getOliveVariety() {
+        return oliveVariety;
+    }
 
     public void setOliveVariety(BaseType oliveVariety) {
         this.oliveVariety = oliveVariety;
@@ -342,6 +378,13 @@ public class UnifiedDelivery extends BaseEntity implements Serializable {
         this.rendement = rendement;
     }
 
+    public MillMachine getMillMachine() {
+        return millMachine;
+    }
+
+    public void setMillMachine(MillMachine millMachine) {
+        this.millMachine = millMachine;
+    }
 
     public Float getOliveQuantity() {
         return oliveQuantity;

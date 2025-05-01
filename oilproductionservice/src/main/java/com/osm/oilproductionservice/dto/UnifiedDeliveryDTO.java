@@ -1,9 +1,11 @@
 package com.osm.oilproductionservice.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.osm.oilproductionservice.enums.DeliveryType;
 import com.osm.oilproductionservice.enums.OliveLotStatus;
 import com.osm.oilproductionservice.model.UnifiedDelivery;
 import com.xdev.xdevbase.dtos.BaseDto;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -93,6 +95,8 @@ public class UnifiedDeliveryDTO extends BaseDto<UnifiedDelivery> {
         this.lotNumber = lotNumber;
     }
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     public LocalDateTime getDeliveryDate() {
         return deliveryDate;
     }
