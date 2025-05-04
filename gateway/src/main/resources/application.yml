@@ -28,6 +28,10 @@ spring:
           uri: lb://oilproductionservice
           predicates:
             - Path=/api/production/**
+        - id: financeservice
+          uri: lb://financeservice
+          predicates:
+            - Path=/api/finance/**
 
   security:
     oauth2:
