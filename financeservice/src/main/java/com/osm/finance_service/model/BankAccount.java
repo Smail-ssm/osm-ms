@@ -1,6 +1,6 @@
-package com.osm.oilproductionservice.model;
+package com.osm.finance_service.model;
 
-import com.osm.oilproductionservice.enums.Currency;
+import com.osm.finance_service.ennum.Currency;
 import com.xdev.xdevbase.entities.BaseEntity;
 import jakarta.persistence.*;
 

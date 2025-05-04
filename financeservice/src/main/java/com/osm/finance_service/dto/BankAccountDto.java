@@ -1,7 +1,7 @@
-package com.osm.oilproductionservice.dto;
+package com.osm.finance_service.dto;
 
-import com.osm.oilproductionservice.enums.Currency;
-import com.osm.oilproductionservice.model.BankAccount;
+import com.osm.finance_service.ennum.Currency;
+import com.osm.finance_service.model.BankAccount;
 import com.xdev.xdevbase.dtos.BaseDto;
 
 public class BankAccountDto extends BaseDto<BankAccount> {
