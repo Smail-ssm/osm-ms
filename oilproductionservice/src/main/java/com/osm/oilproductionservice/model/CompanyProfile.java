@@ -1,12 +1,13 @@
 package com.osm.oilproductionservice.model;
 
 import com.xdev.xdevbase.entities.BaseEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Lob;
+import jakarta.persistence.Table;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "company_profile")
@@ -39,8 +40,6 @@ public class CompanyProfile extends BaseEntity implements Serializable {
     private String postalCode;
     @Column
     private String governorate;
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<BankAccount> bankAccounts = new ArrayList<>();
     /**
      * Logo binary data, max ~200KB enforced by service/controller
      */
@@ -172,12 +171,6 @@ public class CompanyProfile extends BaseEntity implements Serializable {
         this.governorate = governorate;
     }
 
-    public List<BankAccount> getBankAccounts() {
-        return bankAccounts;
-    }
 
-    public void setBankAccounts(List<BankAccount> bankAccounts) {
-        this.bankAccounts = bankAccounts;
-    }
 
 }

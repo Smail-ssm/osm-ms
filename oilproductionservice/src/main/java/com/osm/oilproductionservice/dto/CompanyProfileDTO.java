@@ -4,7 +4,6 @@ import com.osm.oilproductionservice.model.CompanyProfile;
 import com.xdev.xdevbase.dtos.BaseDto;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 public class CompanyProfileDTO extends BaseDto<CompanyProfile> {
     private String legalName;
@@ -20,7 +19,6 @@ public class CompanyProfileDTO extends BaseDto<CompanyProfile> {
     private String city;
     private String postalCode;
     private String governorate;
-    private List<BankAccountDto> bankAccounts;
     private String logoData;
     private String logoContentType;
 
@@ -128,13 +126,7 @@ public class CompanyProfileDTO extends BaseDto<CompanyProfile> {
         this.governorate = governorate;
     }
 
-    public List<BankAccountDto> getBankAccounts() {
-        return bankAccounts;
-    }
 
-    public void setBankAccounts(List<BankAccountDto> bankAccounts) {
-        this.bankAccounts = bankAccounts;
-    }
 
     public String getLogoData() {
         return logoData;
