@@ -9,7 +9,9 @@ import com.osm.oilproductionservice.repository.SupplierInfoTypeRepository;
 import com.osm.oilproductionservice.repository.SupplierRepository;
 import com.xdev.xdevbase.repos.BaseRepository;
 import com.xdev.xdevbase.services.impl.BaseServiceImpl;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,8 +37,7 @@ public class UnifiedDeliveryService extends BaseServiceImpl<UnifiedDelivery, Uni
 
 
         if (dto.getSupplier() != null) {
-            Supplier supplier = supplierRepository.findById(dto.getSupplier().getId())
-                    .orElseThrow(() -> new RuntimeException("Supplier not found with id: " + dto.getSupplier().getSupplierInfo().getId()));
+            Supplier supplier = supplierRepository.findById(dto.getSupplier().getId()).orElseThrow(() -> new RuntimeException("Supplier not found with id: " + dto.getSupplier().getSupplierInfo().getId()));
             delivery.setSupplierType(supplier);
         }
 
@@ -48,12 +49,15 @@ public class UnifiedDeliveryService extends BaseServiceImpl<UnifiedDelivery, Uni
     }
 
     @Override
+    @Transactional
     public UnifiedDeliveryDTO update(UnifiedDeliveryDTO dto) {
-        // 1. Load existing entity or fail
-        UnifiedDelivery existing = deliveryRepository.findById(dto.getId())
-                .orElseThrow(() -> new RuntimeException("UnifiedDelivery not found with id: " + dto.getId()));
+        // 1. Load existing or fail
+        UnifiedDelivery existing = deliveryRepository.findById(dto.getId()).orElseThrow(() -> new RuntimeException("UnifiedDelivery not found with id: " + dto.getId()));
 
-        modelMapper.map(dto, existing);
+
+        BeanUtils.copyProperties(dto, existing, "id", "supplier");
+
+        // 3. Resolve and set the Supplier relationship
         if (dto.getSupplier() != null && dto.getSupplier().getId() != null) {
             Supplier supplier = supplierRepository.findById(dto.getSupplier().getId())
                     .orElseThrow(() -> new RuntimeException("Supplier not found with id: " + dto.getSupplier().getId()));
