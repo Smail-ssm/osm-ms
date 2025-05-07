@@ -1,6 +1,8 @@
 package com.osm.oilproductionservice.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.osm.oilproductionservice.enums.DeliveryType;
 import com.osm.oilproductionservice.enums.OliveLotStatus;
 import com.xdev.xdevbase.entities.BaseEntity;
@@ -21,6 +23,8 @@ import java.util.Set;
 @Entity
 @Table(name = "delivery")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"}, ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UnifiedDelivery extends BaseEntity implements Serializable {
 
     // --- Common Fields ---
@@ -133,7 +137,6 @@ public class UnifiedDelivery extends BaseEntity implements Serializable {
         this.matriculeCamion = matriculeCamion;
         this.etatCamion = etatCamion;
         this.supplier = supplier;
-        this.qualityControlResults = qualityControlResults;
         this.globalLotNumber = globalLotNumber;
         this.oilVariety = oilVariety;
         this.oilQuantity = oilQuantity;
