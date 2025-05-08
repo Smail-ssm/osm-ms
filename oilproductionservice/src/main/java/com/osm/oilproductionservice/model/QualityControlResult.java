@@ -9,16 +9,13 @@ import java.io.Serializable;
 @Table(name = "quality_control_result")
 public class QualityControlResult extends BaseEntity implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
-
     // The identifier of the quality rule (e.g., could be a foreign key from a rule table or a code)
     @ManyToOne(fetch = FetchType.LAZY)
     private QualityControlRule rule;
 
     // The value measured by the quality controller for this rule
     @Column(name = "measured_value", nullable = false)
-    private Float measuredValue;
+    private String measuredValue;
 
     // Many-to-One relationship: each result is associated with one UnifiedDelivery.
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,7 +25,7 @@ public class QualityControlResult extends BaseEntity implements Serializable {
     public QualityControlResult() {
     }
 
-    public QualityControlResult(QualityControlRule rule, Float measuredValue, UnifiedDelivery delivery) {
+    public QualityControlResult(QualityControlRule rule, String measuredValue, UnifiedDelivery delivery) {
         this.rule = rule;
         this.measuredValue = measuredValue;
         this.delivery = delivery;
@@ -43,11 +40,11 @@ public class QualityControlResult extends BaseEntity implements Serializable {
         this.rule = ruleId;
     }
 
-    public Float getMeasuredValue() {
+    public String getMeasuredValue() {
         return measuredValue;
     }
 
-    public void setMeasuredValue(Float measuredValue) {
+    public void setMeasuredValue(String measuredValue) {
         this.measuredValue = measuredValue;
     }
 
