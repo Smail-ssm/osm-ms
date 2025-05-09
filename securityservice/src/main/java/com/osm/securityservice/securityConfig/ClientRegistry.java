@@ -73,7 +73,7 @@ public class ClientRegistry {
                     .tokenSettings(TokenSettings.builder()
                             .accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
                             .accessTokenTimeToLive(Duration.ofMinutes(5))
-                            .refreshTokenTimeToLive(Duration.ofHours(1))
+                            .refreshTokenTimeToLive(Duration.ofHours(24))
                             .reuseRefreshTokens(false)
                             .build())
                     .scope("read")

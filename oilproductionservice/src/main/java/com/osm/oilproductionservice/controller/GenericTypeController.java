@@ -5,6 +5,7 @@ import com.osm.oilproductionservice.enums.TypeCategory;
 import com.osm.oilproductionservice.model.BaseType;
 import com.osm.oilproductionservice.service.GenericTypeService;
 import com.xdev.xdevbase.apiDTOs.ApiResponse;
+import com.xdev.xdevbase.controllers.AdvancedSearchController;
 import com.xdev.xdevbase.controllers.impl.BaseControllerImpl;
 import com.xdev.xdevbase.services.BaseService;
 import org.modelmapper.ModelMapper;
@@ -17,7 +18,9 @@ import java.util.List;
 
 @RequestMapping("/api/production/types")
 @CrossOrigin
-public class GenericTypeController extends BaseControllerImpl<BaseType, BaseTypeDto, BaseTypeDto> {
+public class GenericTypeController extends
+        BaseControllerImpl<BaseType, BaseTypeDto, BaseTypeDto> implements
+        AdvancedSearchController<BaseType, BaseTypeDto> {
     private final GenericTypeService genericTypeService;
 
     public GenericTypeController(BaseService<BaseType, BaseTypeDto, BaseTypeDto> baseService, ModelMapper modelMapper, GenericTypeService genericTypeService) {

@@ -8,7 +8,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import org.hibernate.envers.Audited;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 @Entity
 @Audited
@@ -28,7 +28,7 @@ public class ConfirmationCode extends BaseEntity {
     }
 
     public boolean isExpired() {
-        return this.getLastModifiedDate().plusMinutes(10).isBefore(OffsetDateTime.now());
+        return this.getLastModifiedDate().plusMinutes(10).isBefore(LocalDateTime.now());
     }
 
     public ConfirmationCodeType getConfirmationCodeType() {
