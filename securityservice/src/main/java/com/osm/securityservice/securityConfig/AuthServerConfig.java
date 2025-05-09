@@ -49,9 +49,8 @@ public class AuthServerConfig {
                         .authenticationEntryPoint(authenticationEntryPoint)
                 )
                 .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/oauth2/**", "/jwks", "/.well-known/**", "/actuator/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
-//                        .anyRequest().authenticated()
-                                .anyRequest().permitAll()
+                        .requestMatchers("/oauth2/**", "/jwks", "/.well-known/**", "/actuator/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
