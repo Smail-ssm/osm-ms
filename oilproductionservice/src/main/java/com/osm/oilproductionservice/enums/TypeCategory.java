@@ -9,6 +9,6 @@ public enum TypeCategory {
     PRODUCTION_METHOD,
     OPERATION_TYPE,// Extra Virgin, Pomace, etc.
     OIL_VARIETY,
-    OLIVE_TYPE,
+    OLIVE_TYPE, OIL_TYPE
 
 }
