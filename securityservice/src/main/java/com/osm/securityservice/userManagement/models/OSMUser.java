@@ -5,37 +5,43 @@ import com.xdev.xdevbase.entities.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
 import org.hibernate.envers.Audited;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
 @Entity
 @Audited
 public class OSMUser extends BaseEntity implements UserDetails {
     @Column(unique = true, nullable = false)
     private String username;
+    private String firstName;
+    private String lastName;
     private String password;
     @Column(unique = true)
     private String email;
     @Column(unique = true)
     private String phoneNumber;
-    @OneToMany(fetch = FetchType.EAGER)
-    private Set<Role> roles = new HashSet<Role>();
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Role role;
     private boolean isLocked;
     private ConfirmationMethod confirmationMethod;
-
+    private boolean isNewUser;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles().stream()
-                .flatMap(role -> role.getPermissions().stream())
+        return getRole().getPermissions().stream()
                 .map(permission -> new SimpleGrantedAuthority("MODULE_" + permission.getModule().toString() + "_" + permission.getPermissionName()))
                 .toList();
+    }
+
+    public boolean isNewUser() {
+        return isNewUser;
+    }
+
+    public void setNewUser(boolean newUser) {
+        isNewUser = newUser;
     }
 
     @Override
@@ -64,13 +70,8 @@ public class OSMUser extends BaseEntity implements UserDetails {
         this.email = email;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
-    }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
+
 
     @Override
     public boolean isAccountNonExpired() {
@@ -100,6 +101,14 @@ public class OSMUser extends BaseEntity implements UserDetails {
         this.phoneNumber = phoneNumber;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     public boolean isLocked() {
         return isLocked;
     }
@@ -116,4 +125,19 @@ public class OSMUser extends BaseEntity implements UserDetails {
         this.confirmationMethod = confirmationMethod;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 }

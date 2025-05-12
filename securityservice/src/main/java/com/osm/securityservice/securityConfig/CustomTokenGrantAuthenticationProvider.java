@@ -46,17 +46,19 @@ class CustomTokenGrantAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         CustomTokenGrantAuthenticationToken tokenAuth = (CustomTokenGrantAuthenticationToken) authentication;
-
-        // Authenticate user with username and password
-        Authentication userAuth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(tokenAuth.getUsername(), tokenAuth.getPassword())
-        );
-
         OSMUser user = userService.getByUsername(tokenAuth.getUsername());
 
         if (user == null || user.isLocked()) {
             throw new OAuth2AuthenticationException(OAuth2ErrorCodes.ACCESS_DENIED);
         }
+        if (user.isNewUser()) {
+            throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.ACCESS_DENIED, user.getUsername(), user.getId().toString()));
+        }
+        // Authenticate user with username and password
+        Authentication userAuth = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(tokenAuth.getUsername(), tokenAuth.getPassword())
+        );
+
 
         // Validate client
         Authentication clientPrincipal = (Authentication) tokenAuth.getPrincipal();

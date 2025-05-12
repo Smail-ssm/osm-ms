@@ -6,10 +6,30 @@ import com.xdev.xdevbase.dtos.BaseDto;
 
 public class OSMUserOUTDTO extends BaseDto<OSMUser> {
     private String username;
+    private String firstName;
+    private String lastName;
     private String email;
     private String phoneNumber;
     private boolean isLocked;
+    private RoleDTO role;
     private ConfirmationMethod confirmationMethod;
+    private boolean isNewUser;
+
+    public boolean isNewUser() {
+        return isNewUser;
+    }
+
+    public void setNewUser(boolean newUser) {
+        isNewUser = newUser;
+    }
+
+    public RoleDTO getRole() {
+        return role;
+    }
+
+    public void setRole(RoleDTO role) {
+        this.role = role;
+    }
 
     public String getUsername() {
         return username;
@@ -49,5 +69,21 @@ public class OSMUserOUTDTO extends BaseDto<OSMUser> {
 
     public void setConfirmationMethod(ConfirmationMethod confirmationMethod) {
         this.confirmationMethod = confirmationMethod;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }
