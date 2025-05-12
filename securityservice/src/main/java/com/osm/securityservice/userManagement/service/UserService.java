@@ -50,13 +50,27 @@ public class UserService extends BaseServiceImpl<OSMUser, OSMUserDTO, OSMUserOUT
     @Transactional
     public OSMUserOUTDTO addUser(OSMUserOUTDTO userDTO) throws Exception {
         validateUserDTO(userDTO);
+        checkExistUser(userDTO.getUsername(), userDTO.getEmail(), userDTO.getPhoneNumber());
         String rawPassword = generateSecureCode(8);
         String hashedPassword = passwordEncoder.encode(rawPassword);
         OSMUser user = modelMapper.map(userDTO, OSMUser.class);
         user.setPassword(hashedPassword);
+        user.setNewUser(true);
         sendConfirmation(userDTO, rawPassword);
         OSMUser savedUser = userRepository.save(user);
         return modelMapper.map(savedUser, OSMUserOUTDTO.class);
+    }
+
+    private void checkExistUser(String username, String email, String phoneNumber) {
+        if (username != null && userRepository.findByUsername(username).isPresent()) {
+            throw new IllegalArgumentException("Username is already in use");
+        }
+        if (email != null && userRepository.findByEmailIgnoreCase(email).isPresent()) {
+            throw new IllegalArgumentException("Email is already in use");
+        }
+        if (phoneNumber != null && userRepository.findByPhoneNumber(phoneNumber).isPresent()) {
+            throw new IllegalArgumentException("Phone number is already in use");
+        }
     }
 
     public OSMUser getByUsername(String username) {
@@ -141,7 +155,9 @@ public class UserService extends BaseServiceImpl<OSMUser, OSMUserDTO, OSMUserOUT
             if (!dto.getNewPassword().equals(dto.getNewPasswordConfirmation())) {
                 throw new IllegalArgumentException("Invalid password");
             }
-            user.setPassword(dto.getNewPassword());
+            String hashedPassword = passwordEncoder.encode(dto.getNewPassword());
+            user.setPassword(hashedPassword);
+            user.setNewUser(false);
             userRepository.save(user);
         }
     }

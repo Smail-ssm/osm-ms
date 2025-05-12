@@ -26,7 +26,7 @@ public class UserController extends BaseControllerImpl<OSMUser, OSMUserDTO, OSMU
         this.userService = userService;
     }
 
-    @PostMapping("/resetPassword")
+    @PostMapping("/auth/resetPassword")
     public ResponseEntity<?> resetPassword(@RequestParam String identifier) {
         try {
             OSMUserOUTDTO user = userService.resetPassword(identifier);
@@ -40,7 +40,7 @@ public class UserController extends BaseControllerImpl<OSMUser, OSMUserDTO, OSMU
         }
     }
 
-    @PostMapping("/validateResetCode/{userId}")
+    @PostMapping("/auth/validateResetCode/{userId}")
     public ResponseEntity<?> validateResetCode(@RequestParam String code, @PathVariable UUID userId) {
         try {
             userService.validateResetCode(code, userId);
@@ -54,13 +54,13 @@ public class UserController extends BaseControllerImpl<OSMUser, OSMUserDTO, OSMU
         }
     }
 
-    @PostMapping("/updatePassword/{userId}")
+    @PostMapping("/auth/updatePassword/{userId}")
     public ResponseEntity<?> updatePassword(@RequestBody UpdatePasswordDTO dto, @PathVariable UUID userId) {
         try {
             userService.updatePassword(dto, userId);
             return ResponseEntity.ok().build();
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid input");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Message error: " + e.getMessage());
         }
@@ -69,10 +69,10 @@ public class UserController extends BaseControllerImpl<OSMUser, OSMUserDTO, OSMU
     @PostMapping("/addUser")
     public ResponseEntity<?> addUser(@RequestBody OSMUserOUTDTO dto) {
         try {
-            userService.addUser(dto);
-            return ResponseEntity.ok().build();
+            OSMUserOUTDTO user = userService.addUser(dto);
+            return ResponseEntity.ok(user);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid input");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Message error: " + e.getMessage());
         }

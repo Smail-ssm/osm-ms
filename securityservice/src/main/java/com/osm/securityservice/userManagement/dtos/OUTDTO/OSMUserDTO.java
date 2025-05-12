@@ -4,16 +4,25 @@ import com.osm.securityservice.userManagement.models.OSMUser;
 import com.osm.securityservice.userManagement.models.enums.ConfirmationMethod;
 import com.xdev.xdevbase.dtos.BaseDto;
 
-import java.util.Set;
-
 public class OSMUserDTO extends BaseDto<OSMUser> {
     private String username;
+    private String firstName;
+    private String lastName;
     private String password;
     private String email;
     private String phoneNumber;
-    private Set<RoleDTO> roles;
+    private RoleDTO role;
     private boolean isLocked;
     private ConfirmationMethod confirmationMethod;
+    private boolean isNewUser;
+
+    public boolean isNewUser() {
+        return isNewUser;
+    }
+
+    public void setNewUser(boolean newUser) {
+        isNewUser = newUser;
+    }
 
     public ConfirmationMethod getConfirmationMethod() {
         return confirmationMethod;
@@ -55,12 +64,12 @@ public class OSMUserDTO extends BaseDto<OSMUser> {
         this.phoneNumber = phoneNumber;
     }
 
-    public Set<RoleDTO> getRoles() {
-        return roles;
+    public RoleDTO getRole() {
+        return role;
     }
 
-    public void setRoles(Set<RoleDTO> roles) {
-        this.roles = roles;
+    public void setRole(RoleDTO role) {
+        this.role = role;
     }
 
     public boolean isLocked() {
@@ -69,5 +78,21 @@ public class OSMUserDTO extends BaseDto<OSMUser> {
 
     public void setLocked(boolean locked) {
         isLocked = locked;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

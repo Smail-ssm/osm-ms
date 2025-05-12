@@ -1,9 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Eureka" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-    <module name="discoveryserver" />
-    <option name="SPRING_BOOT_MAIN_CLASS" value="com.osm.discoveryserver.DiscoveryserverApplication" />
-    <method v="2">
-      <option name="Make" enabled="true" />
-    </method>
-  </configuration>
-</component>

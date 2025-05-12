@@ -21,14 +21,22 @@ public class GatewaySecurityConfig {
 
     @Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}")
     private String jwkSetUri;
-
+    String[] PERMITTED_ENDPOINTS = {
+            "/api/security/user/auth/**",
+            "/oauth2/**",
+            "/jwks",
+            "/.well-known/**",
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-resources/**"
+    };
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         return http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .cors(httpSecurityCorsConfigurer -> new CorsGlobalConfiguration())
                 .authorizeExchange(exchanges -> exchanges
-                    .pathMatchers("/oauth2/**", "/jwks", "/.well-known/**", "/actuator/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
+                        .pathMatchers(PERMITTED_ENDPOINTS).permitAll()
                      .anyExchange().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2

@@ -71,7 +71,7 @@ public class SecurityserviceApplication {
             admin.setPassword(passwordEncoder.encode("admin123"));
             admin.setEmail("admin@example.com");
             admin.setPhoneNumber("1234567890");
-            admin.setRoles(Set.of(saveRole));
+            admin.setRole(saveRole);
             admin.setLocked(false); // not locked
             userService.save(admin);
         };

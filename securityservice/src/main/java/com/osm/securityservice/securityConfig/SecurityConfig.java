@@ -8,7 +8,6 @@ import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.osm.securityservice.userManagement.dtos.OUTDTO.OSMUserOUTDTO;
 import com.osm.securityservice.userManagement.models.OSMUser;
-import com.osm.securityservice.userManagement.models.Role;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -112,7 +111,7 @@ public class SecurityConfig {
                                     modelMapper.map(user, OSMUserOUTDTO.class)
                             )
                             .claim("permissions", user.getAuthorities())
-                            .claim("roles", user.getRoles().stream().map(Role::getRoleName).toList())
+                            .claim("role", user.getRole().getRoleName())
                             .claim("authorities", principal.getAuthorities().stream()
                                     .map(GrantedAuthority::getAuthority)
                                     .toList());
