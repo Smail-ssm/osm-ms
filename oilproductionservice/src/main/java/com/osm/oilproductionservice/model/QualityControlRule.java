@@ -2,12 +2,10 @@ package com.osm.oilproductionservice.model;
 
 import com.osm.oilproductionservice.enums.RuleType;
 import com.xdev.xdevbase.entities.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 
 @Entity
@@ -31,6 +29,13 @@ public class QualityControlRule extends BaseEntity implements Serializable {
     private String ruleName;
 
     private String description;
+
+    // New field for textValues
+    @ElementCollection
+    @CollectionTable(name = "quality_control_rule_text_values", joinColumns = @JoinColumn(name = "rule_id"))
+    @Column(name = "text_value")
+    private List<String> textValues;
+
 
     public String getRuleKey() {
         return ruleKey;
@@ -94,5 +99,13 @@ public class QualityControlRule extends BaseEntity implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<String> getTextValues() {
+        return textValues;
+    }
+
+    public void setTextValues(List<String> textValues) {
+        this.textValues = textValues;
     }
 }

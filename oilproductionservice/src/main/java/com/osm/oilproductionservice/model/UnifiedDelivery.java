@@ -9,12 +9,20 @@ import com.xdev.xdevbase.entities.BaseEntity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+
+
 import org.springframework.format.annotation.DateTimeFormat;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+
+
 
 /**
  * The UnifiedDelivery entity combines common delivery fields, oil-specific properties, and olive-specific properties.
@@ -93,47 +101,19 @@ public class UnifiedDelivery extends BaseEntity implements Serializable {
     private Float oliveQuantity;
     private String parcel;
 
+
     // --- Constructors ---
     public UnifiedDelivery() {
     }
 
-    /**
-     * A full-argument constructor to initialize all common fields along with delivery-specific properties.
-     * In real usage, you might create helper constructors or builders to handle the optional fields.
-     */
-    public UnifiedDelivery(String deliveryNumber,
-                           DeliveryType deliveryType,
-                           String lotNumber,
-                           LocalDateTime deliveryDate,
-                           BaseType region,
-                           String matriculeCamion,
-                           String etatCamion,
-                           Supplier supplier,
-                           Set<QualityControlResult> qualityControlResults,
-                           String globalLotNumber,
-                           BaseType oilVariety,
-                           Float oilQuantity,
-                           Float unitPrice,
-                           Float price,
-                           Float paidAmount,
-                           Float unpaidAmount,
-                           StorageUnit storageUnit,
-                           BaseType oilType,
-                           LocalDateTime trtDate,
-                           BaseType operationType,
-                           BaseType oliveVariety,
-                           int sackCount,
-                           BaseType oliveType,
-                           OliveLotStatus status,
-                           Float rendement,
-                           MillMachine millMachine,
-                           Float oliveQuantity,
-                           String parcel) {
+    public UnifiedDelivery(String deliveryNumber, DeliveryType deliveryType, String lotNumber, LocalDateTime deliveryDate, BaseType region, float poidsBrute, float poidsNet, String matriculeCamion, String etatCamion, Supplier supplier, Set<QualityControlResult> qualityControlResults, String globalLotNumber, BaseType oilVariety, Float oilQuantity, Float unitPrice, Float price, Float paidAmount, Float unpaidAmount, StorageUnit storageUnit, BaseType oilType, LocalDateTime trtDate, BaseType operationType, BaseType oliveVariety, int sackCount, BaseType oliveType, OliveLotStatus status, Float rendement, MillMachine millMachine, Float oliveQuantity, String parcel) {
         this.deliveryNumber = deliveryNumber;
         this.deliveryType = deliveryType;
         this.lotNumber = lotNumber;
         this.deliveryDate = deliveryDate;
         this.region = region;
+        this.poidsBrute = poidsBrute;
+        this.poidsNet = poidsNet;
         this.matriculeCamion = matriculeCamion;
         this.etatCamion = etatCamion;
         this.supplier = supplier;
@@ -158,8 +138,17 @@ public class UnifiedDelivery extends BaseEntity implements Serializable {
         this.parcel = parcel;
     }
 
+    /**
+     * A full-argument constructor to initialize all common fields along with delivery-specific properties.
+     * In real usage, you might create helper constructors or builders to handle the optional fields.
+     */
+
+
     // --- Getters and Setters ---
     // Common getters and setters
+
+
+
     public String getDeliveryNumber() {
         return deliveryNumber;
     }
@@ -407,4 +396,6 @@ public class UnifiedDelivery extends BaseEntity implements Serializable {
     public void setParcel(String parcel) {
         this.parcel = parcel;
     }
+
+
 }

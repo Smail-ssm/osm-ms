@@ -3,11 +3,15 @@ package com.osm.oilproductionservice.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.osm.oilproductionservice.enums.DeliveryType;
 import com.osm.oilproductionservice.enums.OliveLotStatus;
+import com.osm.oilproductionservice.model.QualityControlResult;
 import com.osm.oilproductionservice.model.UnifiedDelivery;
 import com.xdev.xdevbase.dtos.BaseDto;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+
+
 
 /**
  * DTO for UnifiedDelivery.
@@ -16,12 +20,19 @@ public class UnifiedDeliveryDTO extends BaseDto<UnifiedDelivery> {
 
     // --- Common Fields ---
     private String deliveryNumber;
+
+    @NotNull(message = "Delivery type is required")
     private DeliveryType deliveryType;
+
     private String lotNumber;
+
+    @NotNull(message = "Delivery date is required")
     private LocalDateTime deliveryDate;
 
     // For the DTO, you may choose to represent complex objects (e.g. BaseType region) as Strings (e.g., region name)
+    @NotNull(message = "Region is required")
     private BaseTypeDto region;
+
     private float poidsBrute;
     private float poidsNet;
     private String matriculeCamion;
@@ -65,7 +76,6 @@ public class UnifiedDeliveryDTO extends BaseDto<UnifiedDelivery> {
 
     private Float rendement;
 
-
     private Float oliveQuantity;
 
     private String parcel;
@@ -74,6 +84,7 @@ public class UnifiedDeliveryDTO extends BaseDto<UnifiedDelivery> {
     public String getDeliveryNumber() {
         return deliveryNumber;
     }
+
 
     public void setDeliveryNumber(String deliveryNumber) {
         this.deliveryNumber = deliveryNumber;
@@ -113,6 +124,7 @@ public class UnifiedDeliveryDTO extends BaseDto<UnifiedDelivery> {
     public void setRegion(BaseTypeDto region) {
         this.region = region;
     }
+
 
     public float getPoidsBrute() {
         return poidsBrute;
