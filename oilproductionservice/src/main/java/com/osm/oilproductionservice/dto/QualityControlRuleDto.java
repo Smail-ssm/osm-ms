@@ -4,8 +4,9 @@ import com.osm.oilproductionservice.enums.RuleType;
 import com.osm.oilproductionservice.model.QualityControlRule;
 import com.xdev.xdevbase.dtos.BaseDto;
 
-public class QualityControlRuleDto extends BaseDto<QualityControlRule> {
+import java.util.List;
 
+public class QualityControlRuleDto extends BaseDto<QualityControlRule> {
 
     private String ruleKey; // Technical key for the rule (e.g., "infestation_percentage")
     private Boolean oilQc; // Indicates if the rule applies to oil quality control
@@ -15,6 +16,7 @@ public class QualityControlRuleDto extends BaseDto<QualityControlRule> {
     private Float maxValue; // Maximum acceptable value for the rule
     private RuleType ruleType;
     private Boolean booleanValue;
+    private List<String> textValues; // New field for text values
 
     public String getRuleKey() {
         return ruleKey;
@@ -78,5 +80,13 @@ public class QualityControlRuleDto extends BaseDto<QualityControlRule> {
 
     public void setBooleanValue(Boolean booleanValue) {
         this.booleanValue = booleanValue;
+    }
+
+    public List<String> getTextValues() {
+        return textValues;
+    }
+
+    public void setTextValues(List<String> textValues) {
+        this.textValues = textValues;
     }
 }
