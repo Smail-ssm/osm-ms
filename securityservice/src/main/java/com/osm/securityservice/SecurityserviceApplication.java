@@ -50,11 +50,13 @@ public class SecurityserviceApplication {
             // Create permissions
             PermissionDTO readUsers = new PermissionDTO();
             readUsers.setPermissionName("READ_USER");
+            readUsers.setCategory("HABILITATION");
             readUsers.setModule(OSMModule.USER); // Enum or Entity
             PermissionDTO read = permissionService.save(readUsers);
 
             PermissionDTO writeUsers = new PermissionDTO();
             writeUsers.setPermissionName("WRITE_USER");
+            writeUsers.setCategory("HABILITATION");
             writeUsers.setModule(OSMModule.USER);
             PermissionDTO write = permissionService.save(writeUsers);
 

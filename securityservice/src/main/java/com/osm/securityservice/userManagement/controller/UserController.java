@@ -78,5 +78,16 @@ public class UserController extends BaseControllerImpl<OSMUser, OSMUserDTO, OSMU
         }
     }
 
+    @PostMapping("/updateUser/{id}")
+    public ResponseEntity<?> updateUser(@RequestBody OSMUserOUTDTO dto, @PathVariable UUID id) {
+        try {
+            OSMUserOUTDTO user = userService.updateUser(dto, id);
+            return ResponseEntity.ok(user);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Message error: " + e.getMessage());
+        }
+    }
 
 }

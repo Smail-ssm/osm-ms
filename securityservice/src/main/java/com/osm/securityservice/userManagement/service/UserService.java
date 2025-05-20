@@ -24,6 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.security.auth.login.AccountLockedException;
 import javax.security.auth.login.CredentialExpiredException;
 import java.security.SecureRandom;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -61,6 +63,43 @@ public class UserService extends BaseServiceImpl<OSMUser, OSMUserDTO, OSMUserOUT
         return modelMapper.map(savedUser, OSMUserOUTDTO.class);
     }
 
+    @Transactional
+    public OSMUserOUTDTO updateUser(OSMUserOUTDTO userDTO, UUID id) throws Exception {
+        if (id == null) throw new IllegalArgumentException("User ID must not be null");
+
+        validateUserDTO(userDTO);
+
+        OSMUser user = repository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException(id.toString()));
+
+        checkUserToUpdate(user, userDTO.getUsername(), userDTO.getEmail(), userDTO.getPhoneNumber());
+
+        boolean usernameChanged = !Objects.equals(userDTO.getUsername(), user.getUsername());
+        boolean emailChanged = userDTO.getEmail() != null && !Objects.equals(userDTO.getEmail(), user.getEmail());
+        boolean phoneChanged = userDTO.getPhoneNumber() != null && !Objects.equals(userDTO.getPhoneNumber(), user.getPhoneNumber());
+        user.setLocked(userDTO.isLocked());
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setUsername(userDTO.getUsername());
+        user.setConfirmationMethod(userDTO.getConfirmationMethod());
+
+        if (userDTO.getEmail() != null) {
+            user.setEmail(userDTO.getEmail());
+        }
+
+        if (userDTO.getPhoneNumber() != null) {
+            user.setPhoneNumber(userDTO.getPhoneNumber());
+        }
+
+        userRepository.save(user);
+        if (usernameChanged || emailChanged || phoneChanged) {
+            String rawPassword = generateSecureCode(8);
+            sendConfirmation(userDTO, rawPassword);
+        }
+
+        return modelMapper.map(user, OSMUserOUTDTO.class);
+    }
+
     private void checkExistUser(String username, String email, String phoneNumber) {
         if (username != null && userRepository.findByUsername(username).isPresent()) {
             throw new IllegalArgumentException("Username is already in use");
@@ -69,6 +108,18 @@ public class UserService extends BaseServiceImpl<OSMUser, OSMUserDTO, OSMUserOUT
             throw new IllegalArgumentException("Email is already in use");
         }
         if (phoneNumber != null && userRepository.findByPhoneNumber(phoneNumber).isPresent()) {
+            throw new IllegalArgumentException("Phone number is already in use");
+        }
+    }
+
+    private void checkUserToUpdate(OSMUser user, String username, String email, String phoneNumber) {
+        if (((user.getUsername() != null && username != null && !user.getUsername().equals(username)) || (user.getUsername() == null && username != null)) && userRepository.findByUsername(username).isPresent()) {
+            throw new IllegalArgumentException("Username is already in use");
+        }
+        if (((user.getEmail() != null && email != null && !user.getEmail().equals(email)) || (user.getEmail() == null && email != null)) && userRepository.findByEmailIgnoreCase(email).isPresent()) {
+            throw new IllegalArgumentException("Email is already in use");
+        }
+        if (((user.getPhoneNumber() != null && phoneNumber != null && !user.getPhoneNumber().equals(phoneNumber)) || (user.getPhoneNumber() == null && phoneNumber != null)) && userRepository.findByPhoneNumber(phoneNumber).isPresent()) {
             throw new IllegalArgumentException("Phone number is already in use");
         }
     }
@@ -193,5 +244,11 @@ public class UserService extends BaseServiceImpl<OSMUser, OSMUserDTO, OSMUserOUT
     public String generateRandomCode() {
         int code = (int) (Math.random() * 900_000) + 100_000; // range: 100000–999999
         return String.valueOf(code);
+    }
+
+    public List<OSMUserDTO> findByRoleName(String roleName) {
+        return userRepository.findByRoleRoleName(roleName).stream().map(
+                user -> modelMapper.map(user, OSMUserDTO.class)
+        ).toList();
     }
 }
