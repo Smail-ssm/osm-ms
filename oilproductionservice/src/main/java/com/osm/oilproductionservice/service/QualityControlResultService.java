@@ -50,60 +50,88 @@ public class QualityControlResultService extends BaseServiceImpl<QualityControlR
     @Transactional
     public List<QualityControlResultDto> saveAll(List<QualityControlResultDto> dtos) {
         log.debug("Processing saveAll for {} DTOs", dtos.size());
+
         List<QualityControlResult> entities = dtos.stream().map(dto -> {
             log.debug("Mapping DTO: {}", dto);
             QualityControlResult entity = new QualityControlResult();
 
-            // Set measured value
-            if (RuleType.NUMERIC.equals(dto.getRule().getRuleType())) {
-                try {
-                    Double.parseDouble(dto.getMeasuredValue());
-                } catch (NumberFormatException e) {
-                    throw new IllegalArgumentException("Invalid numeric value for rule: " + dto.getRule().getId());
-                }
-            } else if (RuleType.BOOLEAN.equals(dto.getRule().getRuleType())) {
-                if (!"true".equalsIgnoreCase(dto.getMeasuredValue()) && !"false".equalsIgnoreCase(dto.getMeasuredValue())) {
-                    throw new IllegalArgumentException("Invalid boolean value for rule: " + dto.getRule().getId());
-                }
-            } else {
-                throw new IllegalArgumentException("Invalid rule type: " + dto.getRule().getRuleType());
-            }
-            entity.setMeasuredValue(dto.getMeasuredValue());
-            // Handle rule
-            QualityControlRuleDto rulID = dto.getRule();
-            if (rulID != null) {
-                QualityControlRule rule = ruleRepository.findById(rulID.getId())
-                        .orElseThrow(() -> {
-                            log.error("Rule not found for ID: {}", rulID);
-                            return new IllegalArgumentException("Rule not found for ID: " + rulID);
-                        });
-                entity.setRule(rule);
-            } else {
+            // Handle rule (obligatoire avant toute validation)
+            QualityControlRuleDto ruleDto = dto.getRule();
+            if (ruleDto == null || ruleDto.getId() == null) {
                 log.error("Rule is required for QualityControlResult");
                 throw new IllegalArgumentException("Rule is required for QualityControlResult");
             }
 
+            QualityControlRule rule = ruleRepository.findById(ruleDto.getId())
+                    .orElseThrow(() -> {
+                        log.error("Rule not found for ID: {}", ruleDto.getId());
+                        return new IllegalArgumentException("Rule not found for ID: " + ruleDto.getId());
+                    });
+            entity.setRule(rule);
+
+            // Set and validate measured value
+            String measuredValue = dto.getMeasuredValue();
+            RuleType ruleType = rule.getRuleType();
+
+            switch (ruleType) {
+                case NUMERIC:
+                    try {
+                        Double value = Double.parseDouble(measuredValue);
+                        if (rule.getMinValue() != null && value < rule.getMinValue()) {
+                            throw new IllegalArgumentException("Measured value below minValue for rule: " + ruleDto.getId());
+                        }
+                        if (rule.getMaxValue() != null && value > rule.getMaxValue()) {
+                            throw new IllegalArgumentException("Measured value above maxValue for rule: " + ruleDto.getId());
+                        }
+                    } catch (NumberFormatException e) {
+                        throw new IllegalArgumentException("Invalid numeric value for rule: " + ruleDto.getId());
+                    }
+                    break;
+
+                case BOOLEAN:
+                    if (!"true".equalsIgnoreCase(measuredValue) && !"false".equalsIgnoreCase(measuredValue)) {
+                        throw new IllegalArgumentException("Invalid boolean value for rule: " + ruleDto.getId());
+                    }
+                    break;
+
+                case STRING:
+                    List<String> allowedValues = rule.getTextValues();
+                    if (allowedValues != null && !allowedValues.isEmpty()) {
+                        if (!allowedValues.contains(measuredValue)) {
+                            throw new IllegalArgumentException("Invalid string value for rule: " + ruleDto.getId() +
+                                    ". Allowed values are: " + allowedValues);
+                        }
+                    }
+                    break;
+
+                default:
+                    throw new IllegalArgumentException("Unknown rule type: " + ruleType);
+            }
+
+            entity.setMeasuredValue(measuredValue);
+
             // Handle delivery
-            UnifiedDeliveryDTO deliveryEntity = dto.getDelivery();
-            if (deliveryEntity != null) {
-                UnifiedDeliveryDTO deliveryDto = unifiedDeliveryService.findById(deliveryEntity.getId());
-                if (deliveryDto == null) {
-                    log.error("Delivery not found for ID: {}", deliveryEntity);
-                    throw new IllegalArgumentException("Delivery not found for ID: " + deliveryEntity);
-                }
-                UnifiedDelivery delivery = modelMapper.map(deliveryDto, UnifiedDelivery.class);
-                entity.setDelivery(delivery);
-            } else {
+            UnifiedDeliveryDTO deliveryDto = dto.getDelivery();
+            if (deliveryDto == null || deliveryDto.getId() == null) {
                 log.error("Delivery is required for QualityControlResult");
                 throw new IllegalArgumentException("Delivery is required for QualityControlResult");
             }
+
+            UnifiedDeliveryDTO foundDeliveryDto = unifiedDeliveryService.findById(deliveryDto.getId());
+            if (foundDeliveryDto == null) {
+                log.error("Delivery not found for ID: {}", deliveryDto.getId());
+                throw new IllegalArgumentException("Delivery not found for ID: " + deliveryDto.getId());
+            }
+
+            UnifiedDelivery delivery = modelMapper.map(foundDeliveryDto, UnifiedDelivery.class);
+            entity.setDelivery(delivery);
 
             return entity;
         }).collect(Collectors.toList());
 
         log.debug("Saving {} entities", entities.size());
         List<QualityControlResult> savedEntities = repository.saveAll(entities);
-        log.debug("Mapping {} saved entities to DTOs", savedEntities.size());
+
         return savedEntities.stream()
                 .map(entity -> modelMapper.map(entity, QualityControlResultDto.class))
                 .collect(Collectors.toList());

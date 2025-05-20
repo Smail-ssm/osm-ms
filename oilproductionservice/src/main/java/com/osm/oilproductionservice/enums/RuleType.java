@@ -9,7 +9,7 @@ import javax.print.DocFlavor;
 public enum RuleType {
     NUMERIC,
     BOOLEAN,
-    TEXT ;
+    STRING ;
     @JsonCreator
     public static RuleType fromString(String key) {
         return key == null ? null : RuleType.valueOf(key.trim().toUpperCase());
