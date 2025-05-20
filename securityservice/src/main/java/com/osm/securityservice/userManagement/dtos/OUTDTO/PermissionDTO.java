@@ -8,7 +8,15 @@ import com.xdev.xdevbase.dtos.BaseDto;
 public class PermissionDTO extends BaseDto<Permission> {
     private String permissionName;
     private OSMModule module;
+    private String category;
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
     public String getPermissionName() {
         return permissionName;
     }
