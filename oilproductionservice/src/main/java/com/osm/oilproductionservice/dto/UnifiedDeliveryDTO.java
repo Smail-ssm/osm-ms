@@ -3,14 +3,14 @@ package com.osm.oilproductionservice.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.osm.oilproductionservice.enums.DeliveryType;
 import com.osm.oilproductionservice.enums.OliveLotStatus;
-import com.osm.oilproductionservice.model.QualityControlResult;
 import com.osm.oilproductionservice.model.UnifiedDelivery;
 import com.xdev.xdevbase.dtos.BaseDto;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
-
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -79,6 +79,10 @@ public class UnifiedDeliveryDTO extends BaseDto<UnifiedDelivery> {
     private Float oliveQuantity;
 
     private String parcel;
+    private Set<QualityControlResultDto> qualityControlResults = new HashSet<>();
+    private StorageUnitDto storageUnit;
+    private BaseTypeDto operationType;
+    private MillMachineDto millMachine;
 
 
     public String getDeliveryNumber() {
@@ -115,6 +119,38 @@ public class UnifiedDeliveryDTO extends BaseDto<UnifiedDelivery> {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     public void setDeliveryDate(LocalDateTime deliveryDate) {
         this.deliveryDate = deliveryDate;
+    }
+
+    public Set<QualityControlResultDto> getQualityControlResults() {
+        return qualityControlResults;
+    }
+
+    public void setQualityControlResults(Set<QualityControlResultDto> qualityControlResults) {
+        this.qualityControlResults = qualityControlResults;
+    }
+
+    public StorageUnitDto getStorageUnit() {
+        return storageUnit;
+    }
+
+    public void setStorageUnit(StorageUnitDto storageUnit) {
+        this.storageUnit = storageUnit;
+    }
+
+    public BaseTypeDto getOperationType() {
+        return operationType;
+    }
+
+    public void setOperationType(BaseTypeDto operationType) {
+        this.operationType = operationType;
+    }
+
+    public MillMachineDto getMillMachine() {
+        return millMachine;
+    }
+
+    public void setMillMachine(MillMachineDto millMachine) {
+        this.millMachine = millMachine;
     }
 
     public BaseTypeDto getRegion() {

@@ -102,41 +102,6 @@ public class UnifiedDelivery extends BaseEntity implements Serializable {
     private String parcel;
 
 
-    // --- Constructors ---
-    public UnifiedDelivery() {
-    }
-
-    public UnifiedDelivery(String deliveryNumber, DeliveryType deliveryType, String lotNumber, LocalDateTime deliveryDate, BaseType region, float poidsBrute, float poidsNet, String matriculeCamion, String etatCamion, Supplier supplier, Set<QualityControlResult> qualityControlResults, String globalLotNumber, BaseType oilVariety, Float oilQuantity, Float unitPrice, Float price, Float paidAmount, Float unpaidAmount, StorageUnit storageUnit, BaseType oilType, LocalDateTime trtDate, BaseType operationType, BaseType oliveVariety, int sackCount, BaseType oliveType, OliveLotStatus status, Float rendement, MillMachine millMachine, Float oliveQuantity, String parcel) {
-        this.deliveryNumber = deliveryNumber;
-        this.deliveryType = deliveryType;
-        this.lotNumber = lotNumber;
-        this.deliveryDate = deliveryDate;
-        this.region = region;
-        this.poidsBrute = poidsBrute;
-        this.poidsNet = poidsNet;
-        this.matriculeCamion = matriculeCamion;
-        this.etatCamion = etatCamion;
-        this.supplier = supplier;
-        this.globalLotNumber = globalLotNumber;
-        this.oilVariety = oilVariety;
-        this.oilQuantity = oilQuantity;
-        this.unitPrice = unitPrice;
-        this.price = price;
-        this.paidAmount = paidAmount;
-        this.unpaidAmount = unpaidAmount;
-        this.storageUnit = storageUnit;
-        this.oilType = oilType;
-        this.trtDate = trtDate;
-        this.operationType = operationType;
-        this.oliveVariety = oliveVariety;
-        this.sackCount = sackCount;
-        this.oliveType = oliveType;
-        this.status = status;
-        this.rendement = rendement;
-        this.millMachine = millMachine;
-        this.oliveQuantity = oliveQuantity;
-        this.parcel = parcel;
-    }
 
     /**
      * A full-argument constructor to initialize all common fields along with delivery-specific properties.
