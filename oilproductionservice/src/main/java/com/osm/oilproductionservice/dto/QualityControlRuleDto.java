@@ -16,7 +16,7 @@ public class QualityControlRuleDto extends BaseDto<QualityControlRule> {
     private Float maxValue; // Maximum acceptable value for the rule
     private RuleType ruleType;
     private Boolean booleanValue;
-    private List<String> textValues; // New field for text values
+    private String ruleTextValue; // New field for text values
 
     public String getRuleKey() {
         return ruleKey;
@@ -82,11 +82,11 @@ public class QualityControlRuleDto extends BaseDto<QualityControlRule> {
         this.booleanValue = booleanValue;
     }
 
-    public List<String> getTextValues() {
-        return textValues;
+    public String getRuleTextValue() {
+        return ruleTextValue;
     }
 
-    public void setTextValues(List<String> textValues) {
-        this.textValues = textValues;
+    public void setRuleTextValue(String ruleTextValue) {
+        this.ruleTextValue = ruleTextValue;
     }
 }

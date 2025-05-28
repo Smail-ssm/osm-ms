@@ -1,5 +1,6 @@
 package com.osm.oilproductionservice.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.xdev.xdevbase.entities.BaseEntity;
 import jakarta.persistence.*;
 

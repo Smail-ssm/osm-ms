@@ -1,5 +1,6 @@
 package com.osm.oilproductionservice.dto;
 
+import com.osm.oilproductionservice.model.GlobalLot;
 import lombok.Data;
 import java.util.List;
 
