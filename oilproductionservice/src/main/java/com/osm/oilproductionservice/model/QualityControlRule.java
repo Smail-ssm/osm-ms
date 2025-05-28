@@ -31,10 +31,7 @@ public class QualityControlRule extends BaseEntity implements Serializable {
     private String description;
 
     // New field for textValues
-    @ElementCollection
-    @CollectionTable(name = "quality_control_rule_text_values", joinColumns = @JoinColumn(name = "rule_id"))
-    @Column(name = "text_value")
-    private List<String> textValues;
+    private String ruleTextValue;
 
 
     public String getRuleKey() {
@@ -101,11 +98,11 @@ public class QualityControlRule extends BaseEntity implements Serializable {
         this.description = description;
     }
 
-    public List<String> getTextValues() {
-        return textValues;
+    public String getRuleTextValue() {
+        return ruleTextValue;
     }
 
-    public void setTextValues(List<String> textValues) {
-        this.textValues = textValues;
+    public void setRuleTextValue(String ruleTextValue) {
+        this.ruleTextValue = ruleTextValue;
     }
 }

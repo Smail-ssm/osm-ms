@@ -79,7 +79,9 @@ public class UnifiedDeliveryDTO extends BaseDto<UnifiedDelivery> {
     private Float oliveQuantity;
 
     private String parcel;
+
     private Set<QualityControlResultDto> qualityControlResults = new HashSet<>();
+
     private StorageUnitDto storageUnit;
     private BaseTypeDto operationType;
     private MillMachineDto millMachine;

@@ -17,7 +17,8 @@ public class QualityControlResultDto extends BaseDto<QualityControlResult> imple
 
     QualityControlRuleDto rule;
     String measuredValue;
-    private UnifiedDeliveryDTO delivery;
+    private String deliveryId;
+
 
 
     public QualityControlRuleDto getRule() {
@@ -36,11 +37,11 @@ public class QualityControlResultDto extends BaseDto<QualityControlResult> imple
         this.measuredValue = measuredValue;
     }
 
-    public UnifiedDeliveryDTO getDelivery() {
-        return delivery;
+    public String getDeliveryId() {
+        return deliveryId;
     }
 
-    public void setDelivery(UnifiedDeliveryDTO delivery) {
-        this.delivery = delivery;
+    public void setDeliveryId(String deliveryId) {
+        this.deliveryId = deliveryId;
     }
 }
