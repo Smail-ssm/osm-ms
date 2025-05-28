@@ -3,6 +3,7 @@ package com.osm.oilproductionservice.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.osm.oilproductionservice.enums.DeliveryType;
 import com.osm.oilproductionservice.enums.OliveLotStatus;
 import com.xdev.xdevbase.entities.BaseEntity;
@@ -59,6 +60,7 @@ public class UnifiedDelivery extends BaseEntity implements Serializable {
 
     @OneToMany(mappedBy = "delivery", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<QualityControlResult> qualityControlResults = new HashSet<>();
+
 
     // --- Oil Delivery Specific Fields ---
     // Note: globalLotNumber is common to both oil and olive deliveries.
