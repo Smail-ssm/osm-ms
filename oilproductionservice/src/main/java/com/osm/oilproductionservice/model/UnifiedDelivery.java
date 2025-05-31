@@ -61,6 +61,16 @@ public class UnifiedDelivery extends BaseEntity implements Serializable {
     @OneToMany(mappedBy = "delivery", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<QualityControlResult> qualityControlResults = new HashSet<>();
 
+    @Column(name = "has_quality_control")
+    private boolean hasQualityControl = false;
+
+    public boolean isHasQualityControl() {
+        return hasQualityControl;
+    }
+
+    public void setHasQualityControl(boolean hasQualityControl) {
+        this.hasQualityControl = hasQualityControl;
+    }
 
     // --- Oil Delivery Specific Fields ---
     // Note: globalLotNumber is common to both oil and olive deliveries.

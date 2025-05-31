@@ -1,6 +1,7 @@
 package com.osm.oilproductionservice.service;
 
 import com.osm.oilproductionservice.dto.*;
+import com.osm.oilproductionservice.enums.DeliveryType;
 import com.osm.oilproductionservice.enums.OliveLotStatus;
 import com.osm.oilproductionservice.model.MillMachine;
 import com.osm.oilproductionservice.model.UnifiedDelivery;
@@ -193,7 +194,7 @@ public class PlanningService {
         }
 
         // Group deliveries by global lot
-        List<UnifiedDelivery> allDeliveries = deliveryRepo.findAll();
+        List<UnifiedDelivery> allDeliveries = deliveryRepo.findAllByDeliveryTypeAndQualityControlResultsIsNotNull(DeliveryType.OLIVE);
         List<UnifiedDeliveryDTO> allDeliveryDtos = allDeliveries.stream().map((element) -> modelMapper.map(element, UnifiedDeliveryDTO.class)).toList();
         Map<String, List<UnifiedDeliveryDTO>> globalLotGroups = allDeliveryDtos.stream()
                 .filter(d -> d.getGlobalLotNumber() != null)

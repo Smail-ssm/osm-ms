@@ -1,6 +1,7 @@
 package com.osm.oilproductionservice.controller;
 
 
+import com.osm.oilproductionservice.dto.ApiResponse;
 import com.osm.oilproductionservice.dto.UnifiedDeliveryDTO;
 import com.osm.oilproductionservice.model.UnifiedDelivery;
 import com.osm.oilproductionservice.service.UnifiedDeliveryService;
@@ -8,9 +9,11 @@ import com.xdev.xdevbase.controllers.AdvancedSearchController;
 import com.xdev.xdevbase.controllers.impl.BaseControllerImpl;
 import com.xdev.xdevbase.services.BaseService;
 import org.modelmapper.ModelMapper;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/production/deliveries")
@@ -26,6 +29,18 @@ public class UnifiedDeliveryController extends BaseControllerImpl<UnifiedDeliver
     }
 
 
+    @GetMapping("/planning")
+    public ResponseEntity<ApiResponse<List<UnifiedDeliveryDTO>>> getPlanning() {
+        ApiResponse<List<UnifiedDeliveryDTO>> response = new ApiResponse<>(true, "Delleveirs for planning fetched  successfully", this.UnifiedDeliveryService.getForPlanning());
 
+        return ResponseEntity.ok(response);
+    }
 
+    @GetMapping("/findForQuality")
+    public ResponseEntity<ApiResponse<List<UnifiedDeliveryDTO>>> getDeliveriesWithoutQualityControl(@RequestParam("types") String types) {
+        List<String> typeList = Arrays.asList(types.split(","));
+        ApiResponse<List<UnifiedDeliveryDTO>> response = new ApiResponse<>(true, "Delleveirs for planning fetched  successfully", this.UnifiedDeliveryService.findByDeliveryTypeInAndQualityControlResultsIsNull(typeList));
+
+        return ResponseEntity.ok(response);
+    }
 }

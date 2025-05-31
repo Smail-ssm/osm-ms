@@ -1,6 +1,7 @@
 package com.osm.oilproductionservice.service;
 
 import com.osm.oilproductionservice.dto.UnifiedDeliveryDTO;
+import com.osm.oilproductionservice.enums.DeliveryType;
 import com.osm.oilproductionservice.model.Supplier;
 import com.osm.oilproductionservice.model.UnifiedDelivery;
 import com.osm.oilproductionservice.repository.DeliveryRepository;
@@ -13,6 +14,9 @@ import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UnifiedDeliveryService extends BaseServiceImpl<UnifiedDelivery, UnifiedDeliveryDTO, UnifiedDeliveryDTO> {
@@ -73,4 +77,10 @@ public class UnifiedDeliveryService extends BaseServiceImpl<UnifiedDelivery, Uni
         return modelMapper.map(updated, UnifiedDeliveryDTO.class);
     }
 
+     public List<UnifiedDeliveryDTO> getForPlanning() {
+        return deliveryRepository.findAllByDeliveryTypeAndQualityControlResultsIsNotNull(DeliveryType.OLIVE).stream().map((element) -> modelMapper.map(element, UnifiedDeliveryDTO.class)).collect(Collectors.toList());
+    }
+    public List<UnifiedDeliveryDTO> findByDeliveryTypeInAndQualityControlResultsIsNull(List<String> types) {
+        return deliveryRepository.findByDeliveryTypeInAndQualityControlResultsIsNull(types).stream().map((element) -> modelMapper.map(element, UnifiedDeliveryDTO.class)).collect(Collectors.toList());
+    }
 }
