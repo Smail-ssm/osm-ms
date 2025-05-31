@@ -1,5 +1,6 @@
 package com.osm.oilproductionservice.repository;
 
+import com.osm.oilproductionservice.enums.DeliveryType;
 import com.osm.oilproductionservice.model.MillMachine;
 import com.osm.oilproductionservice.model.UnifiedDelivery;
 import com.xdev.xdevbase.repos.BaseRepository;
@@ -24,4 +25,9 @@ public interface DeliveryRepository extends BaseRepository<UnifiedDelivery> {
     List<UnifiedDelivery> findByMillMachineId(UUID mill);
 
     List<UnifiedDelivery> findByMillMachineIsNotNull();
+
+    List<UnifiedDelivery> findAllByDeliveryTypeAndQualityControlResultsIsNotNull(DeliveryType deliveryType);
+
+    @Query("SELECT u FROM UnifiedDelivery u WHERE u.deliveryType IN :types AND u.qualityControlResults IS EMPTY")
+    List<UnifiedDelivery> findByDeliveryTypeInAndQualityControlResultsIsNull(@Param("types") List<String> types);
 }
