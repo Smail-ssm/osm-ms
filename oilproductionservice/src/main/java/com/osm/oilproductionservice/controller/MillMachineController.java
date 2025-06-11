@@ -5,6 +5,7 @@ import com.osm.oilproductionservice.dto.MillMachineDto;
 import com.osm.oilproductionservice.model.MillMachine;
 import com.osm.oilproductionservice.service.UnifiedDeliveryService;
 import com.xdev.xdevbase.controllers.impl.BaseControllerImpl;
+import com.xdev.xdevbase.models.OSMModule;
 import com.xdev.xdevbase.services.BaseService;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,5 +20,10 @@ public class MillMachineController extends BaseControllerImpl<MillMachine, MillM
     public MillMachineController(BaseService<MillMachine, MillMachineDto, MillMachineDto> baseService, ModelMapper modelMapper, UnifiedDeliveryService UnifiedDeliveryService) {
         super(baseService, modelMapper);
         this.UnifiedDeliveryService = UnifiedDeliveryService;
+    }
+
+    @Override
+    protected OSMModule getResourceName() {
+        return OSMModule.RECEPTION;
     }
 }

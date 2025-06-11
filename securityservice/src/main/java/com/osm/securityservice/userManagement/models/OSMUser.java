@@ -32,7 +32,7 @@ public class OSMUser extends BaseEntity implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRole().getPermissions().stream()
-                .map(permission -> new SimpleGrantedAuthority("MODULE_" + permission.getModule().toString() + "_" + permission.getPermissionName()))
+                .map(permission -> new SimpleGrantedAuthority(String.format("%s:%s:%s", permission.getModule().toString().toUpperCase(), permission.getEntity().toUpperCase(), permission.getPermissionName().toUpperCase())))
                 .toList();
     }
 

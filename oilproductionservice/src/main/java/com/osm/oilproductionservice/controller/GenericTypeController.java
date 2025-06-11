@@ -6,6 +6,7 @@ import com.osm.oilproductionservice.model.BaseType;
 import com.osm.oilproductionservice.service.GenericTypeService;
 import com.xdev.xdevbase.apiDTOs.ApiResponse;
 import com.xdev.xdevbase.controllers.impl.BaseControllerImpl;
+import com.xdev.xdevbase.models.OSMModule;
 import com.xdev.xdevbase.services.BaseService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -52,5 +53,10 @@ public class GenericTypeController extends
             ApiResponse<BaseType, BaseTypeDto> response = new ApiResponse<>(false, "Error fetching types: " + e.getMessage(), null);
             return ResponseEntity.badRequest().body(response);
         }
+    }
+
+    @Override
+    protected OSMModule getResourceName() {
+        return OSMModule.RECEPTION;
     }
 }

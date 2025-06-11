@@ -22,9 +22,7 @@ import org.springframework.security.oauth2.server.authorization.token.DefaultOAu
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Configuration
 class CustomRefreshTokenAuthenticationProvider implements AuthenticationProvider {
@@ -84,23 +82,16 @@ class CustomRefreshTokenAuthenticationProvider implements AuthenticationProvider
             throw new OAuth2AuthenticationException(OAuth2ErrorCodes.ACCESS_DENIED);
         }
 
-        // Validate client
-//        String clientId = clientPrincipal.getName();
-//        RegisteredClient client = RegisteredClient.withId(UUID.randomUUID().toString())
-//                .clientId(clientId)
-//                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-//                .build();
-
         // Generate new access token
         AuthorizationServerContext authorizationServerContext = AuthorizationServerContextHolder.getContext();
-
+        Set<String> scopes = Collections.emptySet();
         OAuth2Authorization.Builder authorizationBuilder = OAuth2Authorization.from(authorization);
         OAuth2TokenContext tokenContext = DefaultOAuth2TokenContext.builder()
                 .authorization(authorizationBuilder.build())
                 .principal(authorization.getAttribute("principal"))
                 .registeredClient(client)
                 .tokenType(OAuth2TokenType.ACCESS_TOKEN)
-                .authorizedScopes(authorization.getAuthorizedScopes())
+                .authorizedScopes(scopes)
                 .authorizationServerContext(authorizationServerContext)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .authorizationGrant(refreshTokenAuth)

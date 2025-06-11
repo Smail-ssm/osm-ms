@@ -105,14 +105,15 @@ public class SecurityConfig {
             if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
                 Authentication principal = context.getPrincipal();
                 if (principal.getPrincipal() instanceof OSMUser user) {
-
+                    OSMUserOUTDTO dto = modelMapper.map(user, OSMUserOUTDTO.class);
+                    dto.getRole().setPermissions(null);
                     context.getClaims()
                             .claim("osmUser",
-                                    modelMapper.map(user, OSMUserOUTDTO.class)
+                                    dto
                             )
-                            .claim("permissions", user.getAuthorities())
+                            //.claim("permissions", user.getAuthorities())
                             .claim("role", user.getRole().getRoleName())
-                            .claim("authorities", principal.getAuthorities().stream()
+                            .claim("authorities", user.getAuthorities().stream()
                                     .map(GrantedAuthority::getAuthority)
                                     .toList());
 

@@ -199,7 +199,7 @@ public class PlanningService {
                 .filter(d -> d.getGlobalLotNumber() != null)
                 .collect(Collectors.groupingBy(UnifiedDeliveryDTO::getGlobalLotNumber));
 
-        List<GlobalLotDTO> globalLots = globalLotGroups.entrySet().stream()
+        List<GlobalLotDto> globalLots = globalLotGroups.entrySet().stream()
                 .map(entry -> {
                     String globalLotNumber = entry.getKey();
                     List<UnifiedDeliveryDTO> deliveries = entry.getValue();
@@ -234,7 +234,7 @@ public class PlanningService {
                                 millPlan.getItems().add(item);
                             });
 
-                    return new GlobalLotDTO(globalLotNumber, totalWeight, deliveryDtos);
+                    return new GlobalLotDto(globalLotNumber, totalWeight, deliveryDtos);
                 })
                 .collect(Collectors.toList());
 

@@ -6,6 +6,7 @@ import com.osm.securityservice.userManagement.dtos.OUTDTO.RoleDTO;
 import com.osm.securityservice.userManagement.models.Role;
 import com.osm.securityservice.userManagement.service.UserService;
 import com.xdev.xdevbase.controllers.impl.BaseControllerImpl;
+import com.xdev.xdevbase.models.OSMModule;
 import com.xdev.xdevbase.services.BaseService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -47,5 +48,10 @@ public class RoleController extends BaseControllerImpl<Role, RoleDTO, RoleDTO> {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Message error: " + e.getMessage());
         }
+    }
+
+    @Override
+    protected OSMModule getResourceName() {
+        return OSMModule.HABILITATION;
     }
 }

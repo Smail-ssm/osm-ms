@@ -5,6 +5,7 @@ import com.osm.oilproductionservice.dto.TransporterDTO;
 import com.osm.oilproductionservice.model.Transporter;
 import com.osm.oilproductionservice.service.TransporterService;
 import com.xdev.xdevbase.controllers.impl.BaseControllerImpl;
+import com.xdev.xdevbase.models.OSMModule;
 import com.xdev.xdevbase.services.BaseService;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,4 +25,8 @@ public class TransporterController extends BaseControllerImpl<Transporter, Trans
     }
 
 
+    @Override
+    protected OSMModule getResourceName() {
+        return OSMModule.RECEPTION;
+    }
 }

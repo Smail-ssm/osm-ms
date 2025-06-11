@@ -24,9 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.security.auth.login.AccountLockedException;
 import javax.security.auth.login.CredentialExpiredException;
 import java.security.SecureRandom;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class UserService extends BaseServiceImpl<OSMUser, OSMUserDTO, OSMUserOUTDTO> implements UserDetailsService {
@@ -251,4 +249,17 @@ public class UserService extends BaseServiceImpl<OSMUser, OSMUserDTO, OSMUserOUT
                 user -> modelMapper.map(user, OSMUserDTO.class)
         ).toList();
     }
+
+
+    @Override
+    public Set<String> actionsMapping(OSMUser user) {
+        Set<String> actions = new HashSet<>();
+        actions.add("READ");
+        if (user.getRole().getRoleName().equals("ADMIN")) {
+            actions.addAll(Set.of("UPDATE", "DELETE", "CREATE"));
+        }
+        return actions;
+    }
+
+
 }

@@ -5,6 +5,7 @@ import com.osm.oilproductionservice.model.QualityControlResult;
 import com.osm.oilproductionservice.service.QualityControlResultService;
 import com.xdev.xdevbase.apiDTOs.ApiResponse;
 import com.xdev.xdevbase.controllers.impl.BaseControllerImpl;
+import com.xdev.xdevbase.models.OSMModule;
 import com.xdev.xdevbase.services.BaseService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -82,5 +83,10 @@ public class QualityControlResultController extends BaseControllerImpl<QualityCo
             log.error("Unexpected error: {}", e.getMessage(), e);
             return ResponseEntity.status(500).body(new ApiResponse<>(false, "Unexpected error: " + e.getMessage(), null));
         }
+    }
+
+    @Override
+    protected OSMModule getResourceName() {
+        return OSMModule.RECEPTION;
     }
 }

@@ -6,6 +6,7 @@ import com.osm.securityservice.userManagement.dtos.OUTDTO.UpdatePasswordDTO;
 import com.osm.securityservice.userManagement.models.OSMUser;
 import com.osm.securityservice.userManagement.service.UserService;
 import com.xdev.xdevbase.controllers.impl.BaseControllerImpl;
+import com.xdev.xdevbase.models.OSMModule;
 import com.xdev.xdevbase.services.BaseService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.security.auth.login.AccountLockedException;
 import javax.security.auth.login.CredentialExpiredException;
 import java.util.UUID;
+
+import static com.xdev.xdevbase.models.OSMModule.HABILITATION;
 
 @RestController
 @RequestMapping("/api/security/user")
@@ -90,4 +93,8 @@ public class UserController extends BaseControllerImpl<OSMUser, OSMUserDTO, OSMU
         }
     }
 
+    @Override
+    protected OSMModule getResourceName() {
+        return HABILITATION;
+    }
 }

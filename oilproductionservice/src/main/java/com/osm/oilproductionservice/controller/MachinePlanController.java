@@ -4,6 +4,7 @@ import com.osm.oilproductionservice.dto.MachinePlanDto;
 import com.osm.oilproductionservice.model.MachinePlan;
 import com.osm.oilproductionservice.service.MachinePlanService;
 import com.xdev.xdevbase.controllers.impl.BaseControllerImpl;
+import com.xdev.xdevbase.models.OSMModule;
 import com.xdev.xdevbase.services.BaseService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.modelmapper.ModelMapper;
@@ -22,5 +23,10 @@ public class MachinePlanController extends BaseControllerImpl<MachinePlan, Machi
                                  MachinePlanService machinePlanService) {
         super(baseService, modelMapper);
         this.machinePlanService = machinePlanService;
+    }
+
+    @Override
+    protected OSMModule getResourceName() {
+        return OSMModule.RECEPTION;
     }
 }

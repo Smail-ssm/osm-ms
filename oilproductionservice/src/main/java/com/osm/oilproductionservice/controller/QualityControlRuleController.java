@@ -3,6 +3,7 @@ package com.osm.oilproductionservice.controller;
 import com.osm.oilproductionservice.dto.QualityControlRuleDto;
 import com.osm.oilproductionservice.model.QualityControlRule;
 import com.xdev.xdevbase.controllers.impl.BaseControllerImpl;
+import com.xdev.xdevbase.models.OSMModule;
 import com.xdev.xdevbase.services.BaseService;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class QualityControlRuleController extends BaseControllerImpl<QualityControlRule, QualityControlRuleDto, QualityControlRuleDto> {
     public QualityControlRuleController(BaseService<QualityControlRule, QualityControlRuleDto, QualityControlRuleDto> baseService, ModelMapper modelMapper) {
         super(baseService, modelMapper);
+    }
+
+    @Override
+    protected OSMModule getResourceName() {
+        return OSMModule.RECEPTION;
     }
 
 //    private final QualityControlRuleService qualityControlRuleService;

@@ -1,7 +1,7 @@
 package com.osm.securityservice.userManagement.models;
 
-import com.osm.securityservice.userManagement.models.enums.OSMModule;
 import com.xdev.xdevbase.entities.BaseEntity;
+import com.xdev.xdevbase.models.OSMModule;
 import jakarta.persistence.Entity;
 import org.hibernate.envers.Audited;
 
@@ -10,14 +10,14 @@ import org.hibernate.envers.Audited;
 public class Permission extends BaseEntity {
     private String permissionName;
     private OSMModule module;
-    private String category;
+    private String entity;
 
-    public String getCategory() {
-        return category;
+    public String getEntity() {
+        return entity;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setEntity(String entity) {
+        this.entity = entity;
     }
 
     public String getPermissionName() {

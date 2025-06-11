@@ -22,8 +22,10 @@ import org.springframework.security.oauth2.server.authorization.token.DefaultOAu
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @Configuration
 class CustomTokenGrantAuthenticationProvider implements AuthenticationProvider {
@@ -65,11 +67,12 @@ class CustomTokenGrantAuthenticationProvider implements AuthenticationProvider {
         String clientId = clientPrincipal.getName();
 
         RegisteredClient client = registeredClientRepository.findByClientId(clientId);
+        Set<String> scopes = Collections.emptySet();
         // Create OAuth2 authorization
         OAuth2Authorization.Builder authorizationBuilder = OAuth2Authorization.withRegisteredClient(client)
                 .principalName(userAuth.getName())
                 .authorizationGrantType(new AuthorizationGrantType("TOKEN"))
-                .authorizedScopes(tokenAuth.getScopes())
+                .authorizedScopes(scopes)
                 .attribute("principal", userAuth);
         // Get the AuthorizationServerContext
         AuthorizationServerContext authorizationServerContext = AuthorizationServerContextHolder.getContext();
@@ -82,7 +85,7 @@ class CustomTokenGrantAuthenticationProvider implements AuthenticationProvider {
                 .principal(userAuth)
                 .registeredClient(client)
                 .tokenType(OAuth2TokenType.ACCESS_TOKEN)
-                .authorizedScopes(tokenAuth.getScopes())
+                .authorizedScopes(scopes)
                 .authorizationServerContext(authorizationServerContext)
                 .authorizationGrantType(new AuthorizationGrantType("TOKEN"))// Set the AuthorizationServerContext
                 .authorizationGrant(tokenAuth)
@@ -111,7 +114,7 @@ class CustomTokenGrantAuthenticationProvider implements AuthenticationProvider {
                 .principal(userAuth)
                 .registeredClient(client)
                 .tokenType(OAuth2TokenType.REFRESH_TOKEN)
-                .authorizedScopes(tokenAuth.getScopes())
+                .authorizedScopes(scopes)
                 .authorizationServerContext(authorizationServerContext)
                 .authorizationGrantType(new AuthorizationGrantType("TOKEN"))
                 .authorizationGrant(tokenAuth)
