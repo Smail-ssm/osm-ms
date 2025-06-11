@@ -20,7 +20,7 @@ public class SupplierTypeController extends BaseControllerImpl<Supplier, Supplie
     }
 
     @Override
-    protected OSMModule getResourceName() {
-        return OSMModule.RECEPTION;
+    protected String getResourceName() {
+        return "Supplier".toUpperCase();
     }
 }

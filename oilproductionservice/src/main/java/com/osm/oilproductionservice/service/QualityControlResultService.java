@@ -1,8 +1,7 @@
 package com.osm.oilproductionservice.service;
 
 import com.osm.oilproductionservice.dto.QualityControlResultDto;
-import com.osm.oilproductionservice.dto.QualityControlRuleDto;
-import com.osm.oilproductionservice.dto.UnifiedDeliveryDTO;
+import com.osm.oilproductionservice.enums.OliveLotStatus;
 import com.osm.oilproductionservice.enums.RuleType;
 import com.osm.oilproductionservice.model.QualityControlResult;
 import com.osm.oilproductionservice.model.QualityControlRule;
@@ -15,7 +14,6 @@ import com.xdev.xdevbase.services.impl.BaseServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -112,6 +110,7 @@ public class QualityControlResultService extends BaseServiceImpl<QualityControlR
         // 5. Update hasQualityControl flag
         for (UnifiedDelivery delivery : deliveryMap.values()) {
             delivery.setHasQualityControl(true); // since we just added new results
+            delivery.setStatus(OliveLotStatus.CONTROLLED);
         }
         deliveryRepo.saveAll(deliveryMap.values());
 

@@ -194,7 +194,7 @@ public class PlanningService {
         }
 
         // Group deliveries by global lot
-        List<UnifiedDelivery> allDeliveries = deliveryRepo.findAllByDeliveryTypeAndQualityControlResultsIsNotNull(DeliveryType.OLIVE);
+        List<UnifiedDelivery> allDeliveries = deliveryRepo.findOliveDeliveriesControlled();
         List<UnifiedDeliveryDTO> allDeliveryDtos = allDeliveries.stream().map((element) -> modelMapper.map(element, UnifiedDeliveryDTO.class)).toList();
         Map<String, List<UnifiedDeliveryDTO>> globalLotGroups = allDeliveryDtos.stream()
                 .filter(d -> d.getGlobalLotNumber() != null)

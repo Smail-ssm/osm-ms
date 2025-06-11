@@ -26,7 +26,7 @@ public class TransporterController extends BaseControllerImpl<Transporter, Trans
 
 
     @Override
-    protected OSMModule getResourceName() {
-        return OSMModule.RECEPTION;
+    protected String getResourceName() {
+        return "Transporter".toUpperCase();
     }
 }

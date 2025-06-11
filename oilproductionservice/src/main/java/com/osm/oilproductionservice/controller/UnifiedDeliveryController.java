@@ -18,8 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/production/deliveries")
 @CrossOrigin
-public class UnifiedDeliveryController extends BaseControllerImpl<UnifiedDelivery, UnifiedDeliveryDTO, UnifiedDeliveryDTO> implements
-        AdvancedSearchController<UnifiedDelivery, UnifiedDeliveryDTO> {
+public class UnifiedDeliveryController extends BaseControllerImpl<UnifiedDelivery, UnifiedDeliveryDTO, UnifiedDeliveryDTO> {
 
     private final UnifiedDeliveryService UnifiedDeliveryService;
 
@@ -44,8 +43,8 @@ public class UnifiedDeliveryController extends BaseControllerImpl<UnifiedDeliver
         return ResponseEntity.ok(response);
     }
     @Override
-    protected OSMModule getResourceName() {
-        return OSMModule.RECEPTION;
+    protected String getResourceName() {
+        return "UnifiedDelivery".toUpperCase();
     }
 
 }

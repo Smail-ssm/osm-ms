@@ -18,7 +18,7 @@ public class StorageUnitController extends BaseControllerImpl<StorageUnit, Stora
     }
 
     @Override
-    protected OSMModule getResourceName() {
-        return OSMModule.RECEPTION;
+    protected String getResourceName() {
+        return "StorageUnit".toUpperCase();
     }
 }

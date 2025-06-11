@@ -94,7 +94,7 @@ public class UserController extends BaseControllerImpl<OSMUser, OSMUserDTO, OSMU
     }
 
     @Override
-    protected OSMModule getResourceName() {
-        return HABILITATION;
+    protected String getResourceName() {
+        return "OSMUser".toUpperCase();
     }
 }

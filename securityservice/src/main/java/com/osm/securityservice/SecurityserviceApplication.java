@@ -49,25 +49,25 @@ public class SecurityserviceApplication {
             // Create permissions
             PermissionDTO readUsers = new PermissionDTO();
             readUsers.setPermissionName("READ");
-            readUsers.setEntity("USER");
+            readUsers.setEntity("OSMUSER");
             readUsers.setModule(OSMModule.HABILITATION); // Enum or Entity
             PermissionDTO read = permissionService.save(readUsers);
 
             PermissionDTO writeUsers = new PermissionDTO();
             writeUsers.setPermissionName("WRITE");
-            writeUsers.setEntity("USER");
+            writeUsers.setEntity("OSMUSER");
             writeUsers.setModule(OSMModule.HABILITATION);
             PermissionDTO write = permissionService.save(writeUsers);
 
             PermissionDTO updateUsers = new PermissionDTO();
             updateUsers.setPermissionName("UPDATE");
-            updateUsers.setEntity("USER");
+            updateUsers.setEntity("OSMUSER");
             updateUsers.setModule(OSMModule.HABILITATION);
             PermissionDTO update = permissionService.save(updateUsers);
 
             PermissionDTO deleteUsers = new PermissionDTO();
             deleteUsers.setPermissionName("DELETE");
-            deleteUsers.setEntity("USER");
+            deleteUsers.setEntity("OSMUSER");
             deleteUsers.setModule(OSMModule.HABILITATION);
             PermissionDTO delete = permissionService.save(deleteUsers);
 
@@ -105,7 +105,7 @@ public class SecurityserviceApplication {
             PermissionDTO writeReception = permissionService.save(writeReceptions);
 
             RoleDTO userRoleDto = new RoleDTO();
-            userRoleDto.setRoleName("USER");
+            userRoleDto.setRoleName("OSMUSER");
             userRoleDto.setPermissions(Set.of(readReception, writeReception));
             RoleDTO userRole = roleService.save(userRoleDto);
 

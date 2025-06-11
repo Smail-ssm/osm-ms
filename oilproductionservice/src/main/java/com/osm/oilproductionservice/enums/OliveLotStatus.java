@@ -9,6 +9,7 @@ public enum OliveLotStatus {
 
     NEW,
     IN_PROGRESS,
+    CONTROLLED,
     COMPLETED,
     REFUSED,
     CANCELLED

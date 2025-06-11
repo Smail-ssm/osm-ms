@@ -51,7 +51,7 @@ public class RoleController extends BaseControllerImpl<Role, RoleDTO, RoleDTO> {
     }
 
     @Override
-    protected OSMModule getResourceName() {
-        return OSMModule.HABILITATION;
+    protected String getResourceName() {
+        return "Role".toUpperCase();
     }
 }

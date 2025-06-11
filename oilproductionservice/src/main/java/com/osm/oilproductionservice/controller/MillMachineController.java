@@ -23,7 +23,7 @@ public class MillMachineController extends BaseControllerImpl<MillMachine, MillM
     }
 
     @Override
-    protected OSMModule getResourceName() {
-        return OSMModule.RECEPTION;
+    protected String getResourceName() {
+        return "MillMachine";
     }
 }

@@ -56,7 +56,7 @@ public class GenericTypeController extends
     }
 
     @Override
-    protected OSMModule getResourceName() {
-        return OSMModule.RECEPTION;
+    protected String getResourceName() {
+        return "BaseType";
     }
 }

@@ -18,7 +18,7 @@ public class PermissionController extends BaseControllerImpl<Permission, Permiss
     }
 
     @Override
-    protected OSMModule getResourceName() {
-        return OSMModule.HABILITATION;
+    protected String getResourceName() {
+        return "Permission".toUpperCase();
     }
 }
