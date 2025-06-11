@@ -47,4 +47,5 @@ public class UnifiedDeliveryController extends BaseControllerImpl<UnifiedDeliver
     protected OSMModule getResourceName() {
         return OSMModule.RECEPTION;
     }
+
 }
